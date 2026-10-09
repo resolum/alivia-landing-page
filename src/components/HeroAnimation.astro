@@ -1,0 +1,236 @@
+---
+const TOTAL_FRAMES = 240;
+---
+
+<section id="hero-experience" class="relative w-full bg-alivia-surface text-white">
+  <div id="scroll-track" class="relative h-[380vh] w-full">
+    <div
+      id="hero-viewport"
+      class="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-alivia-surface"
+    >
+      <canvas
+        id="hero-canvas"
+        class="relative z-10 w-full h-full object-cover transition-opacity duration-500 opacity-100 hero-canvas-mask"
+      ></canvas>
+      <div
+        class="absolute inset-0 z-15 bg-gradient-to-b from-alivia-primary-deep/40 via-transparent to-transparent pointer-events-none hero-canvas-mask"
+      >
+      </div>
+      <div
+        class="absolute inset-0 z-20 pointer-events-none flex items-center justify-center px-4 sm:px-6"
+      >
+        <div
+          id="story-card-1"
+          class="story-card opacity-100 translate-y-0 transition-all duration-500 ease-out text-center max-w-4xl"
+        >
+          <div
+            class="p-6 sm:p-10 rounded-3xl bg-[#040c29]/50 border border-alivia-secondary/30 backdrop-blur-md shadow-[0_12px_40px_rgba(0,0,0,0.5)] text-white drop-shadow-md"
+          >
+            <div
+              class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-alivia-primary/80 text-alivia-secondary-mint text-xs font-semibold tracking-wider uppercase mb-5 border border-alivia-secondary-medium/40 shadow-sm"
+            >
+              <span class="w-2 h-2 rounded-full bg-alivia-secondary animate-ping"
+              ></span>
+              <span
+                >Domótica por Voz Asistida • Funcionamiento 100% Local (Edge)</span
+              >
+            </div>
+            <h1
+              class="text-3xl sm:text-5xl lg:text-6xl font-semibold font-display tracking-tight leading-[1.2] mb-5 text-white drop-shadow-md"
+            >
+              Autonomía por voz en el hogar sin depender de Internet
+            </h1>
+
+            <p
+              class="text-base sm:text-lg text-alivia-hero-text max-w-3xl mx-auto leading-relaxed mb-7 font-normal drop-shadow"
+            >
+              Alivia permite a personas con discapacidad motora severa controlar
+              puertas, luces y clima mediante comandos vocales naturales en
+              procesamiento local, brindando supervisión remota y serenidad a
+              sus cuidadores.
+            </p>
+
+            <div
+              class="flex flex-wrap items-center justify-center gap-4 pointer-events-auto mb-6"
+            >
+              <a
+                href="#planes"
+                class="inline-flex items-center justify-center px-[22px] py-[12px] rounded-lg text-base font-semibold bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-dark hover:text-white transition-all shadow-lg shadow-alivia-secondary/20 focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target"
+              >
+                Ver planes y equipamiento
+              </a>
+              <a
+                href="#como-funciona"
+                class="inline-flex items-center justify-center px-[22px] py-[12px] rounded-lg text-base font-semibold bg-alivia-primary/80 text-white hover:bg-alivia-primary-medium transition-all border border-alivia-secondary-medium/30 focus-visible:ring-4 focus-visible:ring-alivia-primary-light touch-target backdrop-blur-sm"
+              >
+                Conocer cómo funciona
+              </a>
+            </div>
+
+            <div
+              class="flex items-center justify-center gap-2 text-xs uppercase tracking-widest text-alivia-secondary-medium font-semibold animate-bounce"
+            >
+              <span>Desplace hacia abajo para interactuar</span>
+              <svg
+                class="w-4 h-4 text-alivia-secondary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div
+          id="story-card-2"
+          class="story-card opacity-0 translate-y-8 transition-all duration-700 ease-out absolute max-w-lg left-4 sm:left-10 bottom-8 sm:bottom-12"
+        >
+          <div
+            class="p-6 sm:p-7 rounded-2xl bg-[#040c29]/60 border border-alivia-secondary/40 backdrop-blur-lg shadow-2xl text-white relative overflow-hidden group"
+          >
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-alivia-secondary"></div>
+            <div
+              class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-medium mb-1.5 flex items-center gap-2"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-alivia-secondary"></span>
+              Procesamiento Local Edge
+            </div>
+            <h2
+              class="text-xl sm:text-2xl font-semibold font-display mb-2 text-white"
+            >
+              Respuesta Instantánea sin Internet
+            </h2>
+            <p class="text-xs sm:text-sm text-alivia-primary-mist leading-relaxed">
+              Cada interacción se procesa directamente en el dispositivo local
+              en milisegundos, garantizando privacidad total y operabilidad
+              ininterrumpida.
+            </p>
+          </div>
+        </div>
+        <div
+          id="story-card-3"
+          class="story-card opacity-0 translate-y-8 transition-all duration-700 ease-out absolute max-w-lg right-4 sm:right-10 bottom-8 sm:bottom-12 text-left"
+        >
+          <div
+            class="p-6 sm:p-7 rounded-2xl bg-[#040c29]/60 border border-alivia-secondary/40 backdrop-blur-lg shadow-2xl text-white relative overflow-hidden"
+          >
+            <div class="absolute top-0 right-0 w-1.5 h-full bg-alivia-secondary-medium"></div>
+            <div
+              class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-medium mb-1.5 flex items-center gap-2"
+            >
+              <span class="w-1.5 h-1.5 rounded-full bg-alivia-secondary-medium"></span>
+              Control Adaptativo Inteligente
+            </div>
+            <h2
+              class="text-xl sm:text-2xl font-semibold font-display mb-2 text-white"
+            >
+              Integración Fluida en el Hogar
+            </h2>
+            <p class="text-xs sm:text-sm text-alivia-primary-mist leading-relaxed">
+              Supervisión de luces, accesos y clima coordinados en tiempo real
+              con confirmación auditiva y visual inmediata.
+            </p>
+          </div>
+        </div>
+        <div
+          id="story-card-4"
+          class="story-card opacity-0 translate-y-8 transition-all duration-700 ease-out text-center max-w-xl"
+        >
+          <div
+            class="p-7 sm:p-9 rounded-3xl bg-[#040c29]/65 border border-alivia-secondary/40 backdrop-blur-xl shadow-2xl text-white"
+          >
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-alivia-secondary/20 text-alivia-secondary-medium text-xs font-semibold uppercase tracking-wider mb-4 border border-alivia-secondary/30"
+            >
+              Experiencia Completa
+            </div>
+            <h2
+              class="text-2xl sm:text-3xl font-semibold font-display mb-3 text-white"
+            >
+              ¿Listo para conocer el equipamiento?
+            </h2>
+            <p
+              class="text-alivia-primary-mist text-xs sm:text-sm mb-6 max-w-md mx-auto leading-relaxed"
+            >
+              Descubra cómo Alivia integra elegancia, velocidad y soberanía
+              digital en un sistema accesible diseñado para el hogar.
+            </p>
+            <div
+              class="flex flex-wrap items-center justify-center gap-3 pointer-events-auto"
+            >
+              <a
+                href="#dispositivos"
+                class="px-6 py-3 rounded-lg font-semibold text-sm bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-dark hover:text-white shadow-lg shadow-alivia-secondary/20 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target"
+              >
+                Ver equipamiento completo
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initHeroAnimation } from '../scripts/heroAnimation';
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    if (cleanup) cleanup();
+    cleanup = initHeroAnimation();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+  document.addEventListener('astro:page-load', start);
+</script>
+
+<style>
+  .hero-canvas-mask {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) var(--mask-stop, 100%),
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) var(--mask-stop, 100%),
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2ec4b6;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(46, 196, 182, 0.8);
+    transition: transform 0.15s ease;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2ec4b6;
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(46, 196, 182, 0.8);
+    border: none;
+  }
+</style>
