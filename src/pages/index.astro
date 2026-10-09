@@ -1,33 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/NavBar.astro";
-import HeroSection from "../components/HeroSection.astro";
-import TwoLivesSection from "../components/TwoLivesSection.astro";
-import DevicesSection from "../components/DevicesSection.astro";
-import MediaSection from "../components/MediaSection.astro";
-import TestimonialsSection from "../components/TestimonialsSection.astro";
-import TeamSection from "../components/TeamSection.astro";
-import PlansSection from "../components/PlansSection.astro";
-import DownloadAppSection from "../components/DownloadAppSection.astro";
-import FaqSection from "../components/FaqSection.astro";
-import FooterSection from "../components/FooterSection.astro";
+import LandingContent from "../components/LandingContent.astro";
 ---
 
 <Layout
-	title="Alivia"
-	description="Alivia ofrece autonomía por voz en el hogar para personas con discapacidad motora severa y tranquilidad remota para cuidadores familiares."
+  lang="en"
+  title="Alivia – Voice-Controlled Home Automation Without Internet"
+  description="Alivia enables people with severe motor disabilities to control doors, lights, and climate through natural voice commands processed locally — providing remote supervision and peace of mind to their caregivers."
 >
-	<Navbar />
-	<main id="main-content" class="w-full">
-		<HeroSection />
-		<TwoLivesSection />
-		<DevicesSection />
-		<MediaSection />
-		<TestimonialsSection />
-		<TeamSection />
-		<PlansSection />
-		<DownloadAppSection />
-		<FaqSection />
-	</main>
-	<FooterSection />
+  <LandingContent lang="en" />
 </Layout>

@@ -1,5 +1,13 @@
 ---
-const TOTAL_FRAMES = 240;
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section id="hero-experience" class="relative w-full bg-alivia-surface text-white">
@@ -31,23 +39,18 @@ const TOTAL_FRAMES = 240;
             >
               <span class="w-2 h-2 rounded-full bg-alivia-secondary animate-ping"
               ></span>
-              <span
-                >Domótica por Voz Asistida • Funcionamiento 100% Local (Edge)</span
-              >
+              <span>{t("hero.badge")}</span>
             </div>
             <h1
               class="text-3xl sm:text-5xl lg:text-6xl font-semibold font-display tracking-tight leading-[1.2] mb-5 text-white drop-shadow-md"
             >
-              Autonomía por voz en el hogar sin depender de Internet
+              {t("hero.title")}
             </h1>
 
             <p
               class="text-base sm:text-lg text-alivia-hero-text max-w-3xl mx-auto leading-relaxed mb-7 font-normal drop-shadow"
             >
-              Alivia permite a personas con discapacidad motora severa controlar
-              puertas, luces y clima mediante comandos vocales naturales en
-              procesamiento local, brindando supervisión remota y serenidad a
-              sus cuidadores.
+              {t("hero.desc")}
             </p>
 
             <div
@@ -57,20 +60,20 @@ const TOTAL_FRAMES = 240;
                 href="#planes"
                 class="inline-flex items-center justify-center px-[22px] py-[12px] rounded-lg text-base font-semibold bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-dark hover:text-white transition-all shadow-lg shadow-alivia-secondary/20 focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target"
               >
-                Ver planes y equipamiento
+                {t("hero.ctaPlans")}
               </a>
               <a
                 href="#como-funciona"
                 class="inline-flex items-center justify-center px-[22px] py-[12px] rounded-lg text-base font-semibold bg-alivia-primary/80 text-white hover:bg-alivia-primary-medium transition-all border border-alivia-secondary-medium/30 focus-visible:ring-4 focus-visible:ring-alivia-primary-light touch-target backdrop-blur-sm"
               >
-                Conocer cómo funciona
+                {t("hero.ctaHowItWorks")}
               </a>
             </div>
 
             <div
               class="flex items-center justify-center gap-2 text-xs uppercase tracking-widest text-alivia-secondary-medium font-semibold animate-bounce"
             >
-              <span>Desplace hacia abajo para interactuar</span>
+              <span>{t("hero.scrollHint")}</span>
               <svg
                 class="w-4 h-4 text-alivia-secondary"
                 fill="none"
@@ -99,17 +102,15 @@ const TOTAL_FRAMES = 240;
               class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-medium mb-1.5 flex items-center gap-2"
             >
               <span class="w-1.5 h-1.5 rounded-full bg-alivia-secondary"></span>
-              Procesamiento Local Edge
+              {t("hero.card2.badge")}
             </div>
             <h2
               class="text-xl sm:text-2xl font-semibold font-display mb-2 text-white"
             >
-              Respuesta Instantánea sin Internet
+              {t("hero.card2.title")}
             </h2>
             <p class="text-xs sm:text-sm text-alivia-primary-mist leading-relaxed">
-              Cada interacción se procesa directamente en el dispositivo local
-              en milisegundos, garantizando privacidad total y operabilidad
-              ininterrumpida.
+              {t("hero.card2.desc")}
             </p>
           </div>
         </div>
@@ -125,16 +126,15 @@ const TOTAL_FRAMES = 240;
               class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-medium mb-1.5 flex items-center gap-2"
             >
               <span class="w-1.5 h-1.5 rounded-full bg-alivia-secondary-medium"></span>
-              Control Adaptativo Inteligente
+              {t("hero.card3.badge")}
             </div>
             <h2
               class="text-xl sm:text-2xl font-semibold font-display mb-2 text-white"
             >
-              Integración Fluida en el Hogar
+              {t("hero.card3.title")}
             </h2>
             <p class="text-xs sm:text-sm text-alivia-primary-mist leading-relaxed">
-              Supervisión de luces, accesos y clima coordinados en tiempo real
-              con confirmación auditiva y visual inmediata.
+              {t("hero.card3.desc")}
             </p>
           </div>
         </div>
@@ -148,18 +148,17 @@ const TOTAL_FRAMES = 240;
             <div
               class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-alivia-secondary/20 text-alivia-secondary-medium text-xs font-semibold uppercase tracking-wider mb-4 border border-alivia-secondary/30"
             >
-              Experiencia Completa
+              {t("hero.card4.badge")}
             </div>
             <h2
               class="text-2xl sm:text-3xl font-semibold font-display mb-3 text-white"
             >
-              ¿Listo para conocer el equipamiento?
+              {t("hero.card4.title")}
             </h2>
             <p
               class="text-alivia-primary-mist text-xs sm:text-sm mb-6 max-w-md mx-auto leading-relaxed"
             >
-              Descubra cómo Alivia integra elegancia, velocidad y soberanía
-              digital en un sistema accesible diseñado para el hogar.
+              {t("hero.card4.desc")}
             </p>
             <div
               class="flex flex-wrap items-center justify-center gap-3 pointer-events-auto"
@@ -168,7 +167,7 @@ const TOTAL_FRAMES = 240;
                 href="#dispositivos"
                 class="px-6 py-3 rounded-lg font-semibold text-sm bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-dark hover:text-white shadow-lg shadow-alivia-secondary/20 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target"
               >
-                Ver equipamiento completo
+                {t("hero.card4.cta")}
               </a>
             </div>
           </div>

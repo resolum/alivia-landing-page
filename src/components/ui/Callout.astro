@@ -1,0 +1,61 @@
+---
+interface Props {
+  variant?: "info" | "success" | "warning";
+  title?: string;
+  text?: string;
+  class?: string;
+}
+
+const { variant = "info", title, text, class: className = "" } = Astro.props;
+
+const variantStyles = {
+  info: "bg-alivia-surface border-alivia-primary-medium text-alivia-neutral-dark",
+  success: "bg-alivia-tertiary border-alivia-secondary-dark text-alivia-neutral-dark",
+  warning: "bg-amber-50 border-amber-400 text-amber-950",
+};
+
+const iconStyles = {
+  info: "text-alivia-primary",
+  success: "text-alivia-secondary-dark",
+  warning: "text-amber-600",
+};
+---
+
+<div
+  class:list={[
+    "p-4 sm:p-5 rounded-2xl border-l-4 shadow-sm flex items-start gap-3.5 my-4",
+    variantStyles[variant],
+    className,
+  ]}
+  role="region"
+  aria-label={title || "Aviso"}
+>
+  <div class:list={["shrink-0 mt-0.5", iconStyles[variant]]}>
+    {
+      variant === "info" && (
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    }
+    {
+      variant === "success" && (
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    }
+    {
+      variant === "warning" && (
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      )
+    }
+  </div>
+  <div class="space-y-1 text-sm leading-relaxed">
+    {title && <h4 class="font-bold text-alivia-primary">{title}</h4>}
+    {text && <p>{text}</p>}
+    <slot />
+  </div>
+</div>

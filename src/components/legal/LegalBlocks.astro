@@ -1,0 +1,56 @@
+---
+import type { Block } from "../../data/legal/types";
+import type { Lang } from "../../i18n/ui";
+import Callout from "../ui/Callout.astro";
+import ContactCard from "./ContactCard.astro";
+
+interface Props {
+  blocks: Block[];
+  lang: Lang;
+}
+
+const { blocks, lang } = Astro.props;
+---
+
+<div class="space-y-4">
+  {
+    blocks.map((block) => {
+      if (block.type === "paragraph") {
+        return <p class="leading-relaxed text-alivia-neutral-dark" set:html={block.html} />;
+      }
+
+      if (block.type === "list") {
+        return (
+          <ul class="list-disc list-inside space-y-2 pl-2 text-alivia-neutral-dark">
+            {block.items.map((item) => (
+              <li class="leading-relaxed" set:html={item} />
+            ))}
+          </ul>
+        );
+      }
+
+      if (block.type === "cards") {
+        return (
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
+            {block.items.map((item) => (
+              <div class="p-4 rounded-2xl bg-white border border-alivia-border shadow-xs hover:border-alivia-secondary/60 transition-all space-y-2">
+                <h4 class="font-bold text-sm text-alivia-primary">{item.title}</h4>
+                <p class="text-xs text-alivia-neutral-gray leading-relaxed">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+      if (block.type === "callout") {
+        return <Callout variant={block.variant} title={block.title} text={block.text} />;
+      }
+
+      if (block.type === "contact") {
+        return <ContactCard lang={lang} />;
+      }
+
+      return null;
+    })
+  }
+</div>

@@ -1,6 +1,13 @@
 ---
+import type { Lang } from "../i18n/ui";
 import HeroAnimation from "./HeroAnimation.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 <section id="que-es" class="relative w-full bg-alivia-primary-deep text-white">
-  <HeroAnimation />
+  <HeroAnimation lang={lang} />
 </section>

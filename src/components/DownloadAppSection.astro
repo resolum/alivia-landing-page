@@ -1,5 +1,14 @@
 ---
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
 import PhoneMockup from "./PhoneMockup.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section class="py-12 bg-alivia-surface-mist">
@@ -19,29 +28,27 @@ import PhoneMockup from "./PhoneMockup.astro";
           <span
             class="text-xs uppercase tracking-widest font-extrabold text-alivia-secondary"
           >
-            Herramienta gratuita de acompañamiento
+            {t("download.badge")}
           </span>
           <h2
             class="text-3xl sm:text-4xl font-bold font-display text-white leading-tight"
           >
-            Descarga la App Alivia Cuidadores
+            {t("download.title")}
           </h2>
           <p
             class="text-sm sm:text-base text-alivia-primary-mist leading-relaxed font-normal"
           >
-            Monitorea accesos, recibe alertas de emergencia en tiempo real y
-            coordina turnos de cuidado de forma sencilla y privada.
+            {t("download.desc")}
           </p>
         </div>
         <div
           class="flex flex-col sm:flex-row lg:flex-col gap-3.5 lg:col-span-3 items-stretch sm:items-center lg:items-start justify-center"
         >
-          <a
+          <button
+            type="button"
             id="btn-google-play"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group ring-4 ring-alivia-secondary"
-            aria-label="Descargar en Google Play"
+            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group ring-4 ring-alivia-secondary cursor-pointer text-left"
+            aria-label={t("download.googlePlayLabel")}
           >
             <svg
               class="w-8 h-8 shrink-0 text-alivia-primary group-hover:scale-105 transition-transform"
@@ -56,18 +63,18 @@ import PhoneMockup from "./PhoneMockup.astro";
             <div class="text-left">
               <span
                 class="block text-[10px] uppercase font-semibold text-gray-500"
-                >Disponible en</span
+                >{t("download.googlePlayBadge")}</span
               >
-              <span class="text-base font-bold text-alivia-primary">Google Play</span
+              <span class="text-base font-bold text-alivia-primary"
+                >Google Play</span
               >
             </div>
-          </a>
-          <a
+          </button>
+          <button
+            type="button"
             id="btn-app-store"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group"
-            aria-label="Descargar en App Store"
+            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group cursor-pointer text-left"
+            aria-label={t("download.appStoreLabel")}
           >
             <svg
               class="w-8 h-8 shrink-0 text-alivia-primary group-hover:scale-105 transition-transform"
@@ -82,11 +89,13 @@ import PhoneMockup from "./PhoneMockup.astro";
             <div class="text-left">
               <span
                 class="block text-[10px] uppercase font-semibold text-gray-500"
-                >Consíguelo en</span
+                >{t("download.appStoreBadge")}</span
               >
-              <span class="text-base font-bold text-alivia-primary">App Store</span>
+              <span class="text-base font-bold text-alivia-primary"
+                >App Store</span
+              >
             </div>
-          </a>
+          </button>
         </div>
         <div
           class="lg:col-span-4 flex justify-center lg:justify-end pt-4 lg:pt-0"
@@ -103,53 +112,67 @@ import PhoneMockup from "./PhoneMockup.astro";
 </section>
 
 <script>
-  (() => {
-    const btnPlay = document.getElementById("btn-google-play");
-    const btnStore = document.getElementById("btn-app-store");
-    const mockup = document.getElementById("phone-mockup-frame");
-    const notchIos = document.getElementById("notch-ios");
+  function setupStoreButtons() {
+    const btnGooglePlay = document.getElementById("btn-google-play");
+    const btnAppStore = document.getElementById("btn-app-store");
+    const phoneFrame = document.getElementById("phone-mockup-frame");
     const notchAndroid = document.getElementById("notch-android");
-    const homebarIos = document.getElementById("homebar-ios");
-    const homebarAndroid = document.getElementById("homebar-android");
+    const notchIos = document.getElementById("notch-ios");
     const osTag = document.getElementById("phone-os-tag");
+    const homebarAndroid = document.getElementById("homebar-android");
+    const homebarIos = document.getElementById("homebar-ios");
 
-    if (!mockup) return;
+    if (!btnGooglePlay || !btnAppStore) return;
 
-    const setOS = (os: "android" | "ios") => {
-      mockup.setAttribute("data-os", os);
+    const activeRingClasses = ["ring-4", "ring-alivia-secondary"];
 
-      // Subtle scale pulse animation on OS switch
-      mockup.classList.add("scale-95");
-      setTimeout(() => mockup.classList.remove("scale-95"), 180);
-
+    function setOS(os: "android" | "ios") {
       if (os === "android") {
-        if (notchIos) notchIos.classList.add("hidden");
-        if (notchAndroid) notchAndroid.classList.remove("hidden");
-        if (homebarIos) homebarIos.classList.add("hidden");
-        if (homebarAndroid) homebarAndroid.classList.remove("hidden");
+        btnGooglePlay?.classList.add(...activeRingClasses);
+        btnAppStore?.classList.remove(...activeRingClasses);
+
+        notchAndroid?.classList.remove("hidden");
+        notchIos?.classList.add("hidden");
+
         if (osTag) osTag.textContent = "Alivia Android";
 
-        btnPlay?.classList.add("ring-4", "ring-alivia-secondary");
-        btnStore?.classList.remove("ring-4", "ring-alivia-secondary");
+        homebarAndroid?.classList.remove("hidden");
+        homebarIos?.classList.add("hidden");
+
+        phoneFrame?.setAttribute("data-os", "android");
       } else {
-        if (notchAndroid) notchAndroid.classList.add("hidden");
-        if (notchIos) notchIos.classList.remove("hidden");
-        if (homebarAndroid) homebarAndroid.classList.add("hidden");
-        if (homebarIos) homebarIos.classList.remove("hidden");
+        btnAppStore?.classList.add(...activeRingClasses);
+        btnGooglePlay?.classList.remove(...activeRingClasses);
+
+        notchAndroid?.classList.add("hidden");
+        notchIos?.classList.remove("hidden");
+
         if (osTag) osTag.textContent = "Alivia iOS";
 
-        btnStore?.classList.add("ring-4", "ring-alivia-secondary");
-        btnPlay?.classList.remove("ring-4", "ring-alivia-secondary");
-      }
-    };
+        homebarAndroid?.classList.add("hidden");
+        homebarIos?.classList.remove("hidden");
 
-    btnPlay?.addEventListener("click", (e) => {
-      // Prevent navigation if testing OS toggle, or allow if user clicks
+        phoneFrame?.setAttribute("data-os", "ios");
+      }
+    }
+
+    btnGooglePlay.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       setOS("android");
     });
 
-    btnStore?.addEventListener("click", (e) => {
+    btnAppStore.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       setOS("ios");
     });
-  })();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupStoreButtons);
+  } else {
+    setupStoreButtons();
+  }
+  document.addEventListener("astro:page-load", setupStoreButtons);
 </script>

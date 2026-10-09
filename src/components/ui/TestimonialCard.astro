@@ -1,24 +1,28 @@
 ---
 import type { Testimonial } from '../../data/testimonials';
+import type { Lang } from '../../i18n/ui';
 
 interface Props {
   testimonial: Testimonial;
+  lang?: Lang;
 }
-const { testimonial: t } = Astro.props;
+const { testimonial: tItem, lang = 'es' } = Astro.props;
 
 const avatarBgClass: Record<string, string> = {
   primary:   'bg-alivia-primary text-white font-bold',
   secondary: 'bg-alivia-secondary-dark text-white font-bold',
   neutral:   'bg-slate-200 text-gray-700',
 };
+
+const anonymousBadgeLabel = lang === 'es' ? 'Identidad Reservada' : 'Anonymous';
 ---
 <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-4">
-  <p class="text-sm text-gray-700 leading-relaxed">{t.quote}</p>
+  <p class="text-sm text-gray-700 leading-relaxed">{tItem.quote}</p>
 
   <div class="flex items-center gap-3">
-    <div class={`w-10 h-10 rounded-full flex items-center justify-center text-sm shrink-0 ${avatarBgClass[t.avatarVariant]}`}>
-      {t.initials ? (
-        t.initials
+    <div class={`w-10 h-10 rounded-full flex items-center justify-center text-sm shrink-0 ${avatarBgClass[tItem.avatarVariant]}`}>
+      {tItem.initials ? (
+        tItem.initials
       ) : (
         <svg
           class="w-5 h-5 text-gray-500"
@@ -37,14 +41,14 @@ const avatarBgClass: Record<string, string> = {
     </div>
     <div>
       <p class="text-sm font-bold text-alivia-primary">
-        {t.name}
-        {t.anonymous && (
+        {tItem.name}
+        {tItem.anonymous && (
           <span class="ml-1 text-[10px] font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
-            Identidad Reservada
+            {anonymousBadgeLabel}
           </span>
         )}
       </p>
-      <p class="text-xs text-gray-500">{t.location} · {t.role}</p>
+      <p class="text-xs text-gray-500">{tItem.location} · {tItem.role}</p>
     </div>
   </div>
 </div>

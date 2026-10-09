@@ -1,3 +1,5 @@
+import type { Lang } from '../i18n/ui';
+
 export interface PlanFeature {
   label: string;
   included: boolean;
@@ -17,57 +19,121 @@ export interface Plan {
   ariaLabel: string;
 }
 
-export const PLANS: Plan[] = [
+export const getPlans = (lang: Lang): Plan[] => [
   {
     id: 'esencial',
-    badge: 'Inicio Rápido',
-    name: 'Esencial',
+    badge: lang === 'es' ? 'Inicio Rápido' : 'Quick Start',
+    name: lang === 'es' ? 'Esencial' : 'Essential',
     description:
-      'Control por voz en la habitación principal para iluminación y emergencias.',
+      lang === 'es'
+        ? 'Control por voz en la habitación principal para iluminación y emergencias.'
+        : 'Voice control in the primary room for lighting and emergencies.',
     monthlyPrice: 99,
     annualPrice: 83,
     features: [
-      { label: 'Hub Alivia Core centralizado', included: true },
-      { label: 'Micrófono Far-Field alta sensibilidad', included: true },
-      { label: 'Módulos inteligentes de iluminación', included: true },
-      { label: 'Sin actuador de puerta incluido', included: false },
-      { label: 'App Alivia para el cuidador asignado', included: true },
+      {
+        label: lang === 'es' ? 'Hub Alivia Core centralizado' : 'Centralized Alivia Hub Core',
+        included: true,
+      },
+      {
+        label:
+          lang === 'es'
+            ? 'Micrófono Far-Field alta sensibilidad'
+            : 'High-sensitivity Far-Field microphone',
+        included: true,
+      },
+      {
+        label:
+          lang === 'es'
+            ? 'Módulos inteligentes de iluminación'
+            : 'Smart lighting modules',
+        included: true,
+      },
+      {
+        label:
+          lang === 'es'
+            ? 'Sin actuador de puerta incluido'
+            : 'No door actuator included',
+        included: false,
+      },
+      {
+        label:
+          lang === 'es'
+            ? 'App Alivia para el cuidador asignado'
+            : 'Alivia App for assigned caregiver',
+        included: true,
+      },
     ],
-    ctaLabel: 'Continuar con este Plan',
+    ctaLabel: lang === 'es' ? 'Continuar con este Plan' : 'Select this Plan',
     ctaHref: 'https://app.alivia.care/onboarding',
-    ctaNote: 'Sin cobro de tarjeta en la landing',
-    ariaLabel: 'Continuar con el Plan Esencial',
+    ctaNote:
+      lang === 'es'
+        ? 'Sin cobro de tarjeta en la landing'
+        : 'No credit card charged on landing',
+    ariaLabel:
+      lang === 'es'
+        ? 'Continuar con el Plan Esencial'
+        : 'Select Essential Plan',
   },
   {
     id: 'personalizado',
-    badge: 'A tu medida',
-    name: 'Personalizado',
+    badge: lang === 'es' ? 'A tu medida' : 'Custom Tailored',
+    name: lang === 'es' ? 'Personalizado' : 'Custom',
     description:
-      'Configuración a demanda según número de ambientes y accesos especiales.',
+      lang === 'es'
+        ? 'Configuración a demanda según número de ambientes y accesos especiales.'
+        : 'On-demand configuration according to number of rooms and special access points.',
     monthlyPrice: null,
     annualPrice: null,
     features: [],
-    ctaLabel: 'Personalizar mi plan',
+    ctaLabel: lang === 'es' ? 'Personalizar mi plan' : 'Customize my plan',
     ctaHref: 'https://app.alivia.care/onboarding',
-    ctaNote: 'Redirige a la WebApp de cuidadores',
-    ariaLabel: 'Personalizar mi plan',
+    ctaNote:
+      lang === 'es'
+        ? 'Redirige a la WebApp de cuidadores'
+        : 'Redirects to Caregiver WebApp',
+    ariaLabel: lang === 'es' ? 'Personalizar mi plan' : 'Customize my plan',
   },
 ];
 
+export const PLANS = getPlans('es');
+
 /** Room options for the "Personalizado" plan selector */
-export const ROOM_OPTIONS = [
-  'Habitaciones (Dormitorio + Baño)',
-  '1 Habitación principal',
-  '2 Habitaciones',
-  '3 Habitaciones',
-  '4+ Habitaciones',
-] as const;
+export const getRoomOptions = (lang: Lang): readonly string[] =>
+  lang === 'es'
+    ? [
+        'Habitaciones (Dormitorio + Baño)',
+        '1 Habitación principal',
+        '2 Habitaciones',
+        '3 Habitaciones',
+        '4+ Habitaciones',
+      ]
+    : [
+        'Rooms (Bedroom + Bathroom)',
+        '1 Primary bedroom',
+        '2 Rooms',
+        '3 Rooms',
+        '4+ Rooms',
+      ];
+
+export const ROOM_OPTIONS = getRoomOptions('es');
 
 /** Door options for the "Personalizado" plan selector */
-export const DOOR_OPTIONS = [
-  'Puerta principal',
-  'Sin actuador de puerta',
-  'Puerta principal + baño',
-  '2 puertas',
-  '3+ puertas',
-] as const;
+export const getDoorOptions = (lang: Lang): readonly string[] =>
+  lang === 'es'
+    ? [
+        'Puerta principal',
+        'Sin actuador de puerta',
+        'Puerta principal + baño',
+        '2 puertas',
+        '3+ puertas',
+      ]
+    : [
+        'Main door',
+        'No door actuator',
+        'Main door + bathroom',
+        '2 doors',
+        '3+ doors',
+      ];
+
+export const DOOR_OPTIONS = getDoorOptions('es');
