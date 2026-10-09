@@ -1,7 +1,7 @@
 ---
-import type { Lang } from '../i18n/ui';
-import { useTranslations } from '../i18n/utils';
-import { companyInfo } from '../data/company';
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import { companyInfo } from "../data/company";
 
 interface Props {
   lang: Lang;
@@ -10,11 +10,15 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const privacyHref = lang === "es" ? "/es/politica-de-privacidad" : "/privacy-policy";
-const termsHref = lang === "es" ? "/es/terminos-y-condiciones" : "/terms-and-conditions";
+const privacyHref =
+  lang === "es" ? "/es/politica-de-privacidad" : "/privacy-policy";
+const termsHref =
+  lang === "es" ? "/es/terminos-y-condiciones" : "/terms-and-conditions";
 ---
 
-<footer class="bg-alivia-primary-deep text-white border-t border-alivia-primary-medium pt-16 pb-12">
+<footer
+  class="bg-alivia-primary-deep text-white border-t border-alivia-primary-medium pt-16 pb-12"
+>
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-alivia-primary-medium/60"
@@ -125,7 +129,7 @@ const termsHref = lang === "es" ? "/es/terminos-y-condiciones" : "/terms-and-con
           </li>
           <li>
             <a
-              href="https://app.alivia.care/login"
+              href="https://alivia-landing-page.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
@@ -142,10 +146,12 @@ const termsHref = lang === "es" ? "/es/terminos-y-condiciones" : "/terms-and-con
         </h3>
         <div class="space-y-3 text-xs text-alivia-primary-mist">
           <p>
-            <strong class="block text-white"
-              >{companyInfo.legalName}</strong
+            <strong class="block text-white">{companyInfo.legalName}</strong>
+            <a
+              href={`mailto:${companyInfo.privacyEmail}`}
+              class="hover:text-alivia-secondary underline"
+              >{companyInfo.privacyEmail}</a
             >
-            <a href={`mailto:${companyInfo.privacyEmail}`} class="hover:text-alivia-secondary underline">{companyInfo.privacyEmail}</a>
           </p>
         </div>
       </div>

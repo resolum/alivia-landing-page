@@ -65,7 +65,7 @@ export const getPlans = (lang: Lang): Plan[] => [
       },
     ],
     ctaLabel: lang === 'es' ? 'Continuar con este Plan' : 'Select this Plan',
-    ctaHref: 'https://app.alivia.care/onboarding',
+    ctaHref: 'https://alivia-landing-page.vercel.app/',
     ctaNote:
       lang === 'es'
         ? 'Sin cobro de tarjeta en la landing'
@@ -87,7 +87,7 @@ export const getPlans = (lang: Lang): Plan[] => [
     annualPrice: null,
     features: [],
     ctaLabel: lang === 'es' ? 'Personalizar mi plan' : 'Customize my plan',
-    ctaHref: 'https://app.alivia.care/onboarding',
+    ctaHref: 'https://alivia-landing-page.vercel.app/',
     ctaNote:
       lang === 'es'
         ? 'Redirige a la WebApp de cuidadores'
