@@ -1,0 +1,77 @@
+---
+import { TEAM_MEMBERS } from '../data/team';
+import TeamCard from './ui/TeamCard.astro';
+---
+
+<section
+  id="equipo"
+  class="py-20 bg-alivia-tertiary text-alivia-neutral-dark border-t border-alivia-tertiary-medium"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span
+        class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
+      >
+        Equipo Multidisciplinario
+      </span>
+      <h2
+        class="text-3xl sm:text-4xl font-semibold font-display mt-4 mb-4 text-alivia-primary"
+      >
+        Detrás de Alivia
+      </h2>
+      <p class="text-base sm:text-lg text-alivia-neutral-gray">
+        Estudiantes de Ingeniería de Software dedicados al desarrollo de
+        tecnología y soluciones de alto impacto.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {TEAM_MEMBERS.map((member) => <TeamCard member={member} />)}
+    </div>
+    <div class="mt-20 max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <span
+          class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
+        >
+          About the Team
+        </span>
+      </div>
+    </div>
+    <div class="mt-20 max-w-4xl mx-auto">
+      <div
+        class="aspect-video rounded-2xl bg-alivia-primary-video flex items-center justify-center cursor-pointer overflow-hidden border border-alivia-tertiary-dark hover:border-alivia-secondary transition-colors relative"
+        id="video-placeholder"
+      >
+        <div class="text-center p-8">
+          <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+          <p class="text-lg font-medium text-white mb-2">Reproducir video</p>
+          <p class="text-sm text-white/70">Haz clic para ver la presentación de Alivia</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const videoPlaceholder = document.getElementById('video-placeholder');
+    if (videoPlaceholder) {
+      videoPlaceholder.addEventListener('click', () => {
+        const videoUrl = 'https://www.youtube.com/embed/VIDEO_ID_HERE?autoplay=1';
+        videoPlaceholder.innerHTML = `
+          <iframe
+            src="${videoUrl}"
+            title="Video presentación Alivia"
+            class="w-full h-full"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        `;
+      });
+    }
+  });
+</script>
