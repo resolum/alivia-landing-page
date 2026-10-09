@@ -8,30 +8,30 @@ interface Props {
 
 const {
   title = "Alivia",
-  description = "Alivia ofrece autonomía por voz en el hogar para personas con discapacidad motora severa y tranquilidad remota para cuidadores familiares.",
+  description = "Alivia ofrece autonomía por voz en el hogar para personas con discapacidad motora severa y tranquilidad remota para cuidadores familiares."
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es" class="scroll-smooth">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-    <link rel="icon" href="/icon.ico" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <title>{title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <link rel="icon" href="/icon.ico" />
+  <meta name="generator" content={Astro.generator} />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap"
       rel="stylesheet"
-    />
-  </head>
-  <body
-    class="min-h-screen bg-[#081745] text-[#252F45] font-sans antialiased selection:bg-[#2EC4B6] selection:text-[#0F2A6B]"
-  >
-    <slot />
-  </body>
+  />
+</head>
+<body
+    class="min-h-screen bg-alivia-primary-deep text-alivia-neutral-dark font-sans antialiased selection:bg-alivia-secondary selection:text-alivia-primary"
+>
+<slot />
+</body>
 </html>
