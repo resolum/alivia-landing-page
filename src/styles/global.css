@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-outfit: 'Outfit', sans-serif;
+    --color-alivia-primary: #0F2A6B;
+    --color-alivia-primary-deep: #081745;
+    --color-alivia-primary-medium: #2C4A8F;
+    --color-alivia-primary-light: #8DA3D9;
+    --color-alivia-primary-mist: #DCE5F7;
+    --color-alivia-secondary: #2EC4B6;
+    --color-alivia-secondary-dark: #1E9184;
+    --color-alivia-secondary-medium: #5AD4C8;
+    --color-alivia-secondary-light: #A3E8E0;
+    --color-alivia-secondary-mint: #DEF8F4;
+    --color-alivia-tertiary: #E6F8F5;
+    --color-alivia-tertiary-medium: #C7EEE8;
+    --color-alivia-tertiary-dark: #9DDCD2;
+    --color-alivia-neutral-dark: #252F45;
+    --color-alivia-neutral-gray: #3B4A6B;
+    --color-alivia-neutral-light: #8890A3;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+details summary:focus-visible {
+    outline: 3px solid #2C4A8F !important;
+    outline-offset: 3px !important;
+}
+
+.touch-target {
+    min-width: 44px;
+    min-height: 44px;
+}
+.skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    z-index: 100;
+    background-color: #0F2A6B;
+    color: #FFFFFF;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+    top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
