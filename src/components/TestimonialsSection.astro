@@ -1,0 +1,100 @@
+---
+import { TESTIMONIALS_COL_UP, TESTIMONIALS_COL_DOWN } from '../data/testimonials';
+import TestimonialCard from './ui/TestimonialCard.astro';
+
+const colUpItems   = [...TESTIMONIALS_COL_UP,   ...TESTIMONIALS_COL_UP];
+const colDownItems = [...TESTIMONIALS_COL_DOWN,  ...TESTIMONIALS_COL_DOWN];
+---
+
+<section id="testimonios" class="py-20 bg-white text-alivia-neutral-dark overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
+      <div class="lg:col-span-2 flex gap-5 h-[560px] overflow-hidden relative">
+        <div class="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent z-10 pointer-events-none"></div>
+        <div id="col-up" class="flex-1 flex flex-col gap-5">
+          {colUpItems.map((t) => <TestimonialCard testimonial={t} />)}
+        </div>
+        <div id="col-down" class="flex-1 flex flex-col gap-5">
+          {colDownItems.map((t) => <TestimonialCard testimonial={t} />)}
+        </div>
+      </div>
+      <div class="lg:col-span-1 flex flex-col gap-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-alivia-primary text-white font-bold flex items-center justify-center text-sm">
+            99
+          </div>
+          <span class="text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark">Testimonios reales</span>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-bold font-display text-alivia-primary leading-tight">
+          Historias reales de autonomía y tranquilidad en cada hogar
+        </h2>
+
+        <p class="text-base text-alivia-neutral-blue leading-relaxed">
+          Conoce cómo Alivia transforma el día a día tanto de personas que
+          recuperaron su independencia como de las familias y cuidadores que los
+          acompañan con serenidad.
+        </p>
+
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+          <svg class="w-4 h-4 text-alivia-secondary-dark shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            ></path>
+          </svg>
+          Protegido bajo Ley N° 29733 de Protección de Datos Personales
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    function startConveyor(el: HTMLElement, direction: "up" | "down") {
+      requestAnimationFrame(() => {
+        const halfH = el.scrollHeight / 2;
+        // For 'up': start at 0, move negative; for 'down': start at -halfH, move positive
+        let pos = direction === "up" ? 0 : -halfH;
+        const speed = 0.35;
+        let paused = false;
+
+        el.addEventListener("mouseenter", () => { paused = true; });
+        el.addEventListener("mouseleave", () => { paused = false; });
+
+        function tick() {
+          if (!paused) {
+            if (direction === "up") {
+              pos -= speed;
+              if (pos <= -halfH) pos += halfH;
+            } else {
+              pos += speed;
+              if (pos >= 0) pos -= halfH;
+            }
+            el.style.transform = `translateY(${pos}px)`;
+          }
+          requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
+      });
+    }
+
+    // Respect prefers-reduced-motion
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const colUp   = document.getElementById("col-up");
+      const colDown = document.getElementById("col-down");
+      if (colUp)   startConveyor(colUp,   "up");
+      if (colDown) startConveyor(colDown, "down");
+    }
+  })();
+</script>
+
+<style>
+  /* Removed keyframe animations – now handled by JS for seamless loop */
+  #col-up,
+  #col-down {
+    will-change: transform;
+  }
+</style>
