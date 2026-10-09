@@ -78,7 +78,7 @@ const navLinks = getNavLinks(lang);
         <LanguageSwitcher currentLang={lang} />
       </div>
       <a
-        href="https://app.alivia.care/login"
+        href="https://alivia-landing-page.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
         class="hidden xl:inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark hover:text-white transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target whitespace-nowrap"
@@ -165,13 +165,24 @@ const navLinks = getNavLinks(lang);
         ))
       }
       <a
-        href="https://app.alivia.care/login"
+        href="https://alivia-landing-page.vercel.app/"
         target="_blank"
         rel="noopener noreferrer"
         class="mobile-nav-link mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark transition-all shadow-md"
       >
-        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+        <svg
+          class="w-4 h-4 shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+          ></path>
         </svg>
         <span>{t("nav.login")}</span>
       </a>
