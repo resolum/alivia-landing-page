@@ -1,0 +1,71 @@
+---
+import type { LegalSectionItem } from "../../data/legal/types";
+import type { Lang } from "../../i18n/ui";
+import LegalBlocks from "./LegalBlocks.astro";
+
+interface Props {
+  section: LegalSectionItem;
+  mode: "accordion" | "continuous";
+  lang: Lang;
+}
+
+const { section, mode, lang } = Astro.props;
+const isFirstAccordion = mode === "accordion" && section.number === 1;
+---
+
+<article id={section.id} class="legal-section scroll-mt-28 my-6">
+  {
+    mode === "accordion" ? (
+      <details
+        class="legal-accordion-details group rounded-2xl bg-white border border-alivia-border shadow-xs overflow-hidden transition-all duration-200"
+        open={isFirstAccordion || undefined}
+      >
+        <summary class="flex items-center justify-between p-5 sm:p-6 cursor-pointer select-none focus-visible:ring-2 focus-visible:ring-alivia-secondary focus-visible:outline-none">
+          <div class="flex items-center gap-3.5 pr-4">
+            <span class="w-8 h-8 rounded-full bg-alivia-secondary-mint text-alivia-secondary-dark flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+              {section.number}
+            </span>
+            <div>
+              <h3 class="text-base sm:text-lg font-bold text-alivia-primary font-display group-hover:text-alivia-secondary-dark transition-colors">
+                {section.title}
+              </h3>
+              {section.subtitle && (
+                <p class="text-xs text-alivia-neutral-gray mt-0.5">{section.subtitle}</p>
+              )}
+            </div>
+          </div>
+          <svg
+            class="accordion-chevron w-5 h-5 text-alivia-neutral-light transition-transform duration-300 shrink-0 group-open:rotate-180"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+        <div class="accordion-content-container overflow-hidden">
+          <div class="px-5 pb-6 sm:px-6 sm:pb-6 pt-2 border-t border-alivia-border/60">
+            <LegalBlocks blocks={section.blocks} lang={lang} />
+          </div>
+        </div>
+      </details>
+    ) : (
+      <div class="p-6 sm:p-8 rounded-2xl bg-white border border-alivia-border shadow-xs space-y-4">
+        <div class="flex items-center gap-3.5 pb-4 border-b border-alivia-border/60">
+          <span class="w-8 h-8 rounded-full bg-alivia-secondary-mint text-alivia-secondary-dark flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+            {section.number}
+          </span>
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold text-alivia-primary font-display">
+              {section.title}
+            </h3>
+            {section.subtitle && (
+              <p class="text-xs sm:text-sm text-alivia-neutral-gray mt-0.5">{section.subtitle}</p>
+            )}
+          </div>
+        </div>
+        <LegalBlocks blocks={section.blocks} lang={lang} />
+      </div>
+    )
+  }
+</article>

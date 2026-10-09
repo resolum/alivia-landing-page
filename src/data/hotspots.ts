@@ -1,9 +1,9 @@
+import type { Lang } from '../i18n/ui';
+
 export interface Hotspot {
   id: string;
   name: string;
-  /** Percentage position (0-100) from the left of the rendered image */
   left: number;
-  /** Percentage position (0-100) from the top of the rendered image */
   top: number;
   desc: string;
   tech: string;
@@ -15,23 +15,29 @@ export interface PosConfig {
   offsetX: number;
 }
 
-export const HOTSPOTS: Hotspot[] = [
+export const getHotspots = (lang: Lang): Hotspot[] => [
   {
     id: 'cubierta-frontal',
-    name: 'Cubierta frontal',
+    name: lang === 'es' ? 'Cubierta frontal' : 'Front cover',
     left: 11,
     top: 47,
-    desc: 'Carcasa blanca con anillo de aluminio y entrada de voz. Protege la electrónica y deja pasar la voz y el sonido.',
-    tech: 'Diseño sin pantalla, solo voz.',
+    desc:
+      lang === 'es'
+        ? 'Carcasa blanca con anillo de aluminio y entrada de voz. Protege la electrónica y deja pasar la voz y el sonido.'
+        : 'White casing with aluminum ring and voice input. Protects electronics while allowing voice and sound passthrough.',
+    tech: lang === 'es' ? 'Diseño sin pantalla, solo voz.' : 'Screenless design, voice-only.',
     branches: [],
   },
   {
     id: 'microfono',
-    name: 'Micrófono MEMS I2S (INMP441)',
+    name: lang === 'es' ? 'Micrófono MEMS I2S (INMP441)' : 'MEMS I2S Microphone (INMP441)',
     left: 34,
     top: 25,
-    desc: 'Capta la voz de la persona asistida hasta 2 metros, incluso con ruido moderado.',
-    tech: 'Salida digital I2S con ESP32.',
+    desc:
+      lang === 'es'
+        ? 'Capta la voz de la persona asistida hasta 2 metros, incluso con ruido moderado.'
+        : 'Captures the assisted person\'s voice up to 2 meters away, even in moderate background noise.',
+    tech: lang === 'es' ? 'Salida digital I2S con ESP32.' : 'Digital I2S output with ESP32.',
     branches: [],
   },
   {
@@ -39,65 +45,88 @@ export const HOTSPOTS: Hotspot[] = [
     name: 'ESP32-WROOM-32',
     left: 34,
     top: 42,
-    desc: 'Detecta la palabra de activación y envía el audio al Edge por Wi-Fi o BLE.',
-    tech: 'Doble núcleo, 520 KB SRAM.',
+    desc:
+      lang === 'es'
+        ? 'Detecta la palabra de activación y envía el audio al Edge por Wi-Fi o BLE.'
+        : 'Detects the wake word and streams audio to the Edge via Wi-Fi or BLE.',
+    tech: lang === 'es' ? 'Doble núcleo, 520 KB SRAM.' : 'Dual-core, 520 KB SRAM.',
     branches: [],
   },
   {
     id: 'anillo-led',
-    name: 'Anillo de LEDs de estado',
+    name: lang === 'es' ? 'Anillo de LEDs de estado' : 'Status LED ring',
     left: 42,
     top: 47,
-    desc: 'Indica con colores y parpadeos si el dispositivo está en espera, escuchando, con batería baja o con falla.',
-    tech: 'Nunca depende solo del color.',
+    desc:
+      lang === 'es'
+        ? 'Indica con colores y parpadeos si el dispositivo está en espera, escuchando, con batería baja o con falla.'
+        : 'Indicates with colors and pulses whether the device is standby, listening, low battery, or in fault state.',
+    tech: lang === 'es' ? 'Nunca depende solo del color.' : 'Never relies solely on color.',
     branches: [],
   },
   {
     id: 'altavoz',
-    name: 'Altavoz 3 W',
+    name: lang === 'es' ? 'Altavoz 3 W' : '3 W Speaker',
     left: 51,
     top: 47,
-    desc: 'Confirma cada acción por voz clara, por ejemplo "Listo, la puerta está abierta".',
-    tech: 'Voz breve y serena, sin alarmismo.',
+    desc:
+      lang === 'es'
+        ? 'Confirma cada acción por voz clara, por ejemplo "Listo, la puerta está abierta".'
+        : 'Confirms each action with a clear voice response, for example "Done, the door is open".',
+    tech: lang === 'es' ? 'Voz breve y serena, sin alarmismo.' : 'Brief and calm voice, no alarmism.',
     branches: [],
   },
   {
     id: 'amplificador',
-    name: 'Amplificador I2S (MAX98357A)',
+    name: lang === 'es' ? 'Amplificador I2S (MAX98357A)' : 'I2S Amplifier (MAX98357A)',
     left: 60,
     top: 26,
-    desc: 'Convierte la señal digital de audio en sonido para el altavoz.',
-    tech: 'Conexión I2S directa.',
+    desc:
+      lang === 'es'
+        ? 'Convierte la señal digital de audio en sonido para el altavoz.'
+        : 'Converts digital audio signals into sound for the speaker.',
+    tech: lang === 'es' ? 'Conexión I2S directa.' : 'Direct I2S connection.',
     branches: [],
   },
   {
     id: 'bateria-principal',
-    name: 'Batería principal LiPo',
+    name: lang === 'es' ? 'Batería principal LiPo' : 'Main LiPo battery',
     left: 63,
     top: 48,
-    desc: 'Alimenta el dispositivo de forma continua y segura.',
+    desc:
+      lang === 'es'
+        ? 'Alimenta el dispositivo de forma continua y segura.'
+        : 'Powers the device continuously and safely.',
     tech: '3.7 V, 300 mAh LiPo.',
     branches: [],
   },
   {
     id: 'bateria-respaldo',
-    name: 'Batería de respaldo',
+    name: lang === 'es' ? 'Batería de respaldo' : 'Backup battery',
     left: 70,
     top: 54,
-    desc: 'Mantiene la voz y alertas activas aunque falle el suministro eléctrico.',
-    tech: 'Funciona sin electricidad.',
+    desc:
+      lang === 'es'
+        ? 'Mantiene la voz y alertas activas aunque falle el suministro eléctrico.'
+        : 'Keeps voice commands and emergency alerts active during power outages.',
+    tech: lang === 'es' ? 'Funciona sin electricidad.' : 'Operates without electricity.',
     branches: [],
   },
   {
     id: 'cubierta-trasera',
-    name: 'Cubierta trasera',
+    name: lang === 'es' ? 'Cubierta trasera' : 'Back cover',
     left: 84,
     top: 44,
-    desc: 'Fija el dispositivo a la pared y aloja el puerto de carga USB-C.',
-    tech: 'Diseño de montaje seguro.',
+    desc:
+      lang === 'es'
+        ? 'Fija el dispositivo a la pared y aloja el puerto de carga USB-C.'
+        : 'Mounts the device securely to the wall and houses the USB-C charging port.',
+    tech: lang === 'es' ? 'Diseño de montaje seguro.' : 'Secure mounting design.',
     branches: [],
   },
 ];
+
+export const HOTSPOTS = getHotspots('es');
 
 export const POS_CONFIG: Record<string, PosConfig> = {
   'cubierta-frontal':  { side: 'bottom', offsetX: -10 },

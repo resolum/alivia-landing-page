@@ -1,6 +1,16 @@
 ---
-import { TEAM_MEMBERS } from '../data/team';
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import { getTeamMembers } from '../data/team';
 import TeamCard from './ui/TeamCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const teamMembers = getTeamMembers(lang);
 ---
 
 <section
@@ -12,27 +22,26 @@ import TeamCard from './ui/TeamCard.astro';
       <span
         class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
       >
-        Equipo Multidisciplinario
+        {t("team.badge")}
       </span>
       <h2
         class="text-3xl sm:text-4xl font-semibold font-display mt-4 mb-4 text-alivia-primary"
       >
-        Detrás de Alivia
+        {t("team.title")}
       </h2>
       <p class="text-base sm:text-lg text-alivia-neutral-gray">
-        Estudiantes de Ingeniería de Software dedicados al desarrollo de
-        tecnología y soluciones de alto impacto.
+        {t("team.desc")}
       </p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {TEAM_MEMBERS.map((member) => <TeamCard member={member} />)}
+      {teamMembers.map((member) => <TeamCard member={member} lang={lang} />)}
     </div>
     <div class="mt-20 max-w-4xl mx-auto">
       <div class="text-center mb-12">
         <span
           class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
         >
-          About the Team
+          {t("team.aboutBadge")}
         </span>
       </div>
     </div>
@@ -40,6 +49,7 @@ import TeamCard from './ui/TeamCard.astro';
       <div
         class="aspect-video rounded-2xl bg-alivia-primary-video flex items-center justify-center cursor-pointer overflow-hidden border border-alivia-tertiary-dark hover:border-alivia-secondary transition-colors relative"
         id="video-placeholder"
+        data-iframe-title={t("team.videoIframeTitle")}
       >
         <div class="text-center p-8">
           <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
@@ -47,8 +57,8 @@ import TeamCard from './ui/TeamCard.astro';
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
-          <p class="text-lg font-medium text-white mb-2">Reproducir video</p>
-          <p class="text-sm text-white/70">Haz clic para ver la presentación de Alivia</p>
+          <p class="text-lg font-medium text-white mb-2">{t("team.videoPlay")}</p>
+          <p class="text-sm text-white/70">{t("team.videoClick")}</p>
         </div>
       </div>
     </div>
@@ -60,11 +70,12 @@ import TeamCard from './ui/TeamCard.astro';
     const videoPlaceholder = document.getElementById('video-placeholder');
     if (videoPlaceholder) {
       videoPlaceholder.addEventListener('click', () => {
+        const title = videoPlaceholder.getAttribute('data-iframe-title') || 'Video presentación Alivia';
         const videoUrl = 'https://www.youtube.com/embed/VIDEO_ID_HERE?autoplay=1';
         videoPlaceholder.innerHTML = `
           <iframe
             src="${videoUrl}"
-            title="Video presentación Alivia"
+            title="${title}"
             class="w-full h-full"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

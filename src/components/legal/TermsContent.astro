@@ -1,0 +1,66 @@
+---
+import LegalLayout from "./LegalLayout.astro";
+import LegalHero from "./LegalHero.astro";
+import TableOfContents from "./TableOfContents.astro";
+import LegalSection from "./LegalSection.astro";
+import ReadingSizeToggle from "./ReadingSizeToggle.astro";
+import Callout from "../ui/Callout.astro";
+import { getLegalDoc } from "../../data/legal";
+import type { Lang } from "../../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const doc = getLegalDoc("terms", lang);
+
+const summaryCards = lang === "es" ? [
+  { icon: "shield-check", title: "Garantía de 30 Días", text: "Derecho a devolución si el sistema no se adecúa a las necesidades asistenciales." },
+  { icon: "scale", title: "Marco Legal Peruano", text: "Regido bajo la legislación de la República del Perú y fuero de Lima." },
+  { icon: "headset", title: "Soporte Cercano", text: "Asistencia técnica capacitada y canal oficial para atención al usuario." },
+] : [
+  { icon: "shield-check", title: "30-Day Guarantee", text: "Right to refund if system does not suit assistive needs." },
+  { icon: "scale", title: "Peruvian Legal Framework", text: "Governed under Peruvian laws and Judicial District of Lima." },
+  { icon: "headset", title: "Dedicated Support", text: "Trained technical assistance and official support channel." },
+];
+---
+
+<LegalLayout title={doc.meta.title} description={doc.meta.description} lang={lang} activeTab="terms">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <LegalHero doc={doc} lang={lang} />
+
+    <div class="flex items-center justify-end mb-8 pb-4 border-b border-alivia-border print:hidden">
+      <ReadingSizeToggle lang={lang} />
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      {
+        summaryCards.map((card) => (
+          <div class="p-5 rounded-2xl bg-white border border-alivia-border shadow-xs space-y-2">
+            <h4 class="font-bold text-sm text-alivia-primary">{card.title}</h4>
+            <p class="text-xs text-alivia-neutral-gray leading-relaxed">{card.text}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      doc.introCard && (
+        <div class="mb-8">
+          <Callout variant="info" title={doc.introCard.title} text={doc.introCard.text} />
+        </div>
+      )
+    }
+
+    <div class="flex flex-col lg:flex-row gap-10 items-start">
+      <TableOfContents doc={doc} lang={lang} />
+
+      <div id="legal-doc-content" class="flex-1 w-full min-w-0 transition-all text-base space-y-6">
+        {doc.sections.map((sec) => <LegalSection section={sec} mode="continuous" lang={lang} />)}
+      </div>
+    </div>
+  </div>
+</LegalLayout>
+
+<script src="../../scripts/legal/legalInteractions.ts"></script>

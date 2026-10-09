@@ -1,7 +1,14 @@
 ---
+import type { Lang } from '../i18n/ui';
 import DeviceExplode from './DeviceExplode.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
 ---
 
 <section id="dispositivos" class="relative w-full bg-white text-alivia-neutral-dark">
-  <DeviceExplode />
+  <DeviceExplode lang={lang} />
 </section>

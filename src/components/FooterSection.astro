@@ -1,4 +1,17 @@
 ---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import { companyInfo } from '../data/company';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const privacyHref = lang === "es" ? "/es/politica-de-privacidad" : "/privacy-policy";
+const termsHref = lang === "es" ? "/es/terminos-y-condiciones" : "/terms-and-conditions";
 ---
 
 <footer class="bg-alivia-primary-deep text-white border-t border-alivia-primary-medium pt-16 pb-12">
@@ -15,9 +28,7 @@
           </span>
         </div>
         <p class="text-xs text-alivia-primary-mist leading-relaxed">
-          Sistema de domótica asistida por voz con procesamiento local Edge para
-          personas con discapacidad motora severa y supervisión remota para
-          cuidadores.
+          {t("footer.tagline")}
         </p>
         <div class="pt-2">
           <span
@@ -36,7 +47,7 @@
                 stroke-width="2"
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            Sello WCAG 2.1 AA Cumplido
+            {t("footer.a11ySeal")}
           </span>
         </div>
       </div>
@@ -44,42 +55,42 @@
         <h3
           class="text-sm font-semibold uppercase tracking-wider text-white mb-4 font-display"
         >
-          Plataforma
+          {t("footer.colPlatform")}
         </h3>
         <ul class="space-y-2.5 text-xs text-alivia-primary-mist">
           <li>
             <a
               href="#que-es"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >¿Qué es Alivia?</a
+              >{t("footer.link.whatIsAlivia")}</a
             >
           </li>
           <li>
             <a
               href="#como-funciona"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Cómo funciona (Dos Vidas)</a
+              >{t("footer.link.howItWorks")}</a
             >
           </li>
           <li>
             <a
               href="#dispositivos"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Hub Core y Dispositivos</a
+              >{t("footer.link.hubDevices")}</a
             >
           </li>
           <li>
             <a
               href="#audiovisual"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Demostración Audiovisual</a
+              >{t("footer.link.audiovisual")}</a
             >
           </li>
           <li>
             <a
               href="#planes"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Planes y Equipamiento</a
+              >{t("footer.link.plansEquipment")}</a
             >
           </li>
         </ul>
@@ -88,28 +99,28 @@
         <h3
           class="text-sm font-semibold uppercase tracking-wider text-white mb-4 font-display"
         >
-          Compañía y Equipo
+          {t("footer.colCompany")}
         </h3>
         <ul class="space-y-2.5 text-xs text-alivia-primary-mist">
           <li>
             <a
               href="#equipo"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Detrás de Alivia (Equipo)</a
+              >{t("footer.link.behindAlivia")}</a
             >
           </li>
           <li>
             <a
               href="#testimonios"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Testimonios Reales</a
+              >{t("footer.link.testimonials")}</a
             >
           </li>
           <li>
             <a
               href="#faq"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Preguntas Frecuentes</a
+              >{t("footer.link.faq")}</a
             >
           </li>
           <li>
@@ -118,7 +129,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
-              >Acceso Aplicación Cuidadores</a
+              >{t("footer.link.caregiverApp")}</a
             >
           </li>
         </ul>
@@ -127,14 +138,14 @@
         <h3
           class="text-sm font-semibold uppercase tracking-wider text-white mb-4 font-display"
         >
-          Urgencias y Contacto
+          {t("footer.colContact")}
         </h3>
         <div class="space-y-3 text-xs text-alivia-primary-mist">
           <p>
             <strong class="block text-white"
-              >Soporte Técnico Asistencial 24/7</strong
+              >{companyInfo.legalName}</strong
             >
-            Atención prioritaria para usuarios y familias registradas.
+            <a href={`mailto:${companyInfo.privacyEmail}`} class="hover:text-alivia-secondary underline">{companyInfo.privacyEmail}</a>
           </p>
         </div>
       </div>
@@ -143,19 +154,19 @@
       class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-alivia-primary-light"
     >
       <p>
-        © 2026 Alivia Tecnología Asistencial. Todos los derechos reservados.
+        {t("footer.copyright")}
       </p>
 
       <div class="flex items-center gap-6">
         <a
-          href="#privacidad"
+          href={privacyHref}
           class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary"
-          >Política de Privacidad</a
+          >{t("footer.privacy")}</a
         >
         <a
-          href="#cookies"
+          href={termsHref}
           class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary"
-          >Términos y Condiciones de Uso</a
+          >{t("footer.terms")}</a
         >
       </div>
     </div>

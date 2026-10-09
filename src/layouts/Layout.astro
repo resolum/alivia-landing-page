@@ -1,33 +1,85 @@
 ---
 import "../styles/global.css";
+import type { Lang } from "../i18n/ui";
+import { getEquivalentRoute } from "../i18n/utils";
 
 interface Props {
   title?: string;
   description?: string;
+  lang?: Lang;
 }
 
 const {
   title = "Alivia",
-  description = "Alivia ofrece autonomía por voz en el hogar para personas con discapacidad motora severa y tranquilidad remota para cuidadores familiares."
+  description = "Alivia enables people with severe motor disabilities to control their home by voice, with full local processing and no Internet dependency. Remote peace of mind for family caregivers.",
+  lang = (Astro.currentLocale as Lang) || "en",
 } = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.origin : "https://alivia.care";
+
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const enPath = getEquivalentRoute(Astro.url.pathname, "en");
+const esPath = getEquivalentRoute(Astro.url.pathname, "es");
+
+const enUrl = new URL(enPath, siteUrl).href;
+const esUrl = new URL(esPath, siteUrl).href;
+
+const ogLocale = lang === "es" ? "es_PE" : "en_US";
+const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-  <link rel="icon" href="/icon.ico" />
+  <link rel="icon" type="image/x-icon" href="/logo.ico" />
+  <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
   <meta name="generator" content={Astro.generator} />
   <meta name="description" content={description} />
   <title>{title}</title>
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="en" href={enUrl} />
+  <link rel="alternate" hreflang="es" href={esUrl} />
+  <link rel="alternate" hreflang="x-default" href={enUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:locale:alternate" content={ogLocaleAlternate} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap"
       rel="stylesheet"
   />
+
+  {lang === "en" && (
+    <script is:inline>
+      (function() {
+        // Toggle language auto-detection for static sites
+        const AUTO_DETECT_LANGUAGE = true;
+        if (!AUTO_DETECT_LANGUAGE) return;
+
+        try {
+          const userPref = localStorage.getItem("alivia_preferred_lang");
+          if (userPref) return;
+          const ua = (navigator.userAgent || "").toLowerCase();
+          const isBot = /bot|googlebot|crawler|spider|robot|crawling|facebookexternalhit|twitterbot|slurp/i.test(ua);
+          if (isBot) return;
+          const languages = navigator.languages || [navigator.language || ""];
+          const primaryLang = (languages[0] || "").toLowerCase();
+
+          if (primaryLang.startsWith("es")) {
+            const hash = window.location.hash || "";
+            window.location.replace("/es/" + hash);
+          }
+        } catch (e) {
+          // Ignore storage/redirection errors
+        }
+      })();
+    </script>
+  )}
 </head>
 <body
     class="min-h-screen bg-alivia-primary-deep text-alivia-neutral-dark font-sans antialiased selection:bg-alivia-secondary selection:text-alivia-primary"

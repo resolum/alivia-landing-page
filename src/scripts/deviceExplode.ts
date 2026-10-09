@@ -1,7 +1,14 @@
-import { HOTSPOTS, DEVICE_CONSTANTS, type Hotspot } from '../data/hotspots';
+import { HOTSPOTS as DEFAULT_HOTSPOTS, DEVICE_CONSTANTS, type Hotspot } from '../data/hotspots';
 
 export function initDeviceExplode(): () => void {
   const { TOTAL_FRAMES, BASE_PATH, HS_SHOW_AT, HS_HIDE_BELOW } = DEVICE_CONSTANTS;
+
+  // Read i18n data passed from Astro component if available
+  const i18nScript = document.getElementById('device-i18n-data');
+  const i18nData = i18nScript ? JSON.parse(i18nScript.textContent || '{}') : {};
+  const HOTSPOTS: Hotspot[] = i18nData.hotspots || DEFAULT_HOTSPOTS;
+  const closeLabel: string = i18nData.closeLabel || 'Cerrar';
+  const infoPrefix: string = i18nData.infoPrefix || 'Información de';
 
   const stage        = document.getElementById('device-scroll-stage');
   const canvasArea   = document.getElementById('canvas-area');
@@ -226,7 +233,7 @@ export function initDeviceExplode(): () => void {
     if (activeId) {
       const btn = document.getElementById('hsbtn-' + activeId);
       if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.classList.remove('active'); }
-      if (returnFocus !== false && lastFocusEl) { lastFocusEl.focus(); lastFocusEl = null; }
+      if (returnFocus !== false && lastFocusEl) { lastFocusEl.focus({ preventScroll: true }); lastFocusEl = null; }
     }
     activeId = null;
   };
@@ -320,7 +327,7 @@ export function initDeviceExplode(): () => void {
     bubble.id = 'mindmap-bubble-card';
     bubble.setAttribute('role', 'region');
     bubble.setAttribute('aria-live', 'polite');
-    bubble.setAttribute('aria-label', 'Información de ' + h.name);
+    bubble.setAttribute('aria-label', (infoPrefix ? infoPrefix + ' ' : 'Información de ') + h.name);
     bubble.tabIndex = -1;
 
     bubble.style.cssText =
@@ -343,7 +350,7 @@ export function initDeviceExplode(): () => void {
             </strong>
           </div>
 
-          <button type="button" class="close-bubble" aria-label="Cerrar"
+          <button type="button" class="close-bubble" aria-label="${closeLabel}"
             style="width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:#F1F5F9;border:none;cursor:pointer;color:#64748B;border-radius:50%;transition:all 0.2s;flex-shrink:0;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M18 6L6 18M6 6l12 12"/>
