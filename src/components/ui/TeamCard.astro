@@ -1,0 +1,60 @@
+---
+import type { TeamMember } from "../../data/team";
+import type { Lang } from "../../i18n/ui";
+
+interface Props {
+  member: TeamMember;
+  lang?: Lang;
+}
+const { member, lang = "es" } = Astro.props;
+const roleText =
+  lang === "es"
+    ? "Estudiante de Ingeniería de Software"
+    : "Software Engineering Student";
+---
+
+<div
+  class="p-6 rounded-2xl bg-white border border-alivia-tertiary-dark shadow-sm flex flex-col justify-between hover:border-alivia-secondary transition-all"
+>
+  <div>
+    <div class="flex items-center justify-between mb-4">
+      {
+        member.image ? (
+          <img
+            src={member.image.src}
+            alt={member.name}
+            class="w-24 h-24 rounded-2xl object-cover mx-auto"
+            loading="lazy"
+          />
+        ) : (
+          <div class="w-12 h-12 rounded-xl bg-alivia-secondary-mint text-alivia-secondary-dark flex items-center justify-center font-bold text-lg">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d={member.iconPath}
+              />
+            </svg>
+          </div>
+        )
+      }
+    </div>
+
+    <h3 class="text-xl font-semibold text-alivia-primary mb-1">
+      {member.name}
+    </h3>
+    <p
+      class="text-xs font-semibold text-alivia-secondary-dark uppercase tracking-wider mb-3"
+    >
+      {roleText} ({member.code})
+    </p>
+    <p class="text-sm text-alivia-neutral-gray leading-relaxed">{member.bio}</p>
+  </div>
+</div>

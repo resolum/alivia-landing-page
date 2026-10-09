@@ -1,0 +1,68 @@
+---
+import type { Lang } from "../../i18n/ui";
+import { useTranslations } from "../../i18n/utils";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<button
+  type="button"
+  id="reading-size-toggle"
+  aria-pressed="false"
+  class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-alivia-border bg-white text-xs font-semibold text-alivia-primary hover:bg-alivia-surface transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-alivia-secondary touch-target"
+  aria-label={t("legal.comfortableReading")}
+>
+  <svg class="w-4 h-4 text-alivia-secondary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+  </svg>
+  <span>{t("legal.comfortableReading")}</span>
+</button>
+
+<script>
+  function setupReadingToggle() {
+    const btn = document.getElementById("reading-size-toggle");
+    const docContainer = document.getElementById("legal-doc-content");
+    if (!btn || !docContainer) return;
+
+    let isComfortable = false;
+    try {
+      isComfortable = localStorage.getItem("alivia_legal_font_size") === "comfortable";
+    } catch {
+      // Ignore storage errors
+    }
+
+    const applyState = (comfortable: boolean) => {
+      btn.setAttribute("aria-pressed", String(comfortable));
+      if (comfortable) {
+        docContainer.classList.add("text-lg");
+        docContainer.classList.remove("text-base");
+      } else {
+        docContainer.classList.add("text-base");
+        docContainer.classList.remove("text-lg");
+      }
+    };
+
+    applyState(isComfortable);
+
+    btn.addEventListener("click", () => {
+      isComfortable = !isComfortable;
+      applyState(isComfortable);
+      try {
+        localStorage.setItem("alivia_legal_font_size", isComfortable ? "comfortable" : "default");
+      } catch {
+        // Ignore storage errors
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupReadingToggle);
+  } else {
+    setupReadingToggle();
+  }
+</script>

@@ -1,0 +1,17 @@
+---
+interface Props {
+  /** Visual variant matching the project's badge styles */
+  variant?: 'mint' | 'white' | 'plain';
+  class?: string;
+}
+const { variant = 'plain', class: className } = Astro.props;
+
+const variantClasses: Record<string, string> = {
+  mint:  'text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark',
+  white: 'text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark px-3.5 py-1 rounded-full border border-alivia-tertiary-dark bg-white',
+  plain: 'text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark',
+};
+---
+<span class={[variantClasses[variant], className].filter(Boolean).join(' ')}>
+  <slot />
+</span>

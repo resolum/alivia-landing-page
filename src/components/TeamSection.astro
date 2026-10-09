@@ -1,0 +1,88 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import { getTeamMembers } from '../data/team';
+import TeamCard from './ui/TeamCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const teamMembers = getTeamMembers(lang);
+---
+
+<section
+  id="equipo"
+  class="py-20 bg-alivia-tertiary text-alivia-neutral-dark border-t border-alivia-tertiary-medium"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span
+        class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
+      >
+        {t("team.badge")}
+      </span>
+      <h2
+        class="text-3xl sm:text-4xl font-semibold font-display mt-4 mb-4 text-alivia-primary"
+      >
+        {t("team.title")}
+      </h2>
+      <p class="text-base sm:text-lg text-alivia-neutral-gray">
+        {t("team.desc")}
+      </p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {teamMembers.map((member) => <TeamCard member={member} lang={lang} />)}
+    </div>
+    <div class="mt-20 max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <span
+          class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
+        >
+          {t("team.aboutBadge")}
+        </span>
+      </div>
+    </div>
+    <div class="mt-20 max-w-4xl mx-auto">
+      <div
+        class="aspect-video rounded-2xl bg-alivia-primary-video flex items-center justify-center cursor-pointer overflow-hidden border border-alivia-tertiary-dark hover:border-alivia-secondary transition-colors relative"
+        id="video-placeholder"
+        data-iframe-title={t("team.videoIframeTitle")}
+      >
+        <div class="text-center p-8">
+          <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+            <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+          <p class="text-lg font-medium text-white mb-2">{t("team.videoPlay")}</p>
+          <p class="text-sm text-white/70">{t("team.videoClick")}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const videoPlaceholder = document.getElementById('video-placeholder');
+    if (videoPlaceholder) {
+      videoPlaceholder.addEventListener('click', () => {
+        const title = videoPlaceholder.getAttribute('data-iframe-title') || 'Video presentación Alivia';
+        const videoUrl = 'https://www.youtube.com/embed/VIDEO_ID_HERE?autoplay=1';
+        videoPlaceholder.innerHTML = `
+          <iframe
+            src="${videoUrl}"
+            title="${title}"
+            class="w-full h-full"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        `;
+      });
+    }
+  });
+</script>
