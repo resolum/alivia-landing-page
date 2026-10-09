@@ -15,7 +15,7 @@ const {
   lang = (Astro.currentLocale as Lang) || "en",
 } = Astro.props;
 
-const siteUrl = Astro.site ? Astro.site.origin : "https://alivia.care";
+const siteUrl = Astro.site ? Astro.site.origin : "https://alivia-landing-page.vercel.app/";
 
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const enPath = getEquivalentRoute(Astro.url.pathname, "en");
