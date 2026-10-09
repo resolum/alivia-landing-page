@@ -1,0 +1,158 @@
+---
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import { getPlans } from "../data/plans";
+import PlanCard from "./ui/PlanCard.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const plans = getPlans(lang);
+
+const currencyLocale = lang === "es" ? "es-PE" : "en-US";
+const formatPrice = (val: number) =>
+  new Intl.NumberFormat(currencyLocale, {
+    style: "currency",
+    currency: "PEN",
+    maximumFractionDigits: 0,
+  }).format(val);
+
+const monthlyPriceFormatted = formatPrice(99);
+const annualPriceFormatted = formatPrice(83);
+const perMonthText = t("plans.perMonth");
+const perMonthAnnualText = t("plans.perMonthAnnual");
+---
+
+<section id="planes" class="py-20 bg-alivia-surface text-alivia-primary">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <span
+        class="text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark"
+      >
+        {t("plans.badge")}
+      </span>
+      <h2
+        class="text-3xl sm:text-4xl font-bold font-display mt-3 mb-4 text-alivia-primary"
+      >
+        {t("plans.title")}
+      </h2>
+      <p class="text-base text-alivia-neutral-blue leading-relaxed">
+        {t("plans.desc")}
+      </p>
+    </div>
+    <div class="flex justify-center mb-12">
+      <div
+        id="billing-tablist"
+        role="tablist"
+        aria-label={t("plans.billingLabel")}
+        class="relative inline-flex p-1.5 rounded-2xl bg-white border border-alivia-border shadow-sm"
+        data-monthly-price={monthlyPriceFormatted}
+        data-annual-price={annualPriceFormatted}
+        data-monthly-period={perMonthText}
+        data-annual-period={perMonthAnnualText}
+      >
+        <span
+          id="billing-pill"
+          aria-hidden="true"
+          class="absolute top-1.5 left-1.5 h-[calc(100%-12px)] rounded-xl bg-alivia-primary shadow-md
+                 transition-[width,transform] duration-300 ease-[cubic-bezier(.4,0,.2,1)] pointer-events-none"
+        ></span>
+
+        <button
+          id="btn-mensual"
+          role="tab"
+          aria-selected="true"
+          tabindex="0"
+          class="billing-tab relative z-10 px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors duration-300 text-white focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
+        >
+          {t("plans.monthly")}
+        </button>
+        <button
+          id="btn-anual"
+          role="tab"
+          aria-selected="false"
+          tabindex="-1"
+          class="billing-tab relative z-10 inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors duration-300 text-alivia-neutral-gray focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
+        >
+          {t("plans.annual")}
+          <span
+            class="text-[11px] font-bold text-alivia-secondary-dark bg-alivia-secondary-mint px-2 py-0.5 rounded-full"
+            >{t("plans.save2months")}</span
+          >
+        </button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+      {plans.map((plan) => <PlanCard plan={plan} lang={lang} />)}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const btnMensual = document.getElementById(
+      "btn-mensual",
+    ) as HTMLButtonElement | null;
+    const btnAnual = document.getElementById(
+      "btn-anual",
+    ) as HTMLButtonElement | null;
+    const pill = document.getElementById("billing-pill") as HTMLElement | null;
+    const priceEsencial = document.getElementById("price-esencial");
+    const periodEsencial = document.getElementById("period-esencial");
+    const tablist = document.getElementById("billing-tablist");
+
+    if (!btnMensual || !btnAnual || !pill) return;
+
+    const monthlyPrice = tablist?.getAttribute("data-monthly-price") || "S/ 99";
+    const annualPrice = tablist?.getAttribute("data-annual-price") || "S/ 83";
+    const monthlyPeriod =
+      tablist?.getAttribute("data-monthly-period") || "/ mes";
+    const annualPeriod =
+      tablist?.getAttribute("data-annual-period") || "/ mes (cobro anual)";
+
+    const movePill = (btn: HTMLButtonElement) => {
+      pill.style.width = btn.offsetWidth + "px";
+      pill.style.transform = `translateX(${btn.offsetLeft - 6}px)`;
+    };
+
+    movePill(btnMensual);
+    window.addEventListener("resize", () => {
+      const active =
+        btnMensual.getAttribute("aria-selected") === "true"
+          ? btnMensual
+          : btnAnual;
+      movePill(active);
+    });
+
+    const switchBilling = (
+      active: HTMLButtonElement,
+      inactive: HTMLButtonElement,
+      isAnnual: boolean,
+    ) => {
+      movePill(active);
+      active.setAttribute("aria-selected", "true");
+      active.setAttribute("tabindex", "0");
+      active.classList.add("text-white");
+      active.classList.remove("text-alivia-neutral-gray");
+      inactive.setAttribute("aria-selected", "false");
+      inactive.setAttribute("tabindex", "-1");
+      inactive.classList.remove("text-white");
+      inactive.classList.add("text-alivia-neutral-gray");
+      if (priceEsencial && periodEsencial) {
+        priceEsencial.textContent = isAnnual ? annualPrice : monthlyPrice;
+        periodEsencial.textContent = isAnnual ? annualPeriod : monthlyPeriod;
+      }
+      active.focus();
+    };
+
+    btnMensual.addEventListener("click", () =>
+      switchBilling(btnMensual, btnAnual, false),
+    );
+    btnAnual.addEventListener("click", () =>
+      switchBilling(btnAnual, btnMensual, true),
+    );
+  });
+</script>

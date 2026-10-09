@@ -1,0 +1,35 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  ariaLabel?: string;
+  /** 'plan' = full-width card CTA; 'nav-cta' = navbar login button */
+  variant?: 'plan' | 'nav-cta';
+  target?: string;
+  rel?: string;
+}
+const {
+  href,
+  label,
+  ariaLabel,
+  variant = 'plan',
+  target,
+  rel,
+} = Astro.props;
+
+const variantClasses: Record<string, string> = {
+  'plan':
+    'w-full block text-center px-6 py-3.5 rounded-2xl text-base font-bold bg-alivia-surface text-alivia-primary hover:bg-alivia-border transition-all focus-visible:ring-4 focus-visible:ring-alivia-primary-medium',
+  'nav-cta':
+    'inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark hover:text-white transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target',
+};
+---
+<a
+  href={href}
+  class={variantClasses[variant]}
+  aria-label={ariaLabel}
+  target={target}
+  rel={rel}
+>
+  {label}
+</a>

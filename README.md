@@ -1,46 +1,117 @@
-# Astro Starter Kit: Basics
+# Alivia Landing Page
 
-```sh
-npm create astro@latest -- --template basics
-```
+`alivia-landing-page` is the official landing page of Alivia, a voice-controlled home automation system for people with severe motor disabilities, with a companion app for their family members and caregivers.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The website introduces the product, explains how it works, showcases the IoT device ecosystem, and guides visitors toward the available plans and the mobile app download.
 
-## 🚀 Project Structure
+## About Alivia
 
-Inside of your Astro project, you'll see the following folders and files:
+Alivia is built around two complementary IoT devices that work together without depending on the Internet:
+
+- **Voice recognition device:** captures the voice of the assisted person, detects the wake word, and sends the command to a local Edge node for transcription.
+- **Actuator device:** receives the recognized command and performs the physical action on a door, window, or light through servo motors and a relay.
+
+A caregiver app complements the system with remote supervision, emergency alerts, and care scheduling.
+
+## Purpose
+
+The main purpose of the landing page is to present Alivia clearly and build trust with potential customers, their families, and caregivers.
+
+In the current version, the website focuses on:
+
+- Explaining what Alivia is and who it is for.
+- Showing the benefits for both the assisted person and the caregiver.
+- Presenting the device ecosystem with an interactive exploded view.
+- Providing accessible audiovisual content with a text alternative.
+- Showing testimonials and the team behind the project.
+- Presenting the available plans and redirecting to the web application to subscribe.
+- Promoting the download of the caregiver mobile app.
+- Answering frequently asked questions.
+
+## Project Structure
 
 ```text
-/
+alivia-landing-page/
+├── README.md
+├── package.json
+├── pnpm-lock.yaml
 ├── public/
+│   ├── device/              # Frames of the device exploded-view animation
+│   ├── hero/                # Frames of the hero logo animation
+│   ├── favicon.ico
 │   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+└── src/
+    ├── assets/
+    ├── components/
+    │   ├── DeviceExplode.astro
+    │   ├── DevicesSection.astro
+    │   ├── DownloadAppSection.astro
+    │   ├── FaqSection.astro
+    │   ├── FooterSection.astro
+    │   ├── HeroAnimation.astro
+    │   ├── HeroSection.astro
+    │   ├── ManifestoSection.astro
+    │   ├── MediaSection.astro
+    │   ├── NavBar.astro
+    │   ├── PhoneMockup.astro
+    │   ├── PlansSection.astro
+    │   ├── TeamSection.astro
+    │   ├── TestimonialsSection.astro
+    │   ├── TwoLivesSection.astro
+    │   └── Welcome.astro
+    ├── layouts/
+    │   └── Layout.astro
+    ├── pages/
+    │   └── index.astro
+    └── styles/
+        └── global.css
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Technology Stack
 
-## 🧞 Commands
+- Astro
+- Tailwind CSS (integrated through the `@tailwindcss/vite` plugin)
+- HTML5
+- CSS3
+- JavaScript (canvas-based frame playback and scroll logic)
+- Vite (bundled with Astro)
+- pnpm (package manager)
 
-All commands are run from the root of the project, from a terminal:
+## Getting Started
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Prerequisites
 
-## 👀 Want to learn more?
+- Node.js (a recent LTS version)
+- pnpm
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/resolum/alivia-landing-page.git
+cd alivia-landing-page
+
+# Install the dependencies
+pnpm install
+```
+
+The project uses Tailwind CSS through its Vite plugin. If you set up the project from scratch, install it with:
+
+```bash
+pnpm install tailwindcss @tailwindcss/vite
+```
+
+### Development
+
+```bash
+pnpm run dev
+```
+
+The site will be available at `http://localhost:4321`.
+
+### Production build
+
+```bash
+pnpm build
+pnpm preview
+```

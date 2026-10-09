@@ -1,0 +1,103 @@
+---
+import type { Lang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+import type { Plan } from '../../data/plans';
+import { getRoomOptions, getDoorOptions } from '../../data/plans';
+
+interface Props {
+  plan: Plan;
+  lang: Lang;
+}
+
+const { plan, lang } = Astro.props;
+const t = useTranslations(lang);
+const isCustom = plan.id === 'personalizado';
+
+const roomOptions = getRoomOptions(lang);
+const doorOptions = getDoorOptions(lang);
+
+const currencyLocale = lang === 'es' ? 'es-PE' : 'en-US';
+const formatPrice = (val: number) =>
+  new Intl.NumberFormat(currencyLocale, {
+    style: 'currency',
+    currency: 'PEN',
+    maximumFractionDigits: 0,
+  }).format(val);
+
+const initialPriceText = plan.monthlyPrice !== null ? formatPrice(plan.monthlyPrice) : '';
+const ctaUrl = `${plan.ctaHref}?lang=${lang}`;
+---
+
+<div class="rounded-3xl bg-white border border-alivia-border shadow-sm p-8 flex flex-col gap-6">
+  <div>
+    <p class="text-xs font-bold uppercase tracking-widest text-alivia-secondary-dark mb-2">{plan.badge}</p>
+    <h3 class="text-3xl font-bold font-display text-alivia-primary mb-2">{plan.name}</h3>
+    <p class="text-sm text-alivia-neutral-blue leading-relaxed">{plan.description}</p>
+  </div>
+  <div class="flex items-baseline gap-2">
+    {!isCustom ? (
+      <>
+        <span id={`price-${plan.id}`} class="text-5xl font-bold font-display text-alivia-primary">
+          {initialPriceText}
+        </span>
+        <span id={`period-${plan.id}`} class="text-base text-gray-500">{t("plans.perMonth")}</span>
+      </>
+    ) : (
+      <>
+        <span class="text-5xl font-bold font-display text-alivia-primary">{t("plans.quotePrice")}</span>
+        <span class="text-base text-gray-500">{t("plans.perEvaluation")}</span>
+      </>
+    )}
+  </div>
+  {!isCustom ? (
+    <ul class="space-y-3 text-sm text-gray-700" aria-label={`Características del Plan ${plan.name}`}>
+      {plan.features.map((f) => (
+        <li class="flex items-center gap-3">
+          {f.included ? (
+            <svg class="w-5 h-5 text-alivia-secondary-dark shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          ) : (
+            <svg class="w-5 h-5 text-alivia-border shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          )}
+          {f.included ? f.label : <span class="text-gray-400">{f.label}</span>}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div class="flex flex-col gap-4">
+      <div>
+        <label for="room-select" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+          {t("plans.roomsLabel")}
+        </label>
+        <select id="room-select" class="w-full px-4 py-3 rounded-xl bg-alivia-surface border border-alivia-border text-alivia-primary text-sm font-medium focus:outline-none focus:ring-2 focus:ring-alivia-secondary-dark cursor-pointer">
+          {roomOptions.map((opt) => <option>{opt}</option>)}
+        </select>
+      </div>
+      <div>
+        <label for="door-select" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+          {t("plans.doorsLabel")}
+        </label>
+        <select id="door-select" class="w-full px-4 py-3 rounded-xl bg-alivia-surface border border-alivia-border text-alivia-primary text-sm font-medium focus:outline-none focus:ring-2 focus:ring-alivia-secondary-dark cursor-pointer">
+          {doorOptions.map((opt) => <option>{opt}</option>)}
+        </select>
+      </div>
+    </div>
+  )}
+  <div class="mt-auto">
+    <a
+      href={ctaUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="w-full block text-center px-6 py-3.5 rounded-2xl text-base font-bold bg-alivia-surface text-alivia-primary hover:bg-alivia-border transition-all focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
+      aria-label={plan.ariaLabel}
+    >
+      {plan.ctaLabel}
+    </a>
+    <p class="text-center text-xs text-gray-400 mt-2">{plan.ctaNote}</p>
+  </div>
+</div>

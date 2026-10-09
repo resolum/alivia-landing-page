@@ -1,0 +1,174 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import { companyInfo } from '../data/company';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const privacyHref = lang === "es" ? "/es/politica-de-privacidad" : "/privacy-policy";
+const termsHref = lang === "es" ? "/es/terminos-y-condiciones" : "/terms-and-conditions";
+---
+
+<footer class="bg-alivia-primary-deep text-white border-t border-alivia-primary-medium pt-16 pb-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-alivia-primary-medium/60"
+    >
+      <div class="space-y-4">
+        <div class="flex items-center gap-2.5">
+          <span
+            class="text-2xl font-semibold tracking-tight text-white font-display"
+          >
+            Alivia
+          </span>
+        </div>
+        <p class="text-xs text-alivia-primary-mist leading-relaxed">
+          {t("footer.tagline")}
+        </p>
+        <div class="pt-2">
+          <span
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-alivia-primary text-alivia-secondary-mint border border-alivia-secondary-medium/40"
+          >
+            <svg
+              class="w-4 h-4 text-alivia-secondary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            {t("footer.a11ySeal")}
+          </span>
+        </div>
+      </div>
+      <div>
+        <h3
+          class="text-sm font-semibold uppercase tracking-wider text-white mb-4 font-display"
+        >
+          {t("footer.colPlatform")}
+        </h3>
+        <ul class="space-y-2.5 text-xs text-alivia-primary-mist">
+          <li>
+            <a
+              href="#que-es"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.whatIsAlivia")}</a
+            >
+          </li>
+          <li>
+            <a
+              href="#como-funciona"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.howItWorks")}</a
+            >
+          </li>
+          <li>
+            <a
+              href="#dispositivos"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.hubDevices")}</a
+            >
+          </li>
+          <li>
+            <a
+              href="#audiovisual"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.audiovisual")}</a
+            >
+          </li>
+          <li>
+            <a
+              href="#planes"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.plansEquipment")}</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3
+          class="text-sm font-semibold uppercase tracking-wider text-white mb-4 font-display"
+        >
+          {t("footer.colCompany")}
+        </h3>
+        <ul class="space-y-2.5 text-xs text-alivia-primary-mist">
+          <li>
+            <a
+              href="#equipo"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.behindAlivia")}</a
+            >
+          </li>
+          <li>
+            <a
+              href="#testimonios"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.testimonials")}</a
+            >
+          </li>
+          <li>
+            <a
+              href="#faq"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.faq")}</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://app.alivia.care/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded px-1 py-0.5"
+              >{t("footer.link.caregiverApp")}</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3
+          class="text-sm font-semibold uppercase tracking-wider text-white mb-4 font-display"
+        >
+          {t("footer.colContact")}
+        </h3>
+        <div class="space-y-3 text-xs text-alivia-primary-mist">
+          <p>
+            <strong class="block text-white"
+              >{companyInfo.legalName}</strong
+            >
+            <a href={`mailto:${companyInfo.privacyEmail}`} class="hover:text-alivia-secondary underline">{companyInfo.privacyEmail}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-alivia-primary-light"
+    >
+      <p>
+        {t("footer.copyright")}
+      </p>
+
+      <div class="flex items-center gap-6">
+        <a
+          href={privacyHref}
+          class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary"
+          >{t("footer.privacy")}</a
+        >
+        <a
+          href={termsHref}
+          class="hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary"
+          >{t("footer.terms")}</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>

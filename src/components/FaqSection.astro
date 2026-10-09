@@ -1,0 +1,114 @@
+---
+import type { Lang } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import { getFaqItems } from '../data/faq';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const faqItems = getFaqItems(lang);
+---
+
+<section id="faq" class="py-20 bg-alivia-surface-mist text-alivia-primary">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="text-center mb-12">
+      <span
+        class="text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark px-3.5 py-1 rounded-full border border-alivia-tertiary-dark bg-white"
+      >
+        {t("faq.badge")}
+      </span>
+      <h2
+        class="text-3xl sm:text-4xl font-bold font-display mt-4 mb-3 text-alivia-primary"
+      >
+        {t("faq.title")}
+      </h2>
+      <p class="text-base text-alivia-neutral-blue">
+        {t("faq.desc")}
+      </p>
+    </div>
+    <div class="space-y-3 mb-12" aria-label={t("faq.listLabel")}>
+      {faqItems.map((item) => (
+        <div class="faq-item bg-white rounded-2xl border border-alivia-border overflow-hidden">
+          <button
+            class="faq-trigger w-full flex items-center justify-between px-6 py-5 text-left font-semibold text-base text-alivia-primary hover:bg-alivia-surface/60 transition-colors focus-visible:ring-4 focus-visible:ring-alivia-primary-medium touch-target"
+            aria-expanded="false"
+          >
+            <span>{item.question}</span>
+            <svg
+              class="faq-chevron w-5 h-5 text-gray-500 shrink-0 transition-transform duration-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="faq-body overflow-hidden" style="height:0">
+            <div class="px-6 pb-5 pt-4 text-sm text-alivia-neutral-blue leading-relaxed border-t border-alivia-surface">
+              {item.answer}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="rounded-3xl bg-alivia-primary p-10 text-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-alivia-primary-gradient to-alivia-primary opacity-80"></div>
+      <div class="relative z-10">
+        <blockquote
+          class="text-xl sm:text-2xl font-bold font-display text-white leading-snug mb-6"
+        >
+          {t("faq.quote")}
+        </blockquote>
+        <div class="w-12 h-1 bg-alivia-secondary-dark rounded-full mx-auto"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const DURATION = 320;
+    const EASING   = "cubic-bezier(0.4, 0, 0.2, 1)";
+
+    document.querySelectorAll<HTMLElement>(".faq-item").forEach((item) => {
+      const trigger = item.querySelector<HTMLButtonElement>(".faq-trigger")!;
+      const body    = item.querySelector<HTMLElement>(".faq-body")!;
+      const chevron = item.querySelector<SVGElement>(".faq-chevron")!;
+      let isOpen = false;
+      let currentAnim: Animation | null = null;
+
+      trigger.addEventListener("click", () => {
+        if (currentAnim) currentAnim.cancel();
+
+        if (!isOpen) {
+          body.style.height = "auto";
+          const targetH = body.scrollHeight;
+          body.style.height = "0px";
+          currentAnim = body.animate(
+            [{ height: "0px" }, { height: targetH + "px" }],
+            { duration: DURATION, easing: EASING, fill: "forwards" },
+          );
+          currentAnim.onfinish = () => { body.style.height = "auto"; currentAnim = null; };
+          chevron.style.transform = "rotate(180deg)";
+          trigger.setAttribute("aria-expanded", "true");
+          isOpen = true;
+        } else {
+          const currentH = body.scrollHeight;
+          body.style.height = currentH + "px";
+          currentAnim = body.animate(
+            [{ height: currentH + "px" }, { height: "0px" }],
+            { duration: DURATION, easing: EASING, fill: "forwards" },
+          );
+          currentAnim.onfinish = () => { body.style.height = "0"; currentAnim = null; };
+          chevron.style.transform = "rotate(0deg)";
+          trigger.setAttribute("aria-expanded", "false");
+          isOpen = false;
+        }
+      });
+    });
+  });
+</script>
