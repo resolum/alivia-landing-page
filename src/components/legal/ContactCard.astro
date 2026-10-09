@@ -1,0 +1,49 @@
+---
+import type { Lang } from "../../i18n/ui";
+import { useTranslations } from "../../i18n/utils";
+import { companyInfo } from "../../data/company";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="p-6 rounded-2xl bg-white border border-alivia-border shadow-md space-y-4 my-6">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-alivia-surface text-alivia-primary flex items-center justify-center shrink-0">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    </div>
+    <div>
+      <h3 class="text-base font-bold text-alivia-primary">
+        {t("legal.officialChannel")}
+      </h3>
+      <p class="text-xs text-alivia-neutral-gray">{companyInfo.legalName}</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-alivia-neutral-dark pt-2">
+    <div class="space-y-1">
+      <span class="block text-xs font-semibold uppercase text-alivia-neutral-light">
+        {lang === "es" ? "Correo Electrónico Oficial" : "Official Email"}
+      </span>
+      <a
+        href={`mailto:${companyInfo.privacyEmail}`}
+        class="font-semibold text-alivia-primary hover:text-alivia-secondary transition-colors underline focus-visible:ring-2 focus-visible:ring-alivia-secondary rounded"
+      >
+        {companyInfo.privacyEmail}
+      </a>
+    </div>
+
+    <div class="space-y-1">
+      <span class="block text-xs font-semibold uppercase text-alivia-neutral-light">
+        {lang === "es" ? "Razón Social" : "Legal Entity"}
+      </span>
+      <span class="font-medium">{companyInfo.legalName}</span>
+    </div>
+  </div>
+</div>

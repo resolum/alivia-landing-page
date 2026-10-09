@@ -1,0 +1,36 @@
+---
+import type { Lang } from "../i18n/ui";
+import NavBar from "./NavBar.astro";
+import HeroSection from "./HeroSection.astro";
+import TwoLivesSection from "./TwoLivesSection.astro";
+import DevicesSection from "./DevicesSection.astro";
+import MediaSection from "./MediaSection.astro";
+import TestimonialsSection from "./TestimonialsSection.astro";
+import TeamSection from "./TeamSection.astro";
+import PlansSection from "./PlansSection.astro";
+import DownloadAppSection from "./DownloadAppSection.astro";
+import FaqSection from "./FaqSection.astro";
+import FooterSection from "./FooterSection.astro";
+import ScrollToTop from "./ScrollToTop.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<NavBar lang={lang} />
+<main id="main-content" class="w-full">
+  <HeroSection lang={lang} />
+  <TwoLivesSection lang={lang} />
+  <DevicesSection lang={lang} />
+  <MediaSection lang={lang} />
+  <TestimonialsSection lang={lang} />
+  <TeamSection lang={lang} />
+  <PlansSection lang={lang} />
+  <DownloadAppSection lang={lang} />
+  <FaqSection lang={lang} />
+</main>
+<FooterSection lang={lang} />
+<ScrollToTop lang={lang} />

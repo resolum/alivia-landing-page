@@ -1,0 +1,227 @@
+---
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import { getHotspots } from "../data/hotspots";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const hotspots = getHotspots(lang);
+
+const i18nConfig = JSON.stringify({
+  hotspots,
+  closeLabel: t("devices.hotspot.closeLabel"),
+  infoPrefix: t("devices.hotspot.infoPrefix"),
+  scrollHint: t("devices.scrollHint"),
+});
+---
+
+<div class="sm:hidden text-center max-w-3xl mx-auto w-full px-4 pt-20 pb-4">
+  <span
+    class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-slate-100 px-4 py-1.5 rounded-full border border-slate-200"
+  >
+    {t("devices.badge")}
+  </span>
+  <h2
+    class="text-2xl font-bold font-display mt-3 mb-2 text-alivia-primary leading-tight"
+  >
+    {t("devices.title")}
+  </h2>
+  <p class="text-sm text-slate-600 leading-relaxed">
+    {t("devices.desc")}
+  </p>
+</div>
+
+<div id="device-scroll-stage" class="relative w-full" style="height:500vh;">
+  <div
+    id="device-sticky-wrap"
+    class="sticky top-0 left-0 w-full h-svh flex flex-col bg-white overflow-hidden"
+  >
+    <div
+      class="hidden sm:block shrink-0 text-center max-w-3xl mx-auto w-full px-4 sm:px-6 pt-20 sm:pt-24 pb-1 sm:pb-2 z-30"
+    >
+      <span
+        class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-slate-100 px-4 py-1.5 rounded-full border border-slate-200"
+      >
+        {t("devices.badge")}
+      </span>
+      <h2
+        class="text-2xl sm:text-5xl font-bold font-display mt-2 sm:mt-3 mb-1 text-alivia-primary"
+      >
+        {t("devices.title")}
+      </h2>
+      <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+        {t("devices.desc")}
+      </p>
+    </div>
+    <div id="canvas-area" class="relative flex-1 w-full min-h-0 bg-white">
+      <canvas
+        id="device-canvas"
+        class="absolute inset-0 w-full h-full bg-white"
+        aria-label={t("devices.canvasLabel")}></canvas>
+      <div
+        id="hotspot-layer"
+        class="absolute inset-0 z-20 transition-all duration-500 opacity-0 invisible pointer-events-none"
+        aria-hidden="true"
+      >
+        <svg
+          id="mindmap-svg"
+          class="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
+          aria-hidden="true"></svg>
+        <div
+          id="mindmap-bubbles"
+          class="absolute inset-0 pointer-events-none z-30"
+        >
+        </div>
+      </div>
+      <div
+        id="scroll-hint"
+        class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 pointer-events-none select-none z-10"
+        style="transition:opacity .5s ease;"
+      >
+        <span
+          class="text-[11px] font-semibold uppercase tracking-widest text-alivia-primary/60"
+          >{t("devices.scrollHint")}</span
+        >
+        <svg
+          class="w-4 h-4 text-alivia-primary animate-bounce"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-100 z-50">
+      <div
+        id="device-progress-bar"
+        class="h-full bg-alivia-primary"
+        style="width:0%;transition:none;"
+      >
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" id="device-i18n-data" set:html={i18nConfig} />
+
+<style>
+  :global(.sr-only) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  @keyframes hs-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(15, 42, 107, 0.6);
+    }
+    70% {
+      box-shadow: 0 0 0 14px rgba(15, 42, 107, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(15, 42, 107, 0);
+    }
+  }
+
+  :global(.hotspot-btn) {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border-radius: 9999px;
+    background-color: #0f2a6b;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-family: "Outfit", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    outline: none;
+    z-index: 25;
+    pointer-events: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.4s ease,
+      visibility 0.4s ease,
+      background-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+    animation: hs-pulse 2s infinite;
+    box-shadow: 0 4px 12px rgba(15, 42, 107, 0.3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.hotspot-btn) {
+      animation: none !important;
+    }
+  }
+
+  :global(.hotspot-btn.hs-visible) {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  :global(.hotspot-btn:hover) {
+    transform: translate(-50%, -50%) scale(1.15);
+    background-color: #1a3b8b;
+    color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(15, 42, 107, 0.2);
+  }
+
+  :global(.hotspot-btn:focus-visible) {
+    box-shadow: 0 0 0 4px #0f2a6b;
+  }
+
+  :global(.hotspot-btn.active) {
+    background-color: #0f2a6b;
+    color: #ffffff;
+    border-color: #ffffff;
+    box-shadow:
+      0 0 0 4px #0f2a6b,
+      0 6px 20px rgba(15, 42, 107, 0.4);
+    animation: none;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+
+  :global(.close-bubble:hover) {
+    background-color: #e2e8f0 !important;
+    color: #0f2a6b !important;
+  }
+</style>
+
+<script>
+  import { initDeviceExplode } from "../scripts/deviceExplode";
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    if (cleanup) cleanup();
+    cleanup = initDeviceExplode();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
+  document.addEventListener("astro:page-load", start);
+</script>

@@ -1,0 +1,42 @@
+---
+interface Props {
+  badge?: string;
+  title: string;
+  description?: string;
+  /** Badge color/style variant */
+  badgeVariant?: 'mint' | 'white' | 'plain';
+  /** h2 font-weight */
+  titleWeight?: 'semibold' | 'bold';
+  /** Tailwind margin classes between badge→h2 and h2→p, e.g. 'mt-4 mb-4' */
+  titleSpacing?: string;
+  descClass?: string;
+  wrapperClass?: string;
+}
+const {
+  badge,
+  title,
+  description,
+  badgeVariant   = 'plain',
+  titleWeight    = 'bold',
+  titleSpacing   = 'mt-4 mb-4',
+  descClass      = 'text-base text-alivia-neutral-blue leading-relaxed',
+  wrapperClass   = 'text-center max-w-3xl mx-auto mb-10',
+} = Astro.props;
+
+const badgeClasses: Record<string, string> = {
+  mint:  'text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark',
+  white: 'text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark px-3.5 py-1 rounded-full border border-alivia-tertiary-dark bg-white',
+  plain: 'text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark',
+};
+
+const h2Class = `text-3xl sm:text-4xl font-${titleWeight} font-display ${titleSpacing} text-alivia-primary`;
+---
+<div class={wrapperClass}>
+  {badge && (
+    <span class={badgeClasses[badgeVariant]}>{badge}</span>
+  )}
+  <h2 class={h2Class}>{title}</h2>
+  {description && (
+    <p class={descClass}>{description}</p>
+  )}
+</div>

@@ -1,0 +1,210 @@
+---
+import { languages, languageAbbr, type Lang } from "../i18n/ui";
+import { getEquivalentRoute } from "../i18n/utils";
+
+interface Props {
+  currentLang: Lang;
+}
+
+const { currentLang } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const enPath = getEquivalentRoute(pathname, "en");
+const esPath = getEquivalentRoute(pathname, "es");
+
+const currentLabel = languages[currentLang];
+const currentAbbr = languageAbbr[currentLang];
+
+const switcherAriaLabel =
+  currentLang === "es" ? "Selector de idioma" : "Language selector";
+---
+
+<div class="relative inline-block text-left lang-switcher-container">
+  <button
+    type="button"
+    class="lang-switcher-trigger inline-flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl border border-white/25 bg-[#09153b]/80 text-white hover:border-alivia-secondary/60 hover:bg-[#0d1d4d]/90 focus-visible:ring-2 focus-visible:ring-alivia-secondary transition-all duration-200 text-sm font-semibold shadow-md touch-target min-w-[44px] min-h-[44px]"
+    aria-expanded="false"
+    aria-haspopup="true"
+    aria-label={switcherAriaLabel}
+  >
+    <span class="hidden sm:inline font-medium tracking-wide"
+      >{currentLabel}</span
+    >
+    <span class="sm:hidden font-bold tracking-wide">{currentAbbr}</span>
+    <svg
+      class="lang-chevron w-4 h-4 text-white/80 transition-transform duration-200 shrink-0"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2.5"
+        d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  <div
+    class="lang-switcher-dropdown hidden absolute right-0 top-full mt-2 w-44 p-1.5 rounded-2xl bg-[#09153b]/95 border border-white/20 backdrop-blur-2xl shadow-2xl z-50 flex-col gap-1 transition-all duration-200"
+    role="menu"
+    aria-orientation="vertical"
+    aria-label={switcherAriaLabel}
+  >
+    <a
+      href={enPath}
+      lang="en"
+      hreflang="en"
+      role="menuitem"
+      aria-current={currentLang === "en" ? "true" : undefined}
+      class:list={[
+        "lang-option-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all touch-target focus-visible:ring-2 focus-visible:ring-alivia-secondary",
+        currentLang === "en"
+          ? "bg-alivia-secondary/20 text-alivia-secondary-mint font-semibold border border-alivia-secondary/30"
+          : "text-white/85 hover:text-white hover:bg-white/10",
+      ]}
+    >
+      <span>{languages.en}</span>
+      {
+        currentLang === "en" && (
+          <svg
+            class="w-4 h-4 text-alivia-secondary shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        )
+      }
+    </a>
+    <a
+      href={esPath}
+      lang="es"
+      hreflang="es"
+      role="menuitem"
+      aria-current={currentLang === "es" ? "true" : undefined}
+      class:list={[
+        "lang-option-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all touch-target focus-visible:ring-2 focus-visible:ring-alivia-secondary",
+        currentLang === "es"
+          ? "bg-alivia-secondary/20 text-alivia-secondary-mint font-semibold border border-alivia-secondary/30"
+          : "text-white/85 hover:text-white hover:bg-white/10",
+      ]}
+    >
+      <span>{languages.es}</span>
+      {
+        currentLang === "es" && (
+          <svg
+            class="w-4 h-4 text-alivia-secondary shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        )
+      }
+    </a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const containers = document.querySelectorAll<HTMLElement>(
+      ".lang-switcher-container",
+    );
+
+    containers.forEach((container) => {
+      const trigger = container.querySelector<HTMLButtonElement>(
+        ".lang-switcher-trigger",
+      );
+      const dropdown = container.querySelector<HTMLElement>(
+        ".lang-switcher-dropdown",
+      );
+      const chevron = container.querySelector<SVGElement>(".lang-chevron");
+      const links =
+        container.querySelectorAll<HTMLAnchorElement>(".lang-option-link");
+
+      if (!trigger || !dropdown) return;
+
+      const toggleDropdown = (open?: boolean) => {
+        const isCurrentlyOpen =
+          trigger.getAttribute("aria-expanded") === "true";
+        const shouldOpen = open !== undefined ? open : !isCurrentlyOpen;
+
+        trigger.setAttribute("aria-expanded", String(shouldOpen));
+        if (shouldOpen) {
+          dropdown.classList.remove("hidden");
+          dropdown.classList.add("flex");
+          if (chevron) chevron.style.transform = "rotate(180deg)";
+        } else {
+          dropdown.classList.add("hidden");
+          dropdown.classList.remove("flex");
+          if (chevron) chevron.style.transform = "rotate(0deg)";
+        }
+      };
+
+      trigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+      });
+
+      links.forEach((anchor) => {
+        anchor.addEventListener("click", () => {
+          try {
+            const targetLang = anchor.getAttribute("lang") || "en";
+            localStorage.setItem("alivia_preferred_lang", targetLang);
+          } catch {
+            // Ignore localStorage exceptions
+          }
+
+          const hash = window.location.hash;
+          if (hash) {
+            const basePath = anchor.getAttribute("href") || anchor.pathname;
+            anchor.href = basePath.split("#")[0] + hash;
+          }
+          toggleDropdown(false);
+        });
+      });
+
+      // Close on Escape key
+      container.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          toggleDropdown(false);
+          trigger.focus();
+        }
+      });
+    });
+
+    document.addEventListener("click", (e: MouseEvent) => {
+      containers.forEach((container) => {
+        const trigger = container.querySelector<HTMLButtonElement>(
+          ".lang-switcher-trigger",
+        );
+        const dropdown = container.querySelector<HTMLElement>(
+          ".lang-switcher-dropdown",
+        );
+        const chevron = container.querySelector<SVGElement>(".lang-chevron");
+
+        if (trigger && dropdown && !container.contains(e.target as Node)) {
+          trigger.setAttribute("aria-expanded", "false");
+          dropdown.classList.add("hidden");
+          dropdown.classList.remove("flex");
+          if (chevron) chevron.style.transform = "rotate(0deg)";
+        }
+      });
+    });
+  });
+</script>
