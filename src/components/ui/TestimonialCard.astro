@@ -1,0 +1,50 @@
+---
+import type { Testimonial } from '../../data/testimonials';
+
+interface Props {
+  testimonial: Testimonial;
+}
+const { testimonial: t } = Astro.props;
+
+const avatarBgClass: Record<string, string> = {
+  primary:   'bg-alivia-primary text-white font-bold',
+  secondary: 'bg-alivia-secondary-dark text-white font-bold',
+  neutral:   'bg-slate-200 text-gray-700',
+};
+---
+<div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col gap-4">
+  <p class="text-sm text-gray-700 leading-relaxed">{t.quote}</p>
+
+  <div class="flex items-center gap-3">
+    <div class={`w-10 h-10 rounded-full flex items-center justify-center text-sm shrink-0 ${avatarBgClass[t.avatarVariant]}`}>
+      {t.initials ? (
+        t.initials
+      ) : (
+        <svg
+          class="w-5 h-5 text-gray-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          ></path>
+        </svg>
+      )}
+    </div>
+    <div>
+      <p class="text-sm font-bold text-alivia-primary">
+        {t.name}
+        {t.anonymous && (
+          <span class="ml-1 text-[10px] font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+            Identidad Reservada
+          </span>
+        )}
+      </p>
+      <p class="text-xs text-gray-500">{t.location} · {t.role}</p>
+    </div>
+  </div>
+</div>

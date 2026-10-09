@@ -1,0 +1,36 @@
+---
+import type { TeamMember } from '../../data/team';
+
+interface Props {
+  member: TeamMember;
+}
+const { member } = Astro.props;
+---
+<div class="p-6 rounded-2xl bg-white border border-alivia-tertiary-dark shadow-sm flex flex-col justify-between hover:border-alivia-secondary transition-all">
+  <div>
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-12 h-12 rounded-xl bg-alivia-secondary-mint text-alivia-secondary-dark flex items-center justify-center font-bold text-lg">
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d={member.iconPath}
+          ></path>
+        </svg>
+      </div>
+    </div>
+
+    <h3 class="text-xl font-semibold text-alivia-primary mb-1">{member.name}</h3>
+    <p class="text-xs font-semibold text-alivia-secondary-dark uppercase tracking-wider mb-3">
+      Estudiante de Ingeniería de Software ({member.code})
+    </p>
+    <p class="text-sm text-alivia-neutral-gray leading-relaxed">{member.bio}</p>
+  </div>
+</div>
