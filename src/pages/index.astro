@@ -1,11 +1,35 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/NavBar.astro";
+import HeroSection from "../components/HeroSection.astro";
+import TwoLivesSection from "../components/TwoLivesSection.astro";
+import DevicesSection from "../components/DevicesSection.astro";
+import MediaSection from "../components/MediaSection.astro";
+import TestimonialsSection from "../components/TestimonialsSection.astro";
+import TeamSection from "../components/TeamSection.astro";
+import PlansSection from "../components/PlansSection.astro";
+import DownloadAppSection from "../components/DownloadAppSection.astro";
+import FaqSection from "../components/FaqSection.astro";
+import ManifestoSection from "../components/ManifestoSection.astro";
+import FooterSection from "../components/FooterSection.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Alivia — Sistema de Domótica Asistida por Voz sin Internet"
+	description="Alivia ofrece autonomía por voz en el hogar para personas con discapacidad motora severa y tranquilidad remota para cuidadores familiares."
+>
+	<Navbar />
+	<main id="main-content" class="w-full">
+		<HeroSection />
+		<TwoLivesSection />
+		<DevicesSection />
+		<MediaSection />
+		<TestimonialsSection />
+		<TeamSection />
+		<PlansSection />
+		<DownloadAppSection />
+		<FaqSection />
+		<ManifestoSection />
+	</main>
+	<FooterSection />
 </Layout>
