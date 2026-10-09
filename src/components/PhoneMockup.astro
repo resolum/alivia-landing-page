@@ -1,0 +1,218 @@
+---
+interface Props {
+  class?: string;
+  initialOS?: 'android' | 'ios';
+}
+
+const { class: className = "", initialOS = "android" } = Astro.props;
+const CONFIG = {
+  user: {
+    greeting: "Hola, Lucía",
+    home: "Hogar de María",
+    status: "Todo en orden"
+  },
+  homeState: [
+    { label: "Luz", status: "Encendida", icon: "light" },
+    { label: "Puerta", status: "Cerrada", icon: "door" },
+    { label: "Ventana", status: "Abierta", icon: "window" }
+  ],
+  alert: {
+    title: "Solicitud de auxilio atendida",
+    time: "Hoy, 10:42",
+    badge: "Confirmada"
+  },
+  nextActivity: {
+    title: "Medicación",
+    time: "12:30 p. m."
+  },
+  actionButtonText: "Ver alertas"
+};
+---
+<div
+  id="phone-mockup-frame"
+  data-os={initialOS}
+  class:list={[
+    "relative select-none pointer-events-none mx-auto phone-floating",
+    "w-[225px] sm:w-[245px] lg:w-[260px] transition-all duration-300",
+    className
+  ]}
+  aria-hidden="true"
+  role="presentation"
+>
+  <div
+    class="relative rounded-[36px] bg-alivia-primary-deep p-[9px] shadow-2xl border border-alivia-primary-gradient/50 transition-transform duration-300"
+    style="box-shadow: 0 25px 50px -12px rgba(8, 23, 69, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;"
+  >
+    <div class="absolute -left-[11px] top-20 w-[3px] h-8 bg-alivia-primary-gradient rounded-l-sm"></div>
+    <div class="absolute -left-[11px] top-32 w-[3px] h-8 bg-alivia-primary-gradient rounded-l-sm"></div>
+    <div class="absolute -right-[11px] top-24 w-[3px] h-12 bg-alivia-primary-gradient rounded-r-sm"></div>
+    <div class="relative rounded-[28px] overflow-hidden bg-[#F8FAFC] flex flex-col justify-between text-alivia-primary font-display border border-alivia-primary-deep/20 shadow-inner min-h-[440px]">
+      <div
+        id="notch-android"
+        class:list={["absolute top-2.5 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-alivia-primary-deep rounded-full z-30 flex items-center justify-center ring-2 ring-alivia-primary-deep/30", initialOS === "ios" && "hidden"]}
+      >
+        <div class="w-1.5 h-1.5 rounded-full bg-alivia-primary-gradient/90"></div>
+      </div>
+      <div
+        id="notch-ios"
+        class:list={["absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-alivia-primary-deep rounded-full z-30 flex items-center justify-end px-2", initialOS === "android" && "hidden"]}
+      >
+        <div class="w-2 h-2 rounded-full bg-alivia-primary-gradient/80"></div>
+      </div>
+      <div class="bg-alivia-primary text-white pt-7 pb-3.5 px-3.5 rounded-b-2xl shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="block text-[10px] text-alivia-secondary font-semibold tracking-wide uppercase">
+                {CONFIG.user.home}
+              </span>
+              <span id="phone-os-tag" class="text-[9px] bg-white/10 px-1.5 py-0.2 rounded-full text-white/80 font-mono">
+                {initialOS === "android" ? "Alivia Android" : "Alivia iOS"}
+              </span>
+            </div>
+            <h3 class="text-[13px] font-bold leading-tight mt-0.5">
+              {CONFIG.user.greeting}
+            </h3>
+          </div>
+          <div class="inline-flex items-center gap-1 bg-alivia-secondary text-alivia-primary-deep px-2 py-0.5 rounded-full text-[10px] font-semibold shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-alivia-primary-deep animate-pulse"></span>
+            <span>{CONFIG.user.status}</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-3 space-y-3 text-[11px] flex-1">
+        <div>
+          <span class="block text-[10px] uppercase font-bold text-alivia-neutral-light mb-1.5 tracking-wider">
+            Estado del hogar
+          </span>
+          <div class="grid grid-cols-3 gap-1.5">
+            {CONFIG.homeState.map((item) => (
+              <div class="bg-alivia-tertiary border border-alivia-tertiary-dark rounded-xl p-2 text-center flex flex-col items-center justify-center gap-1 shadow-2xs">
+                {item.icon === 'light' && (
+                  <svg class="w-4 h-4 text-alivia-secondary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                )}
+                {item.icon === 'door' && (
+                  <svg class="w-4 h-4 text-alivia-secondary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                  </svg>
+                )}
+                {item.icon === 'window' && (
+                  <svg class="w-4 h-4 text-alivia-secondary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM4 12h16M12 4v16" />
+                  </svg>
+                )}
+                <div>
+                  <span class="block text-[9px] text-alivia-neutral-gray font-medium leading-none">{item.label}</span>
+                  <span class="block text-[10px] font-bold text-alivia-primary leading-tight mt-0.5">{item.status}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <span class="block text-[10px] uppercase font-bold text-alivia-neutral-light mb-1.5 tracking-wider">
+            Alertas
+          </span>
+          <div class="bg-white border border-alivia-secondary-mint rounded-xl p-2.5 shadow-xs flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-alivia-secondary-mint flex items-center justify-center text-alivia-secondary-dark shrink-0">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+              </div>
+              <div>
+                <strong class="block text-[11px] font-semibold text-alivia-primary leading-tight">
+                  {CONFIG.alert.title}
+                </strong>
+                <span class="block text-[9px] text-alivia-neutral-light mt-0.5">{CONFIG.alert.time}</span>
+              </div>
+            </div>
+            <span class="text-[9px] font-bold text-alivia-secondary-dark bg-alivia-tertiary px-1.5 py-0.5 rounded-md border border-alivia-tertiary-dark shrink-0">
+              {CONFIG.alert.badge}
+            </span>
+          </div>
+        </div>
+        <div>
+          <span class="block text-[10px] uppercase font-bold text-alivia-neutral-light mb-1.5 tracking-wider">
+            Próxima actividad
+          </span>
+          <div class="bg-white border border-alivia-surface rounded-xl p-2.5 shadow-xs flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-alivia-surface flex items-center justify-center text-alivia-primary shrink-0">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <strong class="text-[11px] font-semibold text-alivia-primary">
+                {CONFIG.nextActivity.title}
+              </strong>
+            </div>
+            <span class="text-[10px] font-bold text-alivia-primary">
+              {CONFIG.nextActivity.time}
+            </span>
+          </div>
+        </div>
+        <button
+          type="button"
+          tabindex="-1"
+          class="w-full py-2 px-3 rounded-xl bg-alivia-secondary text-alivia-primary-deep font-bold text-[11px] text-center shadow-xs transition-colors"
+        >
+          {CONFIG.actionButtonText}
+        </button>
+      </div>
+      <div class="bg-white border-t border-alivia-surface px-3 pt-2 pb-1.5">
+        <div class="flex items-center justify-between text-[9px] text-alivia-neutral-light mb-1.5">
+          <div class="flex flex-col items-center text-alivia-primary font-bold">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span class="mt-0.5">Inicio</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span class="mt-0.5">Equipos</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <span class="mt-0.5">Alertas</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span class="mt-0.5">Agenda</span>
+          </div>
+        </div>
+        <div id="homebar-android" class:list={["w-16 h-1 bg-alivia-neutral-light rounded-full mx-auto my-0.5 transition-all", initialOS === "ios" && "hidden"]}></div>
+        <div id="homebar-ios" class:list={["w-24 h-1 bg-alivia-primary-deep rounded-full mx-auto my-0.5 transition-all", initialOS === "android" && "hidden"]}></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes phone-float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .phone-floating {
+    animation: phone-float 5s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phone-floating {
+      animation: none !important;
+    }
+  }
+</style>
