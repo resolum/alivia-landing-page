@@ -1,0 +1,276 @@
+---
+import { NAV_LINKS } from '../data/nav';
+---
+
+<header
+        id="main-header"
+        class="fixed top-0 left-0 right-0 z-50 bg-transparent text-white transition-all duration-300 py-4"
+>
+    <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4"
+    >
+        <div class="flex items-center gap-3">
+            <a
+                    href="#"
+                    class="flex items-center gap-2.5 group focus-visible:ring-2 focus-visible:ring-alivia-secondary-medium rounded-lg p-1"
+                    aria-label="Alivia Inicio"
+            >
+                <div
+                        class="w-10 h-10 rounded-xl bg-alivia-secondary flex items-center justify-center text-alivia-primary-deep font-bold shadow-md shadow-alivia-secondary/20 group-hover:scale-105 transition-transform"
+                >
+                    <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                    >
+                        <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2.5"
+                                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                        ></path>
+                    </svg>
+                </div>
+                <span
+                        class="text-2xl font-bold tracking-tight text-white font-display group-hover:text-alivia-secondary transition-colors"
+                >
+          Alivia
+        </span>
+            </a>
+            <span
+                    class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-alivia-primary-medium/40 backdrop-blur-md text-alivia-secondary-mint border border-alivia-secondary-medium/30"
+            >
+        <svg
+                class="w-3.5 h-3.5 text-alivia-secondary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+        >
+          <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Accesibilidad AA
+      </span>
+        </div>
+        <nav
+                class="hidden xl:flex items-center gap-6 text-sm font-semibold tracking-wide text-white/90"
+                aria-label="Navegación principal"
+        >
+            {NAV_LINKS.map((link) => (
+                    <a
+                            href={link.href}
+                            class="nav-link relative py-1 px-1 text-alivia-primary-mist hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary"
+                    >
+                        {link.label}
+                    </a>
+            ))}
+        </nav>
+        <div class="flex items-center gap-3">
+            <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark hover:text-white transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target"
+                    aria-label="Iniciar sesiÃ³n en la aplicaciÃ³n web de Alivia"
+            >
+                <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                >
+                    <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                    ></path>
+                </svg>
+                <span>Iniciar sesiÃ³n</span>
+            </a>
+            <button
+                    id="mobile-menu-toggle"
+                    type="button"
+                    class="xl:hidden p-2.5 rounded-lg text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary touch-target"
+                    aria-expanded="false"
+                    aria-controls="mobile-menu"
+                    aria-label="Abrir menÃº de navegaciÃ³n"
+            >
+                <svg
+                        id="menu-icon-open"
+                        class="w-6 h-6 block"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                >
+                    <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <svg
+                        id="menu-icon-close"
+                        class="w-6 h-6 hidden"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                >
+                    <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <!-- Mobile Drawer Menu -->
+    <div
+            id="mobile-menu"
+            class="hidden xl:hidden bg-alivia-primary-deep/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 transition-all duration-300"
+            aria-label="MenÃº mÃ³vil"
+    >
+        <div class="flex flex-col gap-4 text-base font-medium text-white/90">
+            <div
+                    class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded bg-alivia-primary-medium/50 text-xs font-semibold text-alivia-secondary-medium w-fit"
+            >
+                Sello Accesibilidad WCAG 2.1 AA
+            </div>
+            {NAV_LINKS.map((link) => (
+                    <a
+                            href={link.href}
+                            class="mobile-nav-link py-2 border-b border-white/10 hover:text-alivia-secondary"
+                    >
+                        {link.label}
+                    </a>
+            ))}
+        </div>
+    </div>
+</header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("main-header");
+        const toggleBtn = document.getElementById("mobile-menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const iconOpen = document.getElementById("menu-icon-open");
+        const iconClose = document.getElementById("menu-icon-close");
+        const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+
+        // Dynamic Header Background: Transparent during Hero, solid dark background upon reaching #como-funciona
+        const comoFunciona = document.getElementById("como-funciona");
+
+        const applyHeaderBackground = (active: boolean) => {
+            if (!header) return;
+            if (active) {
+                header.classList.add(
+                    "bg-alivia-primary-deep/95",
+                    "backdrop-blur-xl",
+                    "shadow-2xl",
+                    "border-b",
+                    "border-alivia-primary-medium/50",
+                    "py-2",
+                );
+                header.classList.remove("bg-transparent", "py-4");
+            } else {
+                header.classList.remove(
+                    "bg-alivia-primary-deep/95",
+                    "backdrop-blur-xl",
+                    "shadow-2xl",
+                    "border-b",
+                    "border-alivia-primary-medium/50",
+                    "py-2",
+                );
+                header.classList.add("bg-transparent", "py-4");
+            }
+        };
+
+        if (comoFunciona) {
+            const headerObserver = new IntersectionObserver(
+                ([entry]) => {
+                    applyHeaderBackground(
+                        !entry.isIntersecting
+                            ? (window.scrollY || document.documentElement.scrollTop) >=
+                            comoFunciona.offsetTop - 80
+                            : true,
+                    );
+                },
+                { root: null, threshold: 0, rootMargin: "0px 0px 0px 0px" },
+            );
+            headerObserver.observe(comoFunciona);
+
+            // Also handle scroll for when user scrolls back above #como-funciona
+            const updateHeaderBackground = () => {
+                const scrollY = window.scrollY || document.documentElement.scrollTop;
+                const triggerOffset = comoFunciona.offsetTop - 80;
+                applyHeaderBackground(scrollY >= triggerOffset);
+            };
+            window.addEventListener("scroll", updateHeaderBackground);
+            window.addEventListener("resize", updateHeaderBackground);
+            updateHeaderBackground();
+        }
+
+        if (toggleBtn && mobileMenu) {
+            toggleBtn.addEventListener("click", () => {
+                const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+                toggleBtn.setAttribute("aria-expanded", String(!isExpanded));
+                mobileMenu.classList.toggle("hidden");
+                if (iconOpen && iconClose) {
+                    iconOpen.classList.toggle("hidden");
+                    iconClose.classList.toggle("hidden");
+                }
+            });
+
+            mobileLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                    mobileMenu.classList.add("hidden");
+                    toggleBtn.setAttribute("aria-expanded", "false");
+                    if (iconOpen && iconClose) {
+                        iconOpen.classList.remove("hidden");
+                        iconClose.classList.add("hidden");
+                    }
+                });
+            });
+        }
+
+        // IntersectionObserver to highlight active navigation link with high contrast
+        const sections = document.querySelectorAll("section[id], div[id]");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "-20% 0px -70% 0px",
+            threshold: 0,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute("id");
+                    navLinks.forEach((link) => {
+                        const href = link.getAttribute("href");
+                        if (href === `#${id}`) {
+                            link.classList.add("text-alivia-secondary", "font-bold");
+                            link.classList.remove("text-alivia-primary-mist", "text-white/90");
+                        } else {
+                            link.classList.remove("text-alivia-secondary", "font-bold");
+                            link.classList.add("text-alivia-primary-mist");
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach((section) => observer.observe(section));
+    });
+</script>
