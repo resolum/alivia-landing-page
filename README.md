@@ -33,16 +33,39 @@ In the current version, the website focuses on:
 ```text
 alivia-landing-page/
 ├── README.md
+├── LICENSE.md
 ├── package.json
 ├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+├── astro.config.mjs
+├── tsconfig.json
 ├── public/
-│   ├── device/              # Frames of the device exploded-view animation
-│   ├── hero/                # Frames of the hero logo animation
+│   ├── device/                       # Frames of the device exploded-view animation
+│   ├── hero/                         # Frames of the hero logo animation
 │   ├── favicon.ico
-│   └── favicon.svg
+│   ├── favicon.svg
+│   └── logo.ico
 └── src/
-    ├── assets/
+    ├── assets/                       # Images (team photos, illustrations, logo)
     ├── components/
+    │   ├── ui/                       # Reusable generic components
+    │   │   ├── Badge.astro
+    │   │   ├── Button.astro
+    │   │   ├── Callout.astro
+    │   │   ├── PlanCard.astro
+    │   │   ├── SectionHeader.astro
+    │   │   ├── TeamCard.astro
+    │   │   └── TestimonialCard.astro
+    │   ├── legal/                    # Components specific to legal documents
+    │   │   ├── ContactCard.astro
+    │   │   ├── LegalBlocks.astro
+    │   │   ├── LegalHero.astro
+    │   │   ├── LegalLayout.astro
+    │   │   ├── LegalSection.astro
+    │   │   ├── PrivacyPolicyContent.astro
+    │   │   ├── ReadingSizeToggle.astro
+    │   │   ├── TableOfContents.astro
+    │   │   └── TermsContent.astro
     │   ├── DeviceExplode.astro
     │   ├── DevicesSection.astro
     │   ├── DownloadAppSection.astro
@@ -50,19 +73,70 @@ alivia-landing-page/
     │   ├── FooterSection.astro
     │   ├── HeroAnimation.astro
     │   ├── HeroSection.astro
+    │   ├── LandingContent.astro      # Shared ordered list of landing sections
+    │   ├── LanguageSwitcher.astro
     │   ├── ManifestoSection.astro
     │   ├── MediaSection.astro
     │   ├── NavBar.astro
     │   ├── PhoneMockup.astro
     │   ├── PlansSection.astro
+    │   ├── ScrollToTop.astro
     │   ├── TeamSection.astro
     │   ├── TestimonialsSection.astro
-    │   ├── TwoLivesSection.astro
-    │   └── Welcome.astro
+    │   └── TwoLivesSection.astro
+    ├── data/                         # Typed content, separated from components
+    │   ├── legal/
+    │   │   ├── config.ts
+    │   │   ├── index.ts
+    │   │   ├── privacy.en.ts
+    │   │   ├── privacy.es.ts
+    │   │   ├── terms.en.ts
+    │   │   ├── terms.es.ts
+    │   │   └── types.ts
+    │   ├── company.ts                # Single source of company and contact data
+    │   ├── faq.ts
+    │   ├── hotspots.ts
+    │   ├── nav.ts
+    │   ├── plans.ts
+    │   ├── team.ts
+    │   └── testimonials.ts
+    ├── i18n/                         # Native Astro i18n (en default, es)
+    │   ├── locales/
+    │   │   ├── en/                   # English UI strings, one file per section
+    │   │   │   ├── devices.ts
+    │   │   │   ├── download.ts
+    │   │   │   ├── faq.ts
+    │   │   │   ├── footer.ts
+    │   │   │   ├── hero.ts
+    │   │   │   ├── legal.ts
+    │   │   │   ├── media.ts
+    │   │   │   ├── nav.ts
+    │   │   │   ├── plans.ts
+    │   │   │   ├── team.ts
+    │   │   │   ├── testimonials.ts
+    │   │   │   └── twoLives.ts
+    │   │   └── es/                   # Spanish UI strings (same keys as en)
+    │   │       └── ...
+    │   ├── ui.ts                     # Languages, default locale and dictionary
+    │   └── utils.ts                  # Translation and path helpers
     ├── layouts/
     │   └── Layout.astro
     ├── pages/
-    │   └── index.astro
+    │   ├── en/
+    │   │   └── index.astro
+    │   ├── es/
+    │   │   ├── index.astro
+    │   │   ├── politica-de-privacidad.astro
+    │   │   └── terminos-y-condiciones.astro
+    │   ├── index.astro               # English home (default locale, no prefix)
+    │   ├── privacy-policy.astro
+    │   └── terms-and-conditions.astro
+    ├── scripts/                      # Client-side logic extracted from components
+    │   ├── legal/
+    │   │   ├── legalInteractions.ts
+    │   │   └── legalTabSlide.ts
+    │   ├── deviceExplode.ts
+    │   └── heroAnimation.ts
     └── styles/
         └── global.css
 ```
