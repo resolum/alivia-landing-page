@@ -1,0 +1,289 @@
+---
+import peopleAssisted from '../assets/people_assisted.png';
+import carer from '../assets/carer.png';
+---
+
+<section
+  id="como-funciona"
+  class="py-20 bg-alivia-surface text-alivia-neutral-dark"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span
+        class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-dark px-3.5 py-1 rounded-full border border-alivia-tertiary-dark bg-white"
+      >
+        Un impacto equitativo en el hogar
+      </span>
+      <h2
+        class="text-3xl sm:text-4xl font-bold font-display mt-4 mb-4 text-alivia-primary"
+      >
+        Dos vidas transformadas en paralelo
+      </h2>
+      <p class="text-base sm:text-lg text-alivia-neutral-gray leading-relaxed">
+        La verdadera autonomía no solo emancipa a quien recibe asistencia;
+        devuelve el sosiego y el descanso genuino a quien cuida.
+      </p>
+    </div>
+    <div class="flex justify-center mb-12">
+      <div
+        id="tablist-wrapper"
+        role="tablist"
+        aria-label="Perspectivas de uso de Alivia"
+        class="relative inline-flex p-1.5 rounded-2xl bg-white border border-alivia-border shadow-sm"
+      >
+        <span
+          id="tab-pill"
+          aria-hidden="true"
+          class="absolute top-1.5 left-1.5 h-[calc(100%-12px)] rounded-xl bg-alivia-primary shadow-md
+                 transition-[width,transform] duration-300 ease-[cubic-bezier(.4,0,.2,1)] pointer-events-none"
+        ></span>
+
+        <button
+          id="tab-persona"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-persona"
+          tabindex="0"
+          class="tab-btn relative z-10 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold
+                 transition-colors duration-300 text-white focus-visible:ring-4 focus-visible:ring-alivia-primary-medium touch-target"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          Para la Persona Asistida
+        </button>
+
+        <button
+          id="tab-cuidador"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-cuidador"
+          tabindex="-1"
+          class="tab-btn relative z-10 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold
+                 transition-colors duration-300 text-alivia-neutral-gray focus-visible:ring-4 focus-visible:ring-alivia-primary-medium touch-target"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+          Para el Cuidador Familiar
+        </button>
+      </div>
+    </div>
+    <div id="panels-container" class="relative" style="min-height:560px">
+      <div
+        id="panel-persona"
+        role="tabpanel"
+        aria-labelledby="tab-persona"
+        class="tab-panel absolute inset-0 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start
+               opacity-100 translate-y-0 transition-all duration-500 ease-out"
+      >
+        <div class="space-y-4 pt-2">
+          <div class="p-5 rounded-2xl bg-white border border-alivia-border shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+            <div class="w-11 h-11 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-alivia-primary mb-1">Decisiones directas sin intermediarios</h3>
+              <p class="text-sm text-alivia-neutral-blue leading-relaxed">Abre accesos, gradúa las luces o ajusta la temperatura con una orden breve, sin aguardar la llegada de nadie.</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white border border-alivia-border shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+            <div class="w-11 h-11 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-alivia-primary mb-1">Alerta vocal de auxilio manos libres</h3>
+              <p class="text-sm text-alivia-neutral-blue leading-relaxed">Si sufres un percance o caída, una palabra clave preconfigurada notifica a tu red familiar al instante.</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white border border-alivia-border shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+            <div class="w-11 h-11 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-alivia-primary mb-1">Dignidad y privacidad inalteradas</h3>
+              <p class="text-sm text-alivia-neutral-blue leading-relaxed">Sin cámaras fisgoneando en tu habitación ni transmisiones que salgan de tus paredes. Tu voz se procesa y se borra.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4">
+          <div class="rounded-3xl overflow-hidden shadow-xl">
+            <img
+              src={peopleAssisted.src}
+              alt="Persona asistida en silla de ruedas disfrutando de su hogar con autonomía"
+              class="w-full h-auto object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div class="rounded-2xl bg-white border border-alivia-border shadow-sm p-5">
+            <blockquote class="text-sm sm:text-base text-alivia-neutral-dark leading-relaxed mb-3 font-medium">
+              «Volví a ser quien decide cuándo entra el sol en mi cuarto. Esa pequeña decisión me devolvió la calma.»
+            </blockquote>
+            <p class="text-sm font-semibold text-alivia-secondary-dark">— Camila V., usuaria titular en Miraflores, Lima</p>
+          </div>
+        </div>
+      </div>
+      <div
+        id="panel-cuidador"
+        role="tabpanel"
+        aria-labelledby="tab-cuidador"
+        class="tab-panel absolute inset-0 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start
+               opacity-0 translate-y-4 pointer-events-none transition-all duration-500 ease-out"
+      >
+        <div class="space-y-4 pt-2">
+          <div class="p-5 rounded-2xl bg-white border border-alivia-border shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+            <div class="w-11 h-11 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-alivia-primary mb-1">Supervisión serena no invasiva</h3>
+              <p class="text-sm text-alivia-neutral-blue leading-relaxed">Conoce el estado de puertas, iluminación y estancias sin necesidad de irrumpir en su descanso cada 20 minutos.</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white border border-alivia-border shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+            <div class="w-11 h-11 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-alivia-primary mb-1">Configuración personalizada de alertas</h3>
+              <p class="text-sm text-alivia-neutral-blue leading-relaxed">Define umbrales de tiempo, contactos de emergencia y frases de confirmación adaptadas a los ritmos de tu ser querido.</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white border border-alivia-border shadow-sm flex items-start gap-4 hover:shadow-md transition-shadow duration-200">
+            <div class="w-11 h-11 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center shrink-0">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-alivia-primary mb-1">Descanso nocturno sin sobresaltos</h3>
+              <p class="text-sm text-alivia-neutral-blue leading-relaxed">Duerme con la certeza de que el sistema responderá si hay un llamado urgente y mantendrá el orden en casa.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4">
+          <div class="rounded-3xl overflow-hidden shadow-xl">
+            <img
+              src={carer.src}
+              alt="Cuidadora familiar tranquila monitoreando el hogar desde su aplicación"
+              class="w-full h-auto object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div class="rounded-2xl bg-white border border-alivia-border shadow-sm p-5">
+            <blockquote class="text-sm sm:text-base text-alivia-neutral-dark leading-relaxed mb-3 font-medium">
+              «Ya no tengo ese nudo en el pecho en el trabajo. Sé que mi madre puede abrir la puerta a la enfermera sin levantarse ni correr riesgos.»
+            </blockquote>
+            <p class="text-sm font-semibold text-alivia-secondary-dark">— Rocío M., cuidadora familiar en San Borja, Lima</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tabPersona = document.getElementById("tab-persona") as HTMLButtonElement | null;
+    const tabCuidador = document.getElementById("tab-cuidador") as HTMLButtonElement | null;
+    const panelPersona = document.getElementById("panel-persona") as HTMLElement | null;
+    const panelCuidador = document.getElementById("panel-cuidador") as HTMLElement | null;
+    const container = document.getElementById("panels-container") as HTMLElement | null;
+    const pill = document.getElementById("tab-pill") as HTMLElement | null;
+
+    if (!tabPersona || !tabCuidador || !panelPersona || !panelCuidador || !container || !pill) return;
+
+    // Position the sliding pill under the given button
+    const movePill = (btn: HTMLButtonElement) => {
+      pill.style.width = btn.offsetWidth + "px";
+      pill.style.transform = `translateX(${btn.offsetLeft - 6}px)`;
+    };
+
+    // Init pill on the first active tab
+    movePill(tabPersona);
+
+    // Keep pill in sync on resize
+    window.addEventListener("resize", () => {
+      const active = tabPersona.getAttribute("aria-selected") === "true" ? tabPersona : tabCuidador;
+      movePill(active);
+    });
+
+    // Keep container height synced to active panel
+    const syncHeight = () => {
+      const active = panelPersona.classList.contains("opacity-100") ? panelPersona : panelCuidador;
+      container.style.minHeight = active.scrollHeight + "px";
+    };
+
+    const switchTab = (
+      activeTab: HTMLButtonElement,
+      activePanel: HTMLElement,
+      inactiveTab: HTMLButtonElement,
+      inactivePanel: HTMLElement,
+    ) => {
+      // Slide the pill
+      movePill(activeTab);
+
+      // Fade out inactive panel
+      inactivePanel.classList.remove("opacity-100", "translate-y-0");
+      inactivePanel.classList.add("opacity-0", "translate-y-4", "pointer-events-none");
+
+      // Fade in active panel
+      requestAnimationFrame(() => {
+        activePanel.classList.remove("opacity-0", "translate-y-4", "pointer-events-none");
+        activePanel.classList.add("opacity-100", "translate-y-0");
+      });
+
+      // Active tab: white text (pill provides the dark bg)
+      activeTab.setAttribute("aria-selected", "true");
+      activeTab.setAttribute("tabindex", "0");
+      activeTab.classList.add("text-white");
+      activeTab.classList.remove("text-alivia-neutral-gray");
+
+      // Inactive tab: muted text
+      inactiveTab.setAttribute("aria-selected", "false");
+      inactiveTab.setAttribute("tabindex", "-1");
+      inactiveTab.classList.remove("text-white");
+      inactiveTab.classList.add("text-alivia-neutral-gray");
+
+      setTimeout(syncHeight, 520);
+      activeTab.focus();
+    };
+
+    tabPersona.addEventListener("click", () =>
+      switchTab(tabPersona, panelPersona, tabCuidador, panelCuidador),
+    );
+    tabCuidador.addEventListener("click", () =>
+      switchTab(tabCuidador, panelCuidador, tabPersona, panelPersona),
+    );
+
+    // Keyboard navigation (Arrow keys)
+    [tabPersona, tabCuidador].forEach((tab, index) => {
+      tab.addEventListener("keydown", (e: KeyboardEvent) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+          if (index === 0)
+            switchTab(tabCuidador, panelCuidador, tabPersona, panelPersona);
+          else
+            switchTab(tabPersona, panelPersona, tabCuidador, panelCuidador);
+        }
+      });
+    });
+
+    syncHeight();
+    window.addEventListener("resize", syncHeight);
+  });
+</script>
