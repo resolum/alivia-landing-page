@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://alivia-landing-page.vercel.app/",
+  site: "https://resolum-alivia.alivia-resolum.workers.dev",
 
   image: {
     service: passthroughImageService(),
