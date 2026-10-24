@@ -110,21 +110,7 @@ alivia-landing-page/
     ├── i18n/                         # Native Astro i18n (en default, es)
     │   ├── locales/
     │   │   ├── en/                   # English UI strings, one file per section
-    │   │   │   ├── devices.ts
-    │   │   │   ├── download.ts
-    │   │   │   ├── faq.ts
-    │   │   │   ├── footer.ts
-    │   │   │   ├── hero.ts
-    │   │   │   ├── howItWorks.ts
-    │   │   │   ├── includedDevices.ts
-    │   │   │   ├── legal.ts
-    │   │   │   ├── media.ts
-    │   │   │   ├── nav.ts
-    │   │   │   ├── plans.ts
-    │   │   │   ├── problem.ts
-    │   │   │   ├── team.ts
-    │   │   │   ├── testimonials.ts
-    │   │   │   └── twoLives.ts
+    │   │   │   ├── en.ts
     │   │   └── es/                   # Spanish UI strings (same keys as en)
     │   │       └── ...
     │   ├── ui.ts                     # Languages, default locale and dictionary
