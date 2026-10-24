@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+    --nav-h: 6rem;
+}
+
 @theme {
     --font-sans:    'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-outfit:  'Outfit', sans-serif;

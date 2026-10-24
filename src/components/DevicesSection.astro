@@ -10,7 +10,7 @@ interface Props {
 const { lang } = Astro.props;
 ---
 
-<section id="dispositivos" class="scroll-mt-24 relative w-full bg-white text-alivia-neutral-dark">
+<section id="dispositivos" class="scroll-mt-24 relative w-full bg-white text-alivia-neutral-dark" aria-labelledby="included-devices-title">
   <IncludedDevices lang={lang} />
   <DeviceExplode lang={lang} />
 </section>
