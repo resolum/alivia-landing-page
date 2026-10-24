@@ -1,31 +1,28 @@
 import type { media as mediaEn } from "../en/media";
 
 export const media = {
-  "media.badge": "Demostración Accesible (US02)",
+  "media.badge": "Demostración audiovisual",
   "media.title": "Alivia en acción: experiencia en el hogar",
   "media.desc":
-    "Demostración en video accesible con opciones avanzadas de reproducción e interpretación sensorial completa.",
-  "media.videoTitle": "Ver video demostrativo de Alivia",
-  "media.videoDuration":
-    "Duración total: 02:45 min • Incluye audio descriptivo y señas",
-  "media.controlsLabel": "Controles de accesibilidad del reproductor",
-  "media.subtitles": "Subtítulos (CC)",
-  "media.subtitlesAriaLabel": "Activar o desactivar subtítulos (CC)",
-  "media.signLanguage": "Lengua de señas",
-  "media.signLanguageAriaLabel": "Activar ventana de lengua de señas",
-  "media.audiodesc": "Audio descriptivo (AD)",
-  "media.audiodescAriaLabel": "Activar pista de audio descriptivo",
+    "Video demostrativo del producto con subtítulos en español e inglés y transcripción completa como alternativa textual accesible.",
+  "media.videoTitle": "Presentación del producto Alivia",
+  "media.videoClick": "Reproduce el video para conocer cómo funciona Alivia",
+  "media.videoDuration": "Duración: 00:32 • Subtítulos en español e inglés",
+  "media.videoUnavailable":
+    "El video no pudo reproducirse. Puedes consultar la transcripción completa, que contiene la misma información.",
+  "media.videoFallbackLink": "Ver transcripción alternativa",
+  "media.videoExternalLink": "Abrir video en una nueva pestaña",
   "media.showTranscript": "Ver Transcripción Completa",
   "media.hideTranscript": "Ocultar Transcripción",
   "media.transcriptLabel": "Transcripción textual equivalente del video",
-  "media.transcriptTitle": "Transcripción completa del video asistencial",
+  "media.transcriptTitle": "Transcripción completa del video del producto",
   "media.transcriptAltLabel": "Texto alternativo accesible",
   "media.transcript.p1":
-    "[00:00 – 00:30] Una persona asistida en silla de ruedas entra a la habitación. Al decir con voz clara “Alivia, abrir puerta principal”, el actuador motorizado desengancha el pestillo de forma fluida y la puerta se abre de par en par.",
+    "[00:00 – 00:08] Alivia es un sistema de domótica asistida por voz para personas con discapacidad motora severa.",
   "media.transcript.p2":
-    "[00:30 – 01:15] Al caer la tarde, la persona indica “Alivia, modo lectura”. El Hub Alivia Core procesa el comando localmente sin enviar datos fuera de la vivienda e incrementa la iluminación ambiente al 80 % cálido.",
+    "[00:08 – 00:16] Un micrófono de largo alcance capta la orden y el Hub la procesa localmente, sin depender de Internet.",
   "media.transcript.p3":
-    "[01:15 – 02:10] En pantalla secundaria se observa la aplicación móvil en el teléfono de la cuidadora familiar, donde recibe una notificación silenciosa indicando que el comando fue ejecutado con éxito y la rutina de tarde está activa.",
+    "[00:16 – 00:24] Los módulos de luz, puerta y ventana ejecutan la acción solicitada en milisegundos.",
   "media.transcript.p4":
-    "[02:10 – 02:45] El video concluye mostrando la pantalla del Hub Alivia Core procesando en modo offline con el indicador LED en color verde turquesa continuo.",
+    "[00:24 – 00:32] La persona gana autonomía y seguridad, mientras su cuidador recibe confirmación y alertas en la aplicación.",
 } satisfies Record<keyof typeof mediaEn, string>;

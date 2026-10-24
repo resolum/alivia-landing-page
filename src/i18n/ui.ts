@@ -1,5 +1,8 @@
 import { nav as navEn } from "./locales/en/nav";
 import { hero as heroEn } from "./locales/en/hero";
+import { problem as problemEn } from "./locales/en/problem";
+import { howItWorks as howItWorksEn } from "./locales/en/howItWorks";
+import { includedDevices as includedDevicesEn } from "./locales/en/includedDevices";
 import { twoLives as twoLivesEn } from "./locales/en/twoLives";
 import { devices as devicesEn } from "./locales/en/devices";
 import { media as mediaEn } from "./locales/en/media";
@@ -12,6 +15,9 @@ import { footer as footerEn } from "./locales/en/footer";
 import { legal as legalEn } from "./locales/en/legal";
 import { nav as navEs } from "./locales/es/nav";
 import { hero as heroEs } from "./locales/es/hero";
+import { problem as problemEs } from "./locales/es/problem";
+import { howItWorks as howItWorksEs } from "./locales/es/howItWorks";
+import { includedDevices as includedDevicesEs } from "./locales/es/includedDevices";
 import { twoLives as twoLivesEs } from "./locales/es/twoLives";
 import { devices as devicesEs } from "./locales/es/devices";
 import { media as mediaEs } from "./locales/es/media";
@@ -39,6 +45,9 @@ export const ui = {
   en: {
     ...navEn,
     ...heroEn,
+    ...problemEn,
+    ...howItWorksEn,
+    ...includedDevicesEn,
     ...twoLivesEn,
     ...devicesEn,
     ...mediaEn,
@@ -53,6 +62,9 @@ export const ui = {
   es: {
     ...navEs,
     ...heroEs,
+    ...problemEs,
+    ...howItWorksEs,
+    ...includedDevicesEs,
     ...twoLivesEs,
     ...devicesEs,
     ...mediaEs,

@@ -1,0 +1,102 @@
+---
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import DeviceIllustration from "./ui/DeviceIllustration.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const items = [
+  {
+    illustration: "light",
+    title: t("includedDevices.light.title"),
+    desc: t("includedDevices.light.desc"),
+    tag: t("includedDevices.light.tag"),
+  },
+  {
+    illustration: "door",
+    title: t("includedDevices.door.title"),
+    desc: t("includedDevices.door.desc"),
+    tag: t("includedDevices.door.tag"),
+  },
+  {
+    illustration: "window",
+    title: t("includedDevices.window.title"),
+    desc: t("includedDevices.window.desc"),
+    tag: t("includedDevices.window.tag"),
+  },
+  {
+    illustration: "microphone",
+    title: t("includedDevices.microphone.title"),
+    desc: t("includedDevices.microphone.desc"),
+    tag: t("includedDevices.microphone.tag"),
+  },
+] as const;
+---
+
+<div class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span
+        class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-slate-100 px-4 py-1.5 rounded-full border border-slate-200"
+      >
+        {t("includedDevices.badge")}
+      </span>
+      <h2
+        class="text-3xl sm:text-4xl font-bold font-display mt-4 mb-4 text-alivia-primary"
+      >
+        {t("includedDevices.title")}
+      </h2>
+      <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
+        {t("includedDevices.desc")}
+      </p>
+    </div>
+
+    <ul
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      aria-label={t("includedDevices.listLabel")}
+    >
+      {
+        items.map((item) => (
+          <li class="flex flex-col rounded-2xl bg-alivia-surface-mist border border-alivia-border shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+            <div class="bg-gradient-to-br from-alivia-tertiary to-alivia-surface p-4 sm:p-5">
+              <DeviceIllustration
+                device={item.illustration}
+                class="max-h-40 mx-auto"
+              />
+            </div>
+            <div class="flex flex-col flex-1 p-5">
+              <span class="self-start text-[11px] uppercase tracking-wider font-semibold text-alivia-secondary-dark bg-alivia-tertiary border border-alivia-tertiary-dark rounded-full px-2.5 py-1 mb-3">
+                {item.tag}
+              </span>
+              <h3 class="text-base font-bold text-alivia-primary mb-2">
+                {item.title}
+              </h3>
+              <p class="text-sm text-alivia-neutral-blue leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div
+      class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 text-center"
+    >
+      <p class="text-sm text-alivia-neutral-gray max-w-2xl leading-relaxed">
+        {t("includedDevices.note")}
+      </p>
+      <a
+        href="#planes"
+        class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold bg-alivia-primary text-white hover:bg-alivia-primary-medium transition-colors focus-visible:ring-4 focus-visible:ring-alivia-primary-light touch-target shrink-0"
+      >
+        {t("includedDevices.plansCta")}
+      </a>
+    </div>
+  </div>
+</div>

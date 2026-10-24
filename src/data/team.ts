@@ -9,6 +9,7 @@ import dayroImg from '../assets/dayro.png';
 export interface TeamMember {
   id: string;
   name: string;
+  role: string;
   code: string;
   bio: string;
   iconPath: string;
@@ -19,6 +20,10 @@ export const getTeamMembers = (lang: Lang): TeamMember[] => [
   {
     id: 'oscar-armas',
     name: 'Oscar Javier Armas Sánchez',
+    role:
+      lang === 'es'
+        ? 'Desarrollo de software y arquitectura de sistemas'
+        : 'Software development and systems architecture',
     code: 'u20211G192',
     bio:
       lang === 'es'
@@ -31,6 +36,10 @@ export const getTeamMembers = (lang: Lang): TeamMember[] => [
   {
     id: 'renato-calvo',
     name: 'Renato Guillermo Calvo Yalan',
+    role:
+      lang === 'es'
+        ? 'Liderazgo y coordinación técnica'
+        : 'Leadership and technical coordination',
     code: 'u202217053',
     bio:
       lang === 'es'
@@ -43,6 +52,10 @@ export const getTeamMembers = (lang: Lang): TeamMember[] => [
   {
     id: 'farid-coronel',
     name: 'Farid Sebastian Coronel Espinoza',
+    role:
+      lang === 'es'
+        ? 'Análisis funcional y levantamiento de requisitos'
+        : 'Functional analysis and requirements gathering',
     code: 'u202312508',
     bio:
       lang === 'es'
@@ -55,6 +68,10 @@ export const getTeamMembers = (lang: Lang): TeamMember[] => [
   {
     id: 'matias-diaz',
     name: 'Matias Sebastian Diaz Quispe',
+    role:
+      lang === 'es'
+        ? 'Desarrollo backend y móvil'
+        : 'Backend and mobile development',
     code: 'u202311938',
     bio:
       lang === 'es'
@@ -67,6 +84,10 @@ export const getTeamMembers = (lang: Lang): TeamMember[] => [
   {
     id: 'nicolas-juarez',
     name: 'Nicolas Emilio Walter Juarez Leon',
+    role:
+      lang === 'es'
+        ? 'Arquitectura de software y gestión de proyectos'
+        : 'Software architecture and project management',
     code: 'u202317483',
     bio:
       lang === 'es'
@@ -79,6 +100,10 @@ export const getTeamMembers = (lang: Lang): TeamMember[] => [
   {
     id: 'dayro-rios',
     name: 'Dayro Richard Rios Piñan',
+    role:
+      lang === 'es'
+        ? 'Comunicación y trabajo en equipo'
+        : 'Communication and teamwork',
     code: 'u202315283',
     bio:
       lang === 'es'
