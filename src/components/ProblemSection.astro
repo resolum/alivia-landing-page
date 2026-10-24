@@ -1,0 +1,150 @@
+---
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="problema" class="scroll-mt-24 py-20 bg-white text-alivia-neutral-dark">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <span
+        class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-dark px-3.5 py-1 rounded-full border border-alivia-tertiary-dark bg-alivia-tertiary"
+      >
+        {t("problem.badge")}
+      </span>
+      <h2
+        class="text-3xl sm:text-4xl font-bold font-display mt-4 mb-4 text-alivia-primary"
+      >
+        {t("problem.title")}
+      </h2>
+      <p class="text-base sm:text-lg text-alivia-neutral-gray leading-relaxed">
+        {t("problem.desc")}
+      </p>
+    </div>
+
+    <ul
+      class="grid grid-cols-1 md:grid-cols-3 gap-6"
+      aria-label={t("problem.cardListLabel")}
+    >
+      <li
+        class="p-6 rounded-2xl bg-alivia-surface-mist border border-alivia-border shadow-sm hover:shadow-md transition-shadow duration-200"
+      >
+        <div
+          class="w-12 h-12 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center mb-4"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-alivia-primary mb-2">
+          {t("problem.card1.title")}
+        </h3>
+        <p class="text-sm text-alivia-neutral-blue leading-relaxed">
+          {t("problem.card1.desc")}
+        </p>
+      </li>
+
+      <li
+        class="p-6 rounded-2xl bg-alivia-surface-mist border border-alivia-border shadow-sm hover:shadow-md transition-shadow duration-200"
+      >
+        <div
+          class="w-12 h-12 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center mb-4"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-alivia-primary mb-2">
+          {t("problem.card2.title")}
+        </h3>
+        <p class="text-sm text-alivia-neutral-blue leading-relaxed">
+          {t("problem.card2.desc")}
+        </p>
+      </li>
+
+      <li
+        class="p-6 rounded-2xl bg-alivia-surface-mist border border-alivia-border shadow-sm hover:shadow-md transition-shadow duration-200"
+      >
+        <div
+          class="w-12 h-12 rounded-xl bg-alivia-surface text-alivia-secondary-dark flex items-center justify-center mb-4"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            ></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-alivia-primary mb-2">
+          {t("problem.card3.title")}
+        </h3>
+        <p class="text-sm text-alivia-neutral-blue leading-relaxed">
+          {t("problem.card3.desc")}
+        </p>
+      </li>
+    </ul>
+
+    <div
+      class="mt-12 rounded-3xl bg-alivia-primary text-white p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6"
+    >
+      <p class="text-base sm:text-lg leading-relaxed max-w-3xl">
+        {t("problem.closing")}
+      </p>
+      <a
+        href="#como-funciona"
+        class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-dark hover:text-white transition-all shadow-lg shadow-alivia-secondary/20 focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target shrink-0"
+      >
+        {t("problem.cta")}
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

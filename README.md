@@ -42,6 +42,7 @@ alivia-landing-page/
 ├── public/
 │   ├── device/                       # Frames of the device exploded-view animation
 │   ├── hero/                         # Frames of the hero logo animation
+│   ├── videos/                       # Product video, poster and WebVTT captions
 │   ├── favicon.ico
 │   ├── favicon.svg
 │   └── logo.ico
@@ -55,7 +56,9 @@ alivia-landing-page/
     │   │   ├── PlanCard.astro
     │   │   ├── SectionHeader.astro
     │   │   ├── TeamCard.astro
-    │   │   └── TestimonialCard.astro
+    │   │   ├── TestimonialCard.astro
+    │   │   ├── VideoPlayer.astro
+    │   │   └── DeviceIllustration.astro
     │   ├── legal/                    # Components specific to legal documents
     │   │   ├── ContactCard.astro
     │   │   ├── LegalBlocks.astro
@@ -73,6 +76,8 @@ alivia-landing-page/
     │   ├── FooterSection.astro
     │   ├── HeroAnimation.astro
     │   ├── HeroSection.astro
+    │   ├── HowItWorksSection.astro
+    │   ├── IncludedDevices.astro
     │   ├── LandingContent.astro      # Shared ordered list of landing sections
     │   ├── LanguageSwitcher.astro
     │   ├── ManifestoSection.astro
@@ -80,6 +85,7 @@ alivia-landing-page/
     │   ├── NavBar.astro
     │   ├── PhoneMockup.astro
     │   ├── PlansSection.astro
+    │   ├── ProblemSection.astro
     │   ├── ScrollToTop.astro
     │   ├── TeamSection.astro
     │   ├── TestimonialsSection.astro
@@ -99,6 +105,7 @@ alivia-landing-page/
     │   ├── nav.ts
     │   ├── plans.ts
     │   ├── team.ts
+    │   ├── videos.ts                 # Product and team video sources and captions
     │   └── testimonials.ts
     ├── i18n/                         # Native Astro i18n (en default, es)
     │   ├── locales/
@@ -108,10 +115,13 @@ alivia-landing-page/
     │   │   │   ├── faq.ts
     │   │   │   ├── footer.ts
     │   │   │   ├── hero.ts
+    │   │   │   ├── howItWorks.ts
+    │   │   │   ├── includedDevices.ts
     │   │   │   ├── legal.ts
     │   │   │   ├── media.ts
     │   │   │   ├── nav.ts
     │   │   │   ├── plans.ts
+    │   │   │   ├── problem.ts
     │   │   │   ├── team.ts
     │   │   │   ├── testimonials.ts
     │   │   │   └── twoLives.ts
@@ -140,7 +150,6 @@ alivia-landing-page/
     └── styles/
         └── global.css
 ```
-
 ## Technology Stack
 
 - Astro
@@ -182,10 +191,3 @@ pnpm run dev
 ```
 
 The site will be available at `http://localhost:4321`.
-
-### Production build
-
-```bash
-pnpm build
-pnpm preview
-```
