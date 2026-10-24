@@ -14,7 +14,8 @@ const label = lang === 'es' ? 'Volver arriba' : 'Back to top';
   type="button"
   aria-label={label}
   title={label}
-  class="fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-alivia-primary text-white shadow-2xl border border-white/20 hover:bg-alivia-primary-medium hover:scale-110 active:scale-95 transition-all duration-300 opacity-0 pointer-events-none translate-y-4"
+  class="fixed z-40 p-3.5 rounded-full bg-alivia-primary text-white shadow-2xl border border-white/20 hover:bg-alivia-primary-medium hover:scale-110 active:scale-95 transition-all duration-300 opacity-0 pointer-events-none translate-y-4 touch-target min-w-[48px] min-h-[48px] flex items-center justify-center focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium"
+  style="bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); right: calc(1.5rem + env(safe-area-inset-right, 0px));"
 >
   <svg
     class="w-6 h-6 stroke-current"
@@ -33,8 +34,18 @@ const label = lang === 'es' ? 'Volver arriba' : 'Back to top';
     const btn = document.getElementById('scroll-to-top');
     if (!btn) return;
 
-    function handleScroll() {
-      if (window.scrollY > 300) {
+    const hero = document.getElementById('hero-experience') || document.getElementById('que-es');
+    let isHeroInView = true;
+
+    function updateVisibility() {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const isMobile = window.innerWidth < 768;
+
+      const shouldShow = isMobile
+        ? scrollY > 300 && !isHeroInView
+        : scrollY > 300;
+
+      if (shouldShow) {
         btn?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
         btn?.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
       } else {
@@ -43,8 +54,22 @@ const label = lang === 'es' ? 'Volver arriba' : 'Back to top';
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    if (hero && 'IntersectionObserver' in window) {
+      const heroObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            isHeroInView = entry.isIntersecting;
+          }
+          updateVisibility();
+        },
+        { threshold: 0 }
+      );
+      heroObserver.observe(hero);
+    }
+
+    window.addEventListener('scroll', updateVisibility, { passive: true });
+    window.addEventListener('resize', updateVisibility, { passive: true });
+    updateVisibility();
 
     btn.addEventListener('click', () => {
       window.scrollTo({

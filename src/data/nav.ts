@@ -7,6 +7,7 @@ export interface NavLink {
 
 export const getNavLinks = (lang: Lang): NavLink[] => [
   { href: '#que-es',        label: lang === 'es' ? '¿Qué es?' : 'What is Alivia?' },
+  { href: '#problema',      label: lang === 'es' ? 'El problema' : 'The problem' },
   { href: '#como-funciona', label: lang === 'es' ? 'Cómo funciona' : 'How it works' },
   { href: '#dispositivos',  label: lang === 'es' ? 'Dispositivos' : 'Devices' },
   { href: '#audiovisual',   label: lang === 'es' ? 'Audiovisual' : 'Media' },

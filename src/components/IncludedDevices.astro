@@ -1,0 +1,115 @@
+---
+import type { Lang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+import { getIncludedDevices } from "../data/includedDevices";
+import DeviceIcon from "./ui/DeviceIcon.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const devices = getIncludedDevices(t);
+---
+
+<div class="py-16 sm:py-20 lg:py-24 bg-white text-alivia-neutral-dark">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+      <div class="lg:col-span-5 lg:sticky lg:top-28 text-left">
+        <span
+          class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-dark block mb-2"
+        >
+          {t("includedDevices.badge")}
+        </span>
+        <h2
+          id="included-devices-title"
+          class="text-2xl sm:text-3xl lg:text-4xl font-bold font-display tracking-tight text-alivia-primary mb-4 leading-tight"
+        >
+          {t("includedDevices.title")}
+        </h2>
+        <p
+          class="text-base text-alivia-neutral-gray leading-relaxed mb-6 lg:mb-8"
+        >
+          {t("includedDevices.desc")}
+        </p>
+        <div
+          class="hidden lg:flex flex-col items-start gap-4 pt-6 border-t border-alivia-border"
+        >
+          <p class="text-xs text-alivia-neutral-gray leading-relaxed max-w-md">
+            {t("includedDevices.note")}
+          </p>
+          <a
+            href="#planes"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold bg-alivia-primary text-white hover:bg-alivia-primary-medium transition-colors focus-visible:ring-4 focus-visible:ring-alivia-primary-light touch-target"
+          >
+            {t("includedDevices.plansCta")}
+          </a>
+        </div>
+      </div>
+      <div class="lg:col-span-7">
+        <ul
+          class="divide-y divide-alivia-border"
+          aria-label={t("includedDevices.listLabel")}
+        >
+          {
+            devices.map((device) => (
+              <li class="device-row py-6 sm:py-7 first:pt-0 last:pb-0 flex items-start gap-4 sm:gap-6">
+                <div class="w-14 h-14 min-w-14 sm:w-[72px] sm:h-[72px] sm:min-w-[72px] rounded-xl border border-alivia-border bg-alivia-surface-mist flex items-center justify-center shrink-0 p-2 overflow-hidden">
+                  <DeviceIcon device={device.id} />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <span class="text-xs uppercase tracking-wider font-semibold text-[#146B61] block mb-1">
+                    {device.tag}
+                  </span>
+                  <h3 class="text-lg sm:text-xl font-bold font-display text-alivia-primary mb-1 leading-snug">
+                    {device.title}
+                  </h3>
+                  <p class="text-sm text-alivia-neutral-gray leading-relaxed">
+                    {device.desc}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+        <div
+          class="mt-10 pt-6 border-t border-alivia-border flex flex-col items-start gap-4 lg:hidden"
+        >
+          <p class="text-xs text-alivia-neutral-gray leading-relaxed">
+            {t("includedDevices.note")}
+          </p>
+          <a
+            href="#planes"
+            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-semibold bg-alivia-primary text-white hover:bg-alivia-primary-medium transition-colors focus-visible:ring-4 focus-visible:ring-alivia-primary-light touch-target text-center"
+          >
+            {t("includedDevices.plansCta")}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .device-row {
+    animation: fadeSlideUp 400ms ease-out both;
+  }
+  @keyframes fadeSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .device-row {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+</style>

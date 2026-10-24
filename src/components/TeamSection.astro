@@ -2,7 +2,9 @@
 import type { Lang } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
 import { getTeamMembers } from '../data/team';
+import { getTeamVideo } from '../data/videos';
 import TeamCard from './ui/TeamCard.astro';
+import VideoPlayer from './ui/VideoPlayer.astro';
 
 interface Props {
   lang: Lang;
@@ -11,6 +13,7 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const teamMembers = getTeamMembers(lang);
+const teamVideo = getTeamVideo(lang);
 ---
 
 <section
@@ -33,56 +36,113 @@ const teamMembers = getTeamMembers(lang);
         {t("team.desc")}
       </p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <div
+      id="team-members"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+    >
       {teamMembers.map((member) => <TeamCard member={member} lang={lang} />)}
     </div>
+
     <div class="mt-20 max-w-4xl mx-auto">
-      <div class="text-center mb-12">
+      <div class="text-center mb-8">
         <span
           class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
         >
           {t("team.aboutBadge")}
         </span>
+        <h3
+          class="text-2xl sm:text-3xl font-semibold font-display mt-4 mb-3 text-alivia-primary"
+        >
+          {t("team.videoTitle")}
+        </h3>
+        <p class="text-base text-alivia-neutral-gray">
+          {t("team.videoDescription")}
+        </p>
       </div>
-    </div>
-    <div class="mt-20 max-w-4xl mx-auto">
+
       <div
-        class="aspect-video rounded-2xl bg-alivia-primary-video flex items-center justify-center cursor-pointer overflow-hidden border border-alivia-tertiary-dark hover:border-alivia-secondary transition-colors relative"
-        id="video-placeholder"
-        data-iframe-title={t("team.videoIframeTitle")}
+        class="overflow-hidden rounded-3xl bg-alivia-primary-deep text-white shadow-2xl border border-alivia-primary-medium"
       >
-        <div class="text-center p-8">
-          <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-            <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-          <p class="text-lg font-medium text-white mb-2">{t("team.videoPlay")}</p>
-          <p class="text-sm text-white/70">{t("team.videoClick")}</p>
-        </div>
+        <VideoPlayer
+          id="team-video"
+          provider={teamVideo.provider}
+          source={teamVideo.source}
+          title={t("team.videoIframeTitle")}
+          description={teamVideo.description}
+          duration={teamVideo.duration}
+          fallbackTargetId="team-video-fallback"
+          fallbackMessage={t("team.videoUnavailable")}
+          fallbackLinkLabel={t("team.videoShowFallback")}
+          externalUrl={teamVideo.externalUrl}
+          playLabel={t("team.videoPlay")}
+          clickLabel={t("team.videoClick")}
+        />
+      </div>
+
+      <div
+        id="team-video-fallback"
+        hidden
+        class="mt-6 rounded-2xl border border-alivia-tertiary-dark bg-white p-6 sm:p-8"
+        aria-label={t("team.videoFallbackTitle")}
+      >
+        <h3 class="text-lg font-semibold text-alivia-primary font-display">
+          {t("team.videoFallbackTitle")}
+        </h3>
+        <p class="mt-2 text-sm text-alivia-neutral-gray">
+          {t("team.videoFallbackDesc")}
+        </p>
+        <ul
+          class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2"
+          aria-label={t("team.videoMembersLabel")}
+        >
+          {
+            teamMembers.map((member) => (
+              <li class="rounded-xl bg-alivia-tertiary/60 p-4">
+                <p class="font-semibold text-alivia-primary">{member.name}</p>
+                <p class="mt-1 text-sm text-alivia-neutral-gray">{member.role}</p>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const videoPlaceholder = document.getElementById('video-placeholder');
-    if (videoPlaceholder) {
-      videoPlaceholder.addEventListener('click', () => {
-        const title = videoPlaceholder.getAttribute('data-iframe-title') || 'Video presentación Alivia';
-        const videoUrl = 'https://www.youtube.com/embed/VIDEO_ID_HERE?autoplay=1';
-        videoPlaceholder.innerHTML = `
-          <iframe
-            src="${videoUrl}"
-            title="${title}"
-            class="w-full h-full"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
-        `;
-      });
-    }
-  });
+  const setupTeamFallbackToggle = () => {
+    const toggle = document.getElementById("toggle-team-fallback");
+    const panel = document.getElementById("team-video-fallback");
+
+    if (!toggle || !panel) return;
+    if (toggle.dataset.initialized === "true") return;
+    toggle.dataset.initialized = "true";
+
+    const showText =
+      toggle.getAttribute("data-show-text") || "Ver resumen del equipo";
+    const hideText =
+      toggle.getAttribute("data-hide-text") || "Ocultar resumen del equipo";
+
+    toggle.addEventListener("click", () => {
+      const isHidden = panel.hasAttribute("hidden");
+
+      if (isHidden) {
+        panel.removeAttribute("hidden");
+        toggle.setAttribute("aria-expanded", "true");
+        toggle.textContent = hideText;
+      } else {
+        panel.setAttribute("hidden", "");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.textContent = showText;
+      }
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupTeamFallbackToggle);
+  } else {
+    setupTeamFallbackToggle();
+  }
+  document.addEventListener("astro:page-load", setupTeamFallbackToggle);
 </script>
