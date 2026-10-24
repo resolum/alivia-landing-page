@@ -101,45 +101,27 @@ export function initHeroAnimation(): () => void {
     const maskStop = 100 - maskFactor * 35;
     canvas.style.setProperty("--mask-stop", `${maskStop}%`);
 
-    if (card1) {
-      if (progress <= 0.22) {
-        card1.style.opacity = "1";
-        card1.style.transform = "translateY(0px)";
-      } else {
-        card1.style.opacity = "0";
-        card1.style.transform = "translateY(20px)";
-      }
-    }
+    const isMobile = window.innerWidth < 768;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hiddenY = prefersReducedMotion ? "0px" : (isMobile ? "16px" : "20px");
 
-    if (card2) {
-      if (progress >= 0.25 && progress <= 0.48) {
-        card2.style.opacity = "1";
-        card2.style.transform = "translateY(0px)";
+    const setCardState = (card: HTMLElement | null, visible: boolean) => {
+      if (!card) return;
+      if (visible) {
+        card.style.opacity = "1";
+        card.style.transform = prefersReducedMotion ? "none" : "translateY(0px)";
+        card.style.pointerEvents = "auto";
       } else {
-        card2.style.opacity = "0";
-        card2.style.transform = "translateY(20px)";
+        card.style.opacity = "0";
+        card.style.transform = prefersReducedMotion ? "none" : `translateY(${hiddenY})`;
+        card.style.pointerEvents = "none";
       }
-    }
+    };
 
-    if (card3) {
-      if (progress >= 0.52 && progress <= 0.75) {
-        card3.style.opacity = "1";
-        card3.style.transform = "translateY(0px)";
-      } else {
-        card3.style.opacity = "0";
-        card3.style.transform = "translateY(20px)";
-      }
-    }
-
-    if (card4) {
-      if (progress >= 0.78) {
-        card4.style.opacity = "1";
-        card4.style.transform = "translateY(0px)";
-      } else {
-        card4.style.opacity = "0";
-        card4.style.transform = "translateY(20px)";
-      }
-    }
+    setCardState(card1, progress <= 0.22);
+    setCardState(card2, progress >= 0.25 && progress <= 0.48);
+    setCardState(card3, progress >= 0.52 && progress <= 0.75);
+    setCardState(card4, progress >= 0.78);
   };
 
   const animateLoop = () => {

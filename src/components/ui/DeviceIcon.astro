@@ -1,0 +1,105 @@
+---
+import type { DeviceType } from "../../data/includedDevices";
+
+interface Props {
+  device: DeviceType;
+  class?: string;
+}
+
+const { device, class: className = "w-10 h-10 sm:w-11 sm:h-11" } = Astro.props;
+---
+
+<svg
+  class:list={["device-icon shrink-0", className]}
+  viewBox="0 0 64 64"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    device === "light" && (
+      <Fragment>
+        <path d="M32 8v10" />
+        <path d="M16 34a16 16 0 0 1 32 0z" />
+        <circle cx="32" cy="42" r="5" stroke="var(--icon-accent, #1E9184)" />
+        <path d="M32 49v5" stroke="var(--icon-accent, #1E9184)" />
+        <path d="M25 47l-4 4" stroke="var(--icon-accent, #1E9184)" />
+        <path d="M39 47l4 4" stroke="var(--icon-accent, #1E9184)" />
+      </Fragment>
+    )
+  }
+
+  {
+    device === "door" && (
+      <Fragment>
+        <path d="M12 54h36" />
+        <path d="M16 54V14h24v40" />
+        <path d="M16 14l18 6v28l-18 6z" />
+        <circle
+          cx="30"
+          cy="34"
+          r="1.5"
+          fill="var(--icon-accent, #1E9184)"
+          stroke="var(--icon-accent, #1E9184)"
+        />
+        <path
+          d="M42 42a26 26 0 0 0 4-14"
+          stroke="var(--icon-accent, #1E9184)"
+        />
+      </Fragment>
+    )
+  }
+
+  {
+    device === "window" && (
+      <Fragment>
+        <rect x="14" y="12" width="36" height="40" rx="2" />
+        <path d="M32 12v40" />
+        <path d="M14 32h36" />
+        <path d="M41 38v8" stroke="var(--icon-accent, #1E9184)" />
+        <path d="M38 41l3-3 3 3" stroke="var(--icon-accent, #1E9184)" />
+        <path d="M38 43l3 3 3-3" stroke="var(--icon-accent, #1E9184)" />
+      </Fragment>
+    )
+  }
+
+  {
+    device === "microphone" && (
+      <Fragment>
+        <rect x="25" y="12" width="14" height="24" rx="7" />
+        <path d="M25 24h14" />
+        <path d="M20 26v9a12 12 0 0 0 24 0v-9" />
+        <path d="M32 47v5" />
+        <path d="M24 52h16" />
+        <path
+          d="M18 15a16 16 0 0 0 0 18"
+          stroke="var(--icon-accent, #1E9184)"
+        />
+        <path
+          d="M13 11a22 22 0 0 0 0 26"
+          stroke="var(--icon-accent, #1E9184)"
+        />
+        <path
+          d="M46 15a16 16 0 0 1 0 18"
+          stroke="var(--icon-accent, #1E9184)"
+        />
+        <path
+          d="M51 11a22 22 0 0 1 0 26"
+          stroke="var(--icon-accent, #1E9184)"
+        />
+      </Fragment>
+    )
+  }
+</svg>
+
+<style>
+  .device-icon {
+    --icon-accent: var(--color-alivia-secondary-dark, #1e9184);
+    color: var(--color-alivia-primary, #0f2a6b);
+  }
+</style>
