@@ -2,6 +2,8 @@
 import type { Lang } from "../i18n/ui";
 import NavBar from "./NavBar.astro";
 import HeroSection from "./HeroSection.astro";
+import ProblemSection from "./ProblemSection.astro";
+import HowItWorksSection from "./HowItWorksSection.astro";
 import TwoLivesSection from "./TwoLivesSection.astro";
 import DevicesSection from "./DevicesSection.astro";
 import MediaSection from "./MediaSection.astro";
@@ -23,6 +25,8 @@ const { lang } = Astro.props;
 <NavBar lang={lang} />
 <main id="main-content" class="w-full">
   <HeroSection lang={lang} />
+  <ProblemSection lang={lang} />
+  <HowItWorksSection lang={lang} />
   <TwoLivesSection lang={lang} />
   <DevicesSection lang={lang} />
   <MediaSection lang={lang} />

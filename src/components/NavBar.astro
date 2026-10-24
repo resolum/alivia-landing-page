@@ -17,8 +17,21 @@ const navLinks = getNavLinks(lang);
 
 <header
   id="main-header"
-  class="fixed top-0 left-0 right-0 z-50 bg-transparent text-white transition-all duration-300 py-4"
+  data-solid-from="problema"
+  data-solid="false"
+  class="fixed top-0 left-0 right-0 z-50 text-white transition-all duration-200 py-4 bg-transparent border-b border-transparent data-[solid=true]:bg-alivia-primary-deep/95 data-[solid=true]:backdrop-blur-xl data-[solid=true]:shadow-2xl data-[solid=true]:border-alivia-primary-medium/50 data-[solid=true]:py-2"
 >
+  <script is:inline>
+    (function () {
+      const header = document.getElementById("main-header");
+      if (!header) return;
+      const triggerId = header.getAttribute("data-solid-from") || "problema";
+      const section = document.getElementById(triggerId);
+      if (!section) return;
+      const isSolid = section.getBoundingClientRect().top <= header.offsetHeight;
+      header.setAttribute("data-solid", isSolid ? "true" : "false");
+    })();
+  </script>
   <div
     class="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 lg:gap-6"
   >
@@ -191,118 +204,53 @@ const navLinks = getNavLinks(lang);
 </header>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const header = document.getElementById("main-header");
-    const toggleBtn = document.getElementById("mobile-menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const iconOpen = document.getElementById("menu-icon-open");
-    const iconClose = document.getElementById("menu-icon-close");
-    const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+  import { initNavBar } from "../scripts/navBar";
 
-    const comoFunciona = document.getElementById("como-funciona");
+  let cleanup: (() => void) | null = null;
 
-    const applyHeaderBackground = (active: boolean) => {
-      if (!header) return;
-      if (active) {
-        header.classList.add(
-          "bg-alivia-primary-deep/95",
-          "backdrop-blur-xl",
-          "shadow-2xl",
-          "border-b",
-          "border-alivia-primary-medium/50",
-          "py-2",
-        );
-        header.classList.remove("bg-transparent", "py-4");
-      } else {
-        header.classList.remove(
-          "bg-alivia-primary-deep/95",
-          "backdrop-blur-xl",
-          "shadow-2xl",
-          "border-b",
-          "border-alivia-primary-medium/50",
-          "py-2",
-        );
-        header.classList.add("bg-transparent", "py-4");
-      }
-    };
+  const start = () => {
+    if (cleanup) cleanup();
+    cleanup = initNavBar();
+  };
 
-    if (comoFunciona) {
-      const headerObserver = new IntersectionObserver(
-        ([entry]) => {
-          applyHeaderBackground(
-            !entry.isIntersecting
-              ? (window.scrollY || document.documentElement.scrollTop) >=
-                  comoFunciona.offsetTop - 80
-              : true,
-          );
-        },
-        { root: null, threshold: 0, rootMargin: "0px 0px 0px 0px" },
-      );
-      headerObserver.observe(comoFunciona);
-
-      const updateHeaderBackground = () => {
-        const scrollY = window.scrollY || document.documentElement.scrollTop;
-        const triggerOffset = comoFunciona.offsetTop - 80;
-        applyHeaderBackground(scrollY >= triggerOffset);
-      };
-      window.addEventListener("scroll", updateHeaderBackground);
-      window.addEventListener("resize", updateHeaderBackground);
-      updateHeaderBackground();
-    }
-
-    if (toggleBtn && mobileMenu) {
-      toggleBtn.addEventListener("click", () => {
-        const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
-        toggleBtn.setAttribute("aria-expanded", String(!isExpanded));
-        mobileMenu.classList.toggle("hidden");
-        if (iconOpen && iconClose) {
-          iconOpen.classList.toggle("hidden");
-          iconClose.classList.toggle("hidden");
-        }
-      });
-
-      mobileLinks.forEach((link) => {
-        link.addEventListener("click", () => {
-          mobileMenu.classList.add("hidden");
-          toggleBtn.setAttribute("aria-expanded", "false");
-          if (iconOpen && iconClose) {
-            iconOpen.classList.remove("hidden");
-            iconClose.classList.add("hidden");
-          }
-        });
-      });
-    }
-
-    const sections = document.querySelectorAll("section[id], div[id]");
-    const navLinks = document.querySelectorAll(".nav-link");
-
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -70% 0px",
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute("id");
-          navLinks.forEach((link) => {
-            const href = link.getAttribute("href");
-            if (href === `#${id}`) {
-              link.classList.add("text-alivia-secondary", "font-bold");
-              link.classList.remove(
-                "text-alivia-primary-mist",
-                "text-white/90",
-              );
-            } else {
-              link.classList.remove("text-alivia-secondary", "font-bold");
-              link.classList.add("text-alivia-primary-mist");
-            }
-          });
-        }
-      });
-    }, observerOptions);
-
-    sections.forEach((section) => observer.observe(section));
-  });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
+  document.addEventListener("astro:page-load", start);
 </script>
+
+<style>
+  #main-header {
+    transition:
+      background-color 200ms ease,
+      padding 200ms ease,
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  #main-header[data-solid="true"] {
+    background-color: color-mix(in srgb, var(--color-alivia-primary-deep) 95%, transparent);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border-bottom-width: 1px;
+    border-color: color-mix(in srgb, var(--color-alivia-primary-medium) 50%, transparent);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  #main-header[data-solid="false"] {
+    background-color: transparent;
+    border-color: transparent;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #main-header {
+      transition: none !important;
+    }
+  }
+</style>
