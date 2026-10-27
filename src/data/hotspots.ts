@@ -143,7 +143,11 @@ export const POS_CONFIG: Record<string, PosConfig> = {
 /** Animation constants */
 export const DEVICE_CONSTANTS = {
   TOTAL_FRAMES: 240,
-  BASE_PATH: '/device/ezgif-frame-',
+  BASE_PATH: '/device/',
+  FRAME_SIZES: [
+    { dir: 'sm', width: 960 },
+    { dir: 'lg', width: 1920 },
+  ],
   HS_SHOW_AT: 0.97,
   HS_HIDE_BELOW: 0.93,
 } as const;
