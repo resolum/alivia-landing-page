@@ -14,7 +14,7 @@ const label = lang === 'es' ? 'Volver arriba' : 'Back to top';
   type="button"
   aria-label={label}
   title={label}
-  class="fixed z-40 p-3.5 rounded-full bg-alivia-primary text-white shadow-2xl border border-white/20 hover:bg-alivia-primary-medium hover:scale-110 active:scale-95 transition-all duration-300 opacity-0 pointer-events-none translate-y-4 touch-target min-w-[48px] min-h-[48px] flex items-center justify-center focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium"
+  class="stt fixed z-40 p-3 rounded-full bg-alivia-primary text-white shadow-[0_8px_24px_rgba(8,23,69,0.28)] hover:bg-alivia-primary-medium opacity-0 pointer-events-none translate-y-4 touch-target min-w-[48px] min-h-[48px] flex items-center justify-center focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium"
   style="bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); right: calc(1.5rem + env(safe-area-inset-right, 0px));"
 >
   <svg
@@ -28,6 +28,20 @@ const label = lang === 'es' ? 'Volver arriba' : 'Back to top';
     <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
   </svg>
 </button>
+
+<style>
+  /* Floats over content: the one element here that earns a shadow */
+  .stt {
+    transition:
+      opacity 200ms var(--ease-out),
+      translate 240ms var(--ease-out),
+      transform 160ms var(--ease-out),
+      background-color 200ms ease;
+  }
+  .stt:active {
+    transform: scale(0.94);
+  }
+</style>
 
 <script>
   function setupScrollToTop() {

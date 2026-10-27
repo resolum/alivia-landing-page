@@ -14,11 +14,10 @@ const t = useTranslations(lang);
   type="button"
   id="reading-size-toggle"
   aria-pressed="false"
-  class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-alivia-border bg-white text-xs font-semibold text-alivia-primary hover:bg-alivia-surface transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-alivia-secondary touch-target"
-  aria-label={t("legal.comfortableReading")}
+  class="press inline-flex items-center gap-2 min-h-11 px-4 rounded-xl bg-white text-sm font-semibold text-alivia-primary hover:bg-alivia-primary-mist aria-pressed:bg-alivia-primary aria-pressed:text-white focus-visible:ring-2 focus-visible:ring-alivia-primary-medium"
 >
-  <svg class="w-4 h-4 text-alivia-secondary-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7V5h16v2M9 19h6M12 5v14" />
   </svg>
   <span>{t("legal.comfortableReading")}</span>
 </button>
@@ -38,13 +37,7 @@ const t = useTranslations(lang);
 
     const applyState = (comfortable: boolean) => {
       btn.setAttribute("aria-pressed", String(comfortable));
-      if (comfortable) {
-        docContainer.classList.add("text-lg");
-        docContainer.classList.remove("text-base");
-      } else {
-        docContainer.classList.add("text-base");
-        docContainer.classList.remove("text-lg");
-      }
+      docContainer.classList.toggle("is-comfortable", comfortable);
     };
 
     applyState(isComfortable);

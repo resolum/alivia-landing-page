@@ -1,7 +1,8 @@
 import { HOTSPOTS as DEFAULT_HOTSPOTS, DEVICE_CONSTANTS, type Hotspot } from '../data/hotspots';
+import { createFrameSequence, createVisibleLoop, pickFrameSize, type FrameSequence } from './frameSequence';
 
 export function initDeviceExplode(): () => void {
-  const { TOTAL_FRAMES, BASE_PATH, HS_SHOW_AT, HS_HIDE_BELOW } = DEVICE_CONSTANTS;
+  const { TOTAL_FRAMES, BASE_PATH, FRAME_SIZES, HS_SHOW_AT, HS_HIDE_BELOW } = DEVICE_CONSTANTS;
 
   // Read i18n data passed from Astro component if available
   const i18nScript = document.getElementById('device-i18n-data');
@@ -20,15 +21,20 @@ export function initDeviceExplode(): () => void {
   const bubblesDiv   = document.getElementById('mindmap-bubbles') as HTMLElement | null;
 
   if (!canvasEl || !stage || !canvasArea) return () => {};
-  const ctx = canvasEl.getContext('2d');
+  const ctx = canvasEl.getContext('2d', { alpha: false });
   if (!ctx) return () => {};
 
-  const images: HTMLImageElement[] = new Array(TOTAL_FRAMES);
-  let loadedCount   = 0;
+  let sequence: FrameSequence | null = null;
   let allLoaded     = false;
   let displayFrame  = 0;
   let targetFrame   = 0;
-  let rafId: number | null = null;
+  let lastDrawn     = -1;
+  let areaW         = canvasArea.clientWidth;
+  let areaH         = canvasArea.clientHeight;
+  let canvasScale   = 1;
+  let stageTop      = 0;
+  let stageScrollable = 0;
+  let lastProgress  = -1;
   let hintDismissed = false;
   let hsVisible     = false;
   let activeId: string | null = null;
@@ -39,14 +45,13 @@ export function initDeviceExplode(): () => void {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const getImageRect = () => {
-    const ref = images[TOTAL_FRAMES - 1] || images[0];
-    if (!ref || !ref.naturalWidth) return null;
-    const cw = canvasArea.clientWidth;
-    const ch = canvasArea.clientHeight;
-    const vPad = cw < 640 ? 140 : 180;
+    const cw = areaW;
+    const ch = areaH;
+    // Room for one hotspot bubble (120px + gaps ≈ 148px) above and below the frame
+    const vPad = cw < 640 ? 140 : 150;
     const availH = Math.max(200, ch - 2 * vPad);
 
-    const ir = ref.naturalWidth / ref.naturalHeight;
+    const ir = sequence?.ratio ?? 16 / 9;
     const cr = cw / availH;
     let dw: number, dh: number, ox: number, oy: number;
 
@@ -65,65 +70,66 @@ export function initDeviceExplode(): () => void {
   };
 
   const drawFrame = (idx: number) => {
-    const targetIdx = Math.max(0, Math.min(idx, TOTAL_FRAMES - 1));
-    let img = images[targetIdx];
-    if (!img || !img.complete || !img.naturalWidth) {
-      for (let j = targetIdx - 1; j >= 0; j--) {
-        if (images[j] && images[j].complete && images[j].naturalWidth) {
-          img = images[j];
-          break;
-        }
-      }
-    }
-    if (!img || !img.complete || !img.naturalWidth) {
-      for (let j = targetIdx + 1; j < TOTAL_FRAMES; j++) {
-        if (images[j] && images[j].complete && images[j].naturalWidth) {
-          img = images[j];
-          break;
-        }
-      }
-    }
-    if (!img || !img.complete || !img.naturalWidth) return;
-    const cw = canvasEl.width, ch = canvasEl.height;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const frame = sequence?.get(idx);
+    if (!frame) return;
 
     const rect = getImageRect();
-    if (!rect) return;
-
-    const ox = rect.left * dpr;
-    const oy = rect.top * dpr;
-    const dw = rect.width * dpr;
-    const dh = rect.height * dpr;
+    const s = canvasScale;
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, cw, ch);
-    ctx.drawImage(img, ox, oy, dw, dh);
+    ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
+    // Resizing the canvas resets this, so set it on every draw.
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(frame.img, rect.left * s, rect.top * s, rect.width * s, rect.height * s);
+  };
+
+  const measure = () => {
+    areaW = canvasArea.clientWidth;
+    areaH = canvasArea.clientHeight;
+    stageTop = stage.getBoundingClientRect().top + window.scrollY;
+    stageScrollable = stage.offsetHeight - window.innerHeight;
   };
 
   const resizeCanvas = () => {
+    measure();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const r   = canvasEl.getBoundingClientRect();
-    canvasEl.width  = r.width  * dpr;
-    canvasEl.height = r.height * dpr;
+    // Never back the canvas with more pixels than the frame itself has.
+    canvasScale = sequence ? Math.min(dpr, sequence.width / getImageRect().width) : dpr;
+    canvasEl.width  = Math.round(areaW * canvasScale);
+    canvasEl.height = Math.round(areaH * canvasScale);
+    lastDrawn = -1;
     drawFrame(Math.round(displayFrame));
   };
 
-  const loadFrame = (i: number) => {
-    const img = new Image();
-    img.src = BASE_PATH + String(i + 1).padStart(3, '0') + '.jpg';
-    img.onload = img.onerror = () => {
-      images[i] = img;
-      loadedCount++;
-      if (i === 0) { resizeCanvas(); drawFrame(0); }
-      if (loadedCount === TOTAL_FRAMES) {
+  // Frames are only requested once the section gets close to the viewport.
+  const startLoading = () => {
+    if (sequence) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    sequence = createFrameSequence(pickFrameSize(FRAME_SIZES, getImageRect().width * dpr), {
+      basePath: BASE_PATH,
+      total: TOTAL_FRAMES,
+      onFrame: (i) => {
+        if (i === 0) resizeCanvas();
+        lastDrawn = -1;
+        loop.wake();
+      },
+      onComplete: () => {
         allLoaded = true;
         repositionHotspots();
-      }
-    };
+        updateTarget();
+      },
+    });
   };
 
-  loadFrame(0);
-  for (let i = 1; i < TOTAL_FRAMES; i++) loadFrame(i);
+  const preloadObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      preloadObserver.disconnect();
+      startLoading();
+    },
+    { rootMargin: '200% 0px' },
+  );
+  preloadObserver.observe(stage);
 
   const injectHotspots = () => {
     if (!hotspotLayer || document.querySelector('.hotspot-btn')) return;
@@ -148,7 +154,6 @@ export function initDeviceExplode(): () => void {
 
   const repositionHotspots = () => {
     const rect = getImageRect();
-    if (!rect) return;
     document.querySelectorAll('.hotspot-btn').forEach(el => {
       const btn = el as HTMLElement;
       const h = HOTSPOTS.find(x => x.id === btn.dataset.id);
@@ -257,9 +262,8 @@ export function initDeviceExplode(): () => void {
     });
 
     const imgRect = getImageRect();
-    if (!imgRect) return;
-    const aw = canvasArea.clientWidth;
-    const ah = canvasArea.clientHeight;
+    const aw = areaW;
+    const ah = areaH;
     const px = imgRect.left + (h.left / 100) * imgRect.width;
     const py = imgRect.top  + (h.top  / 100) * imgRect.height;
 
@@ -390,13 +394,11 @@ export function initDeviceExplode(): () => void {
   };
 
   const updateTarget = () => {
-    if (!stage) return;
-    const r        = stage.getBoundingClientRect();
-    const scrollable = stage.offsetHeight - window.innerHeight;
-    const scrolled = Math.max(0, -r.top);
-    const progress = Math.min(1, scrollable > 0 ? scrolled / scrollable : 0);
+    const scrolled = Math.max(0, window.scrollY - stageTop);
+    const progress = Math.min(1, stageScrollable > 0 ? scrolled / stageScrollable : 0);
     targetFrame = progress * (TOTAL_FRAMES - 1);
-    if (progressBar) progressBar.style.width = (progress * 100) + '%';
+    if (progressBar && progress !== lastProgress) progressBar.style.transform = `scaleX(${progress})`;
+    lastProgress = progress;
     if (!hintDismissed && progress > 0.02) {
       hintDismissed = true;
       if (scrollHint) scrollHint.style.opacity = '0';
@@ -408,12 +410,19 @@ export function initDeviceExplode(): () => void {
   };
 
   const LERP = reduced ? 1 : 0.12;
-  const loop = () => {
-    rafId = requestAnimationFrame(loop);
+  // Returns true while there is still motion left to animate.
+  const tick = () => {
     updateTarget();
     displayFrame += (targetFrame - displayFrame) * LERP;
-    drawFrame(Math.round(displayFrame));
+    if (Math.abs(targetFrame - displayFrame) < 0.01) displayFrame = targetFrame;
+    const frame = Math.round(displayFrame);
+    if (frame !== lastDrawn) {
+      drawFrame(frame);
+      lastDrawn = frame;
+    }
+    return displayFrame !== targetFrame;
   };
+  const loop = createVisibleLoop(stage, tick);
 
   const handleKeydown = (e: KeyboardEvent) => {
     if (e.key === 'Escape' && activeId) closeMindMap(true);
@@ -430,17 +439,23 @@ export function initDeviceExplode(): () => void {
     repositionHotspots();
   };
 
-  window.addEventListener('scroll', updateTarget, { passive: true });
+  const resizeObserver = new ResizeObserver(measure);
+
+  window.addEventListener('scroll', loop.wake, { passive: true });
   window.addEventListener('resize', handleResize, { passive: true });
   document.addEventListener('keydown', handleKeydown);
   document.addEventListener('pointerdown', handlePointerdown, { passive: true });
+  resizeObserver.observe(document.body);
 
   resizeCanvas();
-  loop();
+  tick();
 
   return () => {
-    if (rafId !== null) cancelAnimationFrame(rafId);
-    window.removeEventListener('scroll', updateTarget);
+    loop.destroy();
+    sequence?.destroy();
+    preloadObserver.disconnect();
+    resizeObserver.disconnect();
+    window.removeEventListener('scroll', loop.wake);
     window.removeEventListener('resize', handleResize);
     document.removeEventListener('keydown', handleKeydown);
     document.removeEventListener('pointerdown', handlePointerdown);

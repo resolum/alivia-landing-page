@@ -32,7 +32,9 @@ const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
 <html lang={lang} class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#081745" />
+  <meta name="color-scheme" content="light" />
   <link rel="icon" type="image/x-icon" href="/logo.ico" />
   <link rel="shortcut icon" type="image/x-icon" href="/logo.ico" />
   <meta name="generator" content={Astro.generator} />
@@ -50,12 +52,12 @@ const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
       rel="stylesheet"
   />
 
   {lang === "en" && (
-    <script is:inline>
+    <script is:inline define:vars={{ esPath }}>
       (function() {
         // Toggle language auto-detection for static sites
         const AUTO_DETECT_LANGUAGE = true;
@@ -72,7 +74,8 @@ const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
 
           if (primaryLang.startsWith("es")) {
             const hash = window.location.hash || "";
-            window.location.replace("/es/" + hash);
+            // Same page in Spanish, not always the landing
+            window.location.replace(esPath + hash);
           }
         } catch (e) {
           // Ignore storage/redirection errors
@@ -85,5 +88,33 @@ const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
     class="min-h-screen bg-alivia-primary-deep text-alivia-neutral-dark font-sans antialiased selection:bg-alivia-secondary selection:text-alivia-primary"
 >
 <slot />
+<script>
+  // Section entrances: content stays visible if this never runs (no JS, reduced motion).
+  const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+  if (items.length && "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-revealed");
+          io.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+    );
+    // Stagger siblings that share a [data-reveal-group] parent
+    document.querySelectorAll<HTMLElement>("[data-reveal-group]").forEach((group) => {
+      group.querySelectorAll<HTMLElement>(":scope > [data-reveal]").forEach((el, i) => {
+        el.style.setProperty("--reveal-i", String(Math.min(i, 6)));
+      });
+    });
+    items.forEach((el) => {
+      // Already on screen at load: show immediately, no entrance
+      if (el.getBoundingClientRect().top < innerHeight * 0.9) el.classList.add("is-revealed");
+      io.observe(el);
+    });
+    document.documentElement.classList.add("reveal-ready");
+  }
+</script>
 </body>
 </html>

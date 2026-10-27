@@ -26,20 +26,15 @@ const perMonthText = t("plans.perMonth");
 const perMonthAnnualText = t("plans.perMonthAnnual");
 ---
 
-<section id="planes" class="py-20 bg-alivia-surface text-alivia-primary">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6">
-    <div class="text-center max-w-3xl mx-auto mb-10">
-      <span
-        class="text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark"
-      >
-        {t("plans.badge")}
-      </span>
+<section id="planes" class="scroll-mt-24 py-20 sm:py-28 bg-alivia-surface text-alivia-primary">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-10" data-reveal>
       <h2
-        class="text-3xl sm:text-4xl font-bold font-display mt-3 mb-4 text-alivia-primary"
+        class="text-[2rem] leading-[1.1] sm:text-5xl font-semibold font-display mb-5 text-alivia-primary"
       >
         {t("plans.title")}
       </h2>
-      <p class="text-base text-alivia-neutral-blue leading-relaxed">
+      <p class="text-base sm:text-lg text-alivia-neutral-blue leading-relaxed">
         {t("plans.desc")}
       </p>
     </div>
@@ -48,7 +43,7 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
         id="billing-tablist"
         role="tablist"
         aria-label={t("plans.billingLabel")}
-        class="relative inline-flex p-1.5 rounded-2xl bg-white border border-alivia-border shadow-sm"
+        class="relative flex w-full sm:w-auto sm:inline-flex p-1.5 rounded-2xl bg-white"
         data-monthly-price={monthlyPriceFormatted}
         data-annual-price={annualPriceFormatted}
         data-monthly-period={perMonthText}
@@ -57,8 +52,8 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
         <span
           id="billing-pill"
           aria-hidden="true"
-          class="absolute top-1.5 left-1.5 h-[calc(100%-12px)] rounded-xl bg-alivia-primary shadow-md
-                 transition-[width,transform] duration-300 ease-[cubic-bezier(.4,0,.2,1)] pointer-events-none"
+          class="absolute top-1.5 left-1.5 h-[calc(100%-12px)] rounded-xl bg-alivia-primary
+                 transition-[width,transform] duration-300 ease-[var(--ease-in-out)] pointer-events-none"
         ></span>
 
         <button
@@ -66,7 +61,7 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
           role="tab"
           aria-selected="true"
           tabindex="0"
-          class="billing-tab relative z-10 px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors duration-300 text-white focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
+          class="billing-tab relative z-10 flex-1 sm:flex-none min-h-11 px-3 sm:px-6 py-2.5 rounded-xl leading-tight text-sm sm:text-base font-semibold transition-colors duration-200 text-white focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
         >
           {t("plans.monthly")}
         </button>
@@ -75,17 +70,17 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
           role="tab"
           aria-selected="false"
           tabindex="-1"
-          class="billing-tab relative z-10 inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors duration-300 text-alivia-neutral-gray focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
+          class="billing-tab relative z-10 flex-1 sm:flex-none min-h-11 inline-flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-2.5 rounded-xl leading-tight text-sm sm:text-base font-semibold transition-colors duration-200 text-alivia-neutral-gray focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
         >
           {t("plans.annual")}
           <span
-            class="text-[11px] font-bold text-alivia-secondary-dark bg-alivia-secondary-mint px-2 py-0.5 rounded-full"
+            class="text-xs font-semibold text-alivia-primary bg-alivia-secondary-mint px-2 py-0.5 rounded-full whitespace-nowrap"
             >{t("plans.save2months")}</span
           >
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6" data-reveal-group>
       {plans.map((plan) => <PlanCard plan={plan} lang={lang} />)}
     </div>
   </div>

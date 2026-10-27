@@ -135,7 +135,8 @@ export const privacyDocEn: LegalDoc = {
       blocks: [
         {
           type: "paragraph",
-          html: "We retain personal data only for the duration of the service relationship. Upon account cancellation, data is deleted or irreversibly anonymized within 30 days. TODO(translation-review)",
+          // TODO(translation-review): confirm this clause before launch (was rendered on the page)
+          html: "We retain personal data only for the duration of the service relationship. Upon account cancellation, data is deleted or irreversibly anonymized within 30 days.",
         },
       ],
     },

@@ -4,7 +4,7 @@ import { useTranslations } from "../i18n/utils";
 import { getNavLinks } from "../data/nav";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 import { Image } from "astro:assets";
-import logoImg from "../assets/logo.png";
+import logoImg from "../assets/logo.webp";
 
 interface Props {
   lang: Lang;
@@ -44,7 +44,7 @@ const navLinks = getNavLinks(lang);
         <Image
           src={logoImg}
           alt="Alivia Logo"
-          class="w-20 h-20 sm:w-20 sm:h-20 object-contain group-hover:scale-105 transition-transform"
+          class="w-14 h-14 sm:w-20 sm:h-20 object-contain group-hover:scale-105 transition-transform duration-200 ease-[var(--ease-out)]"
         />
         <span
           class="text-2xl font-bold tracking-tight text-white font-display group-hover:text-alivia-secondary transition-colors"
@@ -79,7 +79,7 @@ const navLinks = getNavLinks(lang);
         navLinks.map((link) => (
           <a
             href={link.href}
-            class="nav-link relative py-1 px-1.5 text-alivia-primary-mist hover:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary"
+            class="nav-link relative py-1 px-1.5 text-alivia-primary-mist hover:text-alivia-secondary aria-[current=true]:text-alivia-secondary transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary"
           >
             {link.label}
           </a>
@@ -94,7 +94,7 @@ const navLinks = getNavLinks(lang);
         href="https://resolum-alivia.alivia-resolum.workers.dev/"
         target="_blank"
         rel="noopener noreferrer"
-        class="hidden xl:inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-xs font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark hover:text-white transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target whitespace-nowrap"
+        class="press hidden xl:inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark hover:text-white focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target whitespace-nowrap"
         aria-label={t("nav.loginAriaLabel")}
       >
         <svg
@@ -155,7 +155,7 @@ const navLinks = getNavLinks(lang);
   <!-- Mobile Drawer Menu -->
   <div
     id="mobile-menu"
-    class="hidden xl:hidden bg-alivia-primary-deep/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 transition-all duration-300 max-h-[calc(100vh-4rem)] overflow-y-auto"
+    class="hidden xl:hidden bg-alivia-primary-deep border-b border-white/10 px-6 pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain"
     aria-label={t("nav.mobileMenuLabel")}
   >
     <div class="flex flex-col gap-4 text-base font-medium text-white/90">
@@ -171,7 +171,7 @@ const navLinks = getNavLinks(lang);
         navLinks.map((link) => (
           <a
             href={link.href}
-            class="mobile-nav-link py-2 border-b border-white/10 hover:text-alivia-secondary"
+            class="mobile-nav-link flex items-center min-h-12 py-2 border-b border-white/10 hover:text-alivia-secondary active:text-alivia-secondary transition-colors"
           >
             {link.label}
           </a>
@@ -181,7 +181,7 @@ const navLinks = getNavLinks(lang);
         href="https://resolum-alivia.alivia-resolum.workers.dev/"
         target="_blank"
         rel="noopener noreferrer"
-        class="mobile-nav-link mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark transition-all shadow-md"
+        class="press mobile-nav-link mt-2 inline-flex items-center justify-center gap-2 px-5 min-h-12 rounded-full text-base font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark"
       >
         <svg
           class="w-4 h-4 shrink-0"
@@ -234,7 +234,7 @@ const navLinks = getNavLinks(lang);
     background-color: color-mix(in srgb, var(--color-alivia-primary-deep) 95%, transparent);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 10px 30px -18px rgba(8, 23, 69, 0.6);
     border-bottom-width: 1px;
     border-color: color-mix(in srgb, var(--color-alivia-primary-medium) 50%, transparent);
     padding-top: 0.5rem;
@@ -248,9 +248,29 @@ const navLinks = getNavLinks(lang);
     padding-bottom: 1rem;
   }
 
+  /* Drawer drops from the bar it belongs to; opened occasionally, so a short entrance */
+  #mobile-menu:not(.hidden) {
+    animation: menu-in 240ms var(--ease-out);
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #main-header {
       transition: none !important;
+    }
+    #mobile-menu:not(.hidden) {
+      animation-name: menu-fade;
+    }
+    @keyframes menu-fade {
+      from {
+        opacity: 0;
+      }
     }
   }
 </style>
