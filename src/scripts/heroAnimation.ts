@@ -1,186 +1,157 @@
+import { createFrameSequence, createVisibleLoop, pickFrameSize } from "./frameSequence";
+
+const TOTAL_FRAMES = 240;
+const FRAME_SIZES = [
+  { dir: "sm", width: 960 },
+  { dir: "lg", width: 1920 },
+] as const;
+
 export function initHeroAnimation(): () => void {
-  const TOTAL_FRAMES = 240;
   const canvas = document.getElementById("hero-canvas") as HTMLCanvasElement | null;
   const scrollTrack = document.getElementById("scroll-track");
-  const resetScrollBtn = document.getElementById("reset-scroll-btn");
 
   if (!canvas || !scrollTrack) return () => {};
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return () => {};
 
-  const card1 = document.getElementById("story-card-1");
-  const card2 = document.getElementById("story-card-2");
-  const card3 = document.getElementById("story-card-3");
-  const card4 = document.getElementById("story-card-4");
+  const cards = ["story-card-1", "story-card-2", "story-card-3", "story-card-4"].map((id) =>
+    document.getElementById(id),
+  );
 
-  const images: HTMLImageElement[] = [];
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const LERP = prefersReducedMotion ? 1 : 0.12;
+
   let targetFrame = 0;
   let currentFrame = 0;
-  let isAutoplay = false;
-  let rafId: number | null = null;
   let lastRenderedFrame = -1;
+  let drawnIndex = -1;
+  let trackTop = 0;
+  let trackScrollable = 0;
+  let isMobile = window.innerWidth < 768;
+  let lastMaskStop = -1;
+  const cardStates: (boolean | undefined)[] = [];
 
-  const getFrameUrl = (index: number) => {
-    const paddedIndex = String(index).padStart(3, "0");
-    return `/hero/ezgif-frame-${paddedIndex}.png`;
-  };
+  // Width (CSS px) the frame is drawn at to cover the viewport.
+  const coverWidth = (ratio: number) => Math.max(window.innerWidth, window.innerHeight * ratio);
+  const dpr = () => Math.min(window.devicePixelRatio || 1, 2);
+
+  const sequence = createFrameSequence(pickFrameSize(FRAME_SIZES, coverWidth(16 / 9) * dpr()), {
+    basePath: "/hero/",
+    total: TOTAL_FRAMES,
+    onFrame: (i) => {
+      // Redraw only if the new frame is closer to what should be on screen.
+      const want = Math.round(currentFrame);
+      if (drawnIndex === -1 || Math.abs(i - want) < Math.abs(drawnIndex - want)) {
+        lastRenderedFrame = -1;
+        loop.wake();
+      }
+    },
+  });
 
   const renderFrame = (frameIndex: number) => {
-    if (!ctx) return;
-    let img = images[frameIndex];
-
-    if (!img || !img.complete || img.naturalWidth === 0) {
-      for (let j = frameIndex - 1; j >= 0; j--) {
-        if (images[j] && images[j].complete && images[j].naturalWidth > 0) {
-          img = images[j];
-          break;
-        }
-      }
-    }
-    if (!img || !img.complete || img.naturalWidth === 0) {
-      for (let j = frameIndex + 1; j < TOTAL_FRAMES; j++) {
-        if (images[j] && images[j].complete && images[j].naturalWidth > 0) {
-          img = images[j];
-          break;
-        }
-      }
-    }
-
-    if (!img || !img.complete || img.naturalWidth === 0) return;
+    const frame = sequence.get(frameIndex);
+    if (!frame) return;
+    const { img } = frame;
 
     const canvasW = canvas.width;
     const canvasH = canvas.height;
+    const imgRatio = img.naturalWidth / img.naturalHeight;
 
-    ctx.clearRect(0, 0, canvasW, canvasH);
-
-    const imgW = img.naturalWidth;
-    const imgH = img.naturalHeight;
-    const imgRatio = imgW / imgH;
-    const canvasRatio = canvasW / canvasH;
-
-    let drawW: number, drawH: number, offsetX: number, offsetY: number;
-
-    if (canvasRatio > imgRatio) {
+    let drawW: number, drawH: number;
+    if (canvasW / canvasH > imgRatio) {
       drawW = canvasW;
       drawH = canvasW / imgRatio;
-      offsetX = 0;
-      offsetY = (canvasH - drawH) / 2;
     } else {
       drawH = canvasH;
       drawW = canvasH * imgRatio;
-      offsetX = canvasH * imgRatio > canvasW ? (canvasW - (canvasH * imgRatio)) / 2 : (canvasW - drawW) / 2;
-      offsetY = 0;
     }
 
-    ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+    // Resizing the canvas resets this, so set it on every draw.
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, (canvasW - drawW) / 2, (canvasH - drawH) / 2, drawW, drawH);
+    drawnIndex = frame.index;
+  };
+
+  const measure = () => {
+    const rect = scrollTrack.getBoundingClientRect();
+    trackTop = rect.top + window.scrollY;
+    trackScrollable = rect.height - window.innerHeight;
   };
 
   const resizeCanvas = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    renderFrame(Math.round(currentFrame));
+    isMobile = window.innerWidth < 768;
+    // Never back the canvas with more pixels than the frame itself has.
+    const scale = Math.min(dpr(), sequence.width / coverWidth(sequence.ratio));
+    canvas.width = Math.round(window.innerWidth * scale);
+    canvas.height = Math.round(window.innerHeight * scale);
+    measure();
+    lastRenderedFrame = -1;
+    loop.wake();
   };
 
   const getScrollProgress = () => {
-    if (!scrollTrack) return 0;
-    const rect = scrollTrack.getBoundingClientRect();
-    const totalScrollableHeight = rect.height - window.innerHeight;
-    if (totalScrollableHeight <= 0) return 0;
+    if (trackScrollable <= 0) return 0;
+    return Math.max(0, Math.min(1, (window.scrollY - trackTop) / trackScrollable));
+  };
 
-    const scrollY = -rect.top;
-    return Math.max(0, Math.min(1, scrollY / totalScrollableHeight));
+  const setCardState = (card: HTMLElement | null, index: number, visible: boolean) => {
+    if (!card || cardStates[index] === visible) return;
+    cardStates[index] = visible;
+    const hiddenY = isMobile ? "16px" : "20px";
+    card.style.opacity = visible ? "1" : "0";
+    card.style.transform = prefersReducedMotion ? "none" : `translateY(${visible ? "0px" : hiddenY})`;
+    card.style.visibility = visible ? "visible" : "hidden";
+    card.style.pointerEvents = visible ? "auto" : "none";
   };
 
   const updateOverlayCards = (progress: number) => {
-    let maskFactor = 0;
-    if (progress > 0.88) {
-      maskFactor = Math.min(1, (progress - 0.88) / 0.12);
+    const maskFactor = progress > 0.88 ? Math.min(1, (progress - 0.88) / 0.12) : 0;
+    const maskStop = Math.round((100 - maskFactor * 35) * 10) / 10;
+    if (maskStop !== lastMaskStop) {
+      lastMaskStop = maskStop;
+      canvas.style.setProperty("--mask-stop", `${maskStop}%`);
     }
-    const maskStop = 100 - maskFactor * 35;
-    canvas.style.setProperty("--mask-stop", `${maskStop}%`);
 
-    const isMobile = window.innerWidth < 768;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const hiddenY = prefersReducedMotion ? "0px" : (isMobile ? "16px" : "20px");
-
-    const setCardState = (card: HTMLElement | null, visible: boolean) => {
-      if (!card) return;
-      if (visible) {
-        card.style.opacity = "1";
-        card.style.transform = prefersReducedMotion ? "none" : "translateY(0px)";
-        card.style.pointerEvents = "auto";
-      } else {
-        card.style.opacity = "0";
-        card.style.transform = prefersReducedMotion ? "none" : `translateY(${hiddenY})`;
-        card.style.pointerEvents = "none";
-      }
-    };
-
-    setCardState(card1, progress <= 0.22);
-    setCardState(card2, progress >= 0.25 && progress <= 0.48);
-    setCardState(card3, progress >= 0.52 && progress <= 0.75);
-    setCardState(card4, progress >= 0.78);
+    setCardState(cards[0], 0, progress <= 0.22);
+    setCardState(cards[1], 1, progress >= 0.25 && progress <= 0.48);
+    setCardState(cards[2], 2, progress >= 0.52 && progress <= 0.75);
+    setCardState(cards[3], 3, progress >= 0.78);
   };
 
-  const animateLoop = () => {
-    rafId = requestAnimationFrame(animateLoop);
+  // Returns true while there is still motion left to animate.
+  const tick = () => {
+    const progress = getScrollProgress();
+    targetFrame = progress * (TOTAL_FRAMES - 1);
+    updateOverlayCards(progress);
 
-    if (!isAutoplay) {
-      const progress = getScrollProgress();
-      targetFrame = progress * (TOTAL_FRAMES - 1);
-      updateOverlayCards(progress);
-    } else {
-      targetFrame += 0.4;
-      if (targetFrame >= TOTAL_FRAMES - 1) {
-        targetFrame = 0;
-      }
-      const synthProgress = targetFrame / (TOTAL_FRAMES - 1);
-      updateOverlayCards(synthProgress);
-    }
-    currentFrame += (targetFrame - currentFrame) * 0.12;
+    currentFrame += (targetFrame - currentFrame) * LERP;
+    if (Math.abs(targetFrame - currentFrame) < 0.01) currentFrame = targetFrame;
 
     const frameToDraw = Math.round(currentFrame);
     if (frameToDraw !== lastRenderedFrame) {
       renderFrame(frameToDraw);
       lastRenderedFrame = frameToDraw;
     }
+    return currentFrame !== targetFrame;
   };
 
-  const handleResetScroll = () => {
-    isAutoplay = false;
-    window.scrollTo({
-      top: scrollTrack.offsetTop,
-      behavior: "smooth",
-    });
-  };
+  const loop = createVisibleLoop(scrollTrack, tick);
+  const resizeObserver = new ResizeObserver(measure);
 
+  window.addEventListener("scroll", loop.wake, { passive: true });
   window.addEventListener("resize", resizeCanvas, { passive: true });
-  if (resetScrollBtn) {
-    resetScrollBtn.addEventListener("click", handleResetScroll);
-  }
+  resizeObserver.observe(document.body);
 
-  // Preload images and start loop
   resizeCanvas();
-  rafId = requestAnimationFrame(animateLoop);
-
-  for (let i = 0; i < TOTAL_FRAMES; i++) {
-    const img = new Image();
-    img.src = getFrameUrl(i + 1);
-    img.onload = () => {
-      images[i] = img;
-      if (i === 0) {
-        renderFrame(0);
-      }
-    };
-    images.push(img);
-  }
+  tick();
 
   // Cleanup handler for View Transitions / unmounting
   return () => {
-    if (rafId !== null) cancelAnimationFrame(rafId);
+    loop.destroy();
+    sequence.destroy();
+    resizeObserver.disconnect();
+    window.removeEventListener("scroll", loop.wake);
     window.removeEventListener("resize", resizeCanvas);
-    if (resetScrollBtn) resetScrollBtn.removeEventListener("click", handleResetScroll);
   };
 }

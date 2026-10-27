@@ -61,9 +61,16 @@ export function initNavBar(): () => void {
     setMobileMenuState(false);
   };
 
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (e.key !== "Escape" || toggleBtn?.getAttribute("aria-expanded") !== "true") return;
+    setMobileMenuState(false);
+    toggleBtn?.focus();
+  };
+
   if (toggleBtn) {
     toggleBtn.addEventListener("click", handleToggleClick);
   }
+  document.addEventListener("keydown", handleKeydown);
 
   mobileLinks.forEach((link) => {
     link.addEventListener("click", handleMobileLinkClick);
@@ -92,13 +99,9 @@ export function initNavBar(): () => void {
         const id = entry.target.getAttribute("id");
         navLinks.forEach((link) => {
           const href = link.getAttribute("href");
-          if (href === `#${id}`) {
-            link.classList.add("text-alivia-secondary", "font-bold");
-            link.classList.remove("text-alivia-primary-mist", "text-white/90");
-          } else {
-            link.classList.remove("text-alivia-secondary", "font-bold");
-            link.classList.add("text-alivia-primary-mist");
-          }
+          // Colour only: toggling weight would shift every link's width
+          if (href === `#${id}`) link.setAttribute("aria-current", "true");
+          else link.removeAttribute("aria-current");
         });
       }
     });
@@ -108,6 +111,7 @@ export function initNavBar(): () => void {
 
   return () => {
     if (toggleBtn) toggleBtn.removeEventListener("click", handleToggleClick);
+    document.removeEventListener("keydown", handleKeydown);
     mobileLinks.forEach((link) => link.removeEventListener("click", handleMobileLinkClick));
     window.removeEventListener("scroll", scheduleUpdate);
     window.removeEventListener("resize", scheduleUpdate);
