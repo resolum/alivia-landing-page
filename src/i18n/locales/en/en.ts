@@ -9,28 +9,23 @@ export const en = {
   'nav.mobileMenuToggle': 'Open navigation menu',
   'nav.mobileMenuLabel': 'Mobile menu',
   // hero
-  'hero.badge': 'Voice-Controlled Home Automation \u2022 100\u202f% Local Processing (Edge)',
   'hero.title': 'Voice-controlled home automation, no Internet required',
   'hero.desc':
     'Alivia enables people with severe motor disabilities to control doors, lights, and climate through natural voice commands processed locally \u2014 providing remote supervision and peace\u00a0of\u00a0mind to their caregivers.',
   'hero.ctaPlans': 'View plans and equipment',
   'hero.ctaHowItWorks': 'Learn how it works',
   'hero.scrollHint': 'Scroll down to explore',
-  'hero.card2.badge': 'Local Edge Processing',
   'hero.card2.title': 'Instant Response Without Internet',
   'hero.card2.desc':
     'Every interaction is processed directly on the local device in milliseconds, ensuring total privacy and uninterrupted operation.',
-  'hero.card3.badge': 'Intelligent Adaptive Control',
   'hero.card3.title': 'Seamless Home Integration',
   'hero.card3.desc':
     'Lights, access points, and climate controlled in real time with immediate auditory and visual confirmation.',
-  'hero.card4.badge': 'Complete Experience',
   'hero.card4.title': 'Ready to explore the equipment?',
   'hero.card4.desc':
     'Discover how Alivia integrates elegance, speed, and digital sovereignty into an accessible system designed for the home.',
   'hero.card4.cta': 'View full equipment',
   // problem
-  'problem.badge': 'The problem we address',
   'problem.title': 'Dependence should not decide how you live at home',
   'problem.desc':
     'When a severe motor disability limits movement, simple tasks such as turning on a light, opening a door, or closing a window depend on someone else. That wait reduces autonomy and increases worry across the whole family.',
@@ -48,7 +43,6 @@ export const en = {
   'problem.cta': 'See how it works',
   'problem.cardListLabel': 'Situations Alivia helps solve',
   // howItWorks
-  'howItWorks.badge': 'How it works',
   'howItWorks.title': 'From voice to action in seconds',
   'howItWorks.desc':
     'Alivia processes every command inside the home, without depending on the Internet, and confirms the action to the assisted person and their care network.',
@@ -67,8 +61,29 @@ export const en = {
   'howItWorks.note':
     '100% local: no Internet, no cameras, and no voice sent outside the home.',
   'howItWorks.stepsLabel': 'Alivia operating steps',
+  'howItWorks.pickLabel': 'Pick a command and follow its path',
+  'howItWorks.hub.where': 'Processed at home',
+  'howItWorks.hub.offline': 'No Internet',
+  'howItWorks.hub.action': 'Action',
+  'howItWorks.hub.target': 'Target',
+  'howItWorks.app.name': 'Caregiver app',
+  'howItWorks.app.now': 'Now',
+  'howItWorks.cmd.light.say': 'Turn on the light',
+  'howItWorks.cmd.light.action': 'Turn on',
+  'howItWorks.cmd.light.target': 'Bedroom light',
+  'howItWorks.cmd.light.state': 'On',
+  'howItWorks.cmd.light.reply': 'Done, the light is on.',
+  'howItWorks.cmd.door.say': 'Open the door',
+  'howItWorks.cmd.door.action': 'Open',
+  'howItWorks.cmd.door.target': 'Front door',
+  'howItWorks.cmd.door.state': 'Open',
+  'howItWorks.cmd.door.reply': 'Done, the door is open.',
+  'howItWorks.cmd.window.say': 'Open the window',
+  'howItWorks.cmd.window.action': 'Open',
+  'howItWorks.cmd.window.target': 'Living room window',
+  'howItWorks.cmd.window.state': 'Open',
+  'howItWorks.cmd.window.reply': 'Done, the window is open.',
   // includedDevices
-  'includedDevices.badge': 'Included equipment',
   'includedDevices.title': 'The devices that make autonomy possible',
   'includedDevices.desc':
     'Every Alivia kit includes the modules needed to act on the environment. These are the four main components.',
@@ -93,7 +108,6 @@ export const en = {
     'The kit composition is adjusted to each home during installation. Check the plans for available options.',
   'includedDevices.plansCta': 'See plans and equipment',
   // twoLives
-  'twoLives.badge': 'An equitable impact at home',
   'twoLives.title': 'Two lives transformed in parallel',
   'twoLives.desc':
     'True autonomy doesn\u2019t only empower the person receiving support; it also returns genuine rest and peace\u00a0of\u00a0mind to those who provide care.',
@@ -131,7 +145,6 @@ export const en = {
   'twoLives.caregiver.quoteAttrib':
     '\u2014 Roc\u00edo\u00a0M., family caregiver in San Borja, Lima',
   // devices
-  'devices.badge': 'Embedded Engineering \u00b7 Zero Forced Subscription',
   'devices.title': 'The Alivia Ecosystem in Your Room',
   'devices.desc':
     'Interoperable modules with no exposed cables, designed to biomedical standards.',
@@ -140,30 +153,15 @@ export const en = {
   'devices.hotspot.closeLabel': 'Close',
   'devices.hotspot.infoPrefix': 'Component info',
   // media
-  'media.badge': 'Demostración audiovisual',
   'media.title': 'Alivia in action: home experience',
   'media.desc':
     'Product demo video with captions in Spanish and English, plus a full transcript as an accessible text alternative.',
   'media.videoTitle': 'Alivia product presentation',
   'media.videoClick': 'Play the video to discover how Alivia works',
-  'media.videoDuration': 'Duration: 00:32 • Spanish and English captions',
   'media.videoUnavailable':
     'The video could not be played. You can read the full transcript, which contains the same information.',
   'media.videoFallbackLink': 'View text alternative',
   'media.videoExternalLink': 'Open video in a new tab',
-  'media.showTranscript': 'View Full Transcript',
-  'media.hideTranscript': 'Hide Transcript',
-  'media.transcriptLabel': 'Full text equivalent of the video',
-  'media.transcriptTitle': 'Full transcript of the product video',
-  'media.transcriptAltLabel': 'Accessible text alternative',
-  'media.transcript.p1':
-    '[00:00\u00a0\u2013\u00a000:08] Alivia is a voice-assisted home automation system for people with severe motor disabilities.',
-  'media.transcript.p2':
-    '[00:08\u00a0\u2013\u00a000:16] A far-field microphone captures the command and the Hub processes it locally, without relying on the Internet.',
-  'media.transcript.p3':
-    '[00:16\u00a0\u2013\u00a000:24] The light, door, and window modules perform the requested action in milliseconds.',
-  'media.transcript.p4':
-    '[00:24\u00a0\u2013\u00a000:32] The person gains autonomy and safety, while the caregiver receives confirmation and alerts in the app.',
   // testimonials
   'testimonials.badge': 'Real testimonials',
   'testimonials.count': '99',
@@ -174,31 +172,23 @@ export const en = {
   'testimonials.privacyNote':
     'Protected under Law\u00a0No.\u00a029733 on Personal Data Protection',
   // team
-  'team.badge': 'Multidisciplinary Team',
   'team.title': 'Behind Alivia',
   'team.desc':
     'Software Engineering students dedicated to developing technology and high-impact solutions.',
-  'team.aboutBadge': 'About the Team',
   'team.videoTitle': 'Team presentation',
   'team.videoDescription':
     'Meet the people behind Alivia and the main responsibility of each team member.',
   'team.videoPlay': 'Play video',
   'team.videoClick': 'Watch the Alivia team presentation',
   'team.videoIframeTitle': 'Alivia team presentation video',
-  'team.videoTemporaryBadge': 'Temporary video',
-  'team.videoTemporaryNote':
-    'Temporary video. It will be replaced by the official team presentation once it is recorded.',
   'team.videoUnavailable':
     'The team video could not be played. You can read the text summary with the team members and their responsibilities.',
   'team.videoShowFallback': 'View team summary',
-  'team.videoHideFallback': 'Hide team summary',
-  'team.videoExternalLink': 'Open video on YouTube',
   'team.videoFallbackTitle': 'Team text summary',
   'team.videoFallbackDesc':
     'These are the people behind Alivia and their main responsibility.',
   'team.videoMembersLabel': 'Alivia team members and their responsibilities',
   // plans
-  'plans.badge': 'No surprises or fine print',
   'plans.title': 'Plans Designed for Every Need',
   'plans.desc':
     'Professionally certified installation without breaking walls, with free removal if your loved one doesn\u2019t adapt.',
@@ -213,7 +203,6 @@ export const en = {
   'plans.roomsLabel': 'Rooms required (1 mic per room):',
   'plans.doorsLabel': 'Doors requiring motorization:',
   // download
-  'download.badge': 'Free companion tool',
   'download.title': 'Download the Alivia Caregivers App',
   'download.desc':
     'Monitor access points, receive real-time emergency alerts, and coordinate care shifts simply and privately.',
@@ -221,10 +210,7 @@ export const en = {
   'download.googlePlayBadge': 'Get it on',
   'download.appStoreLabel': 'Download on App Store',
   'download.appStoreBadge': 'Get it on',
-  'download.androidTag': 'Alivia Android',
-  'download.iosTag': 'Alivia iOS',
   // faq
-  'faq.badge': 'Clarity and certainty',
   'faq.title': 'Frequently Asked Questions',
   'faq.desc':
     'Answers to your questions about technical reliability, privacy, and home adaptation.',
@@ -247,9 +233,6 @@ export const en = {
   'footer.link.testimonials': 'Real Testimonials',
   'footer.link.faq': 'Frequently Asked Questions',
   'footer.link.caregiverApp': 'Caregiver App Access',
-  'footer.support.title': '24/7 Assistive Technical Support',
-  'footer.support.desc':
-    'Priority care for registered users and families.',
   'footer.copyright':
     '\u00a9\u00a02026 Alivia Assistive Technology. All rights reserved.',
   'footer.privacy': 'Privacy Policy',
@@ -260,8 +243,6 @@ export const en = {
   'legal.termsTab': 'Terms and Conditions',
   'legal.lastUpdated': 'Last updated:',
   'legal.version': 'Version',
-  'legal.expandAll': 'Expand all',
-  'legal.collapseAll': 'Collapse all',
   'legal.comfortableReading': 'Comfortable reading',
   'legal.tableOfContents': 'Table of contents',
   'legal.readingTime': 'min read',
@@ -269,7 +250,6 @@ export const en = {
   'legal.supportBoxDesc': 'If you require phone support or accessible formats:',
   'legal.badgeWcag': 'WCAG 2.1 AA Accessibility',
   'legal.badgeEncryption': '100% Local Processing',
-  'legal.badgeRegistry': 'Data Bank Registry N° 18492',
   'legal.badgeLaw': 'Law N° 29733 (Peru)',
   'legal.print': 'Print document',
   'legal.skipLink': 'Skip to legal content',

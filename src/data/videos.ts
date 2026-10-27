@@ -23,7 +23,7 @@ export interface VideoItem {
 }
 
 const PRODUCT_VIDEO = "/videos/alivia-producto.mp4";
-const PRODUCT_POSTER = "/videos/alivia-producto-poster.jpg";
+const PRODUCT_POSTER = "/videos/alivia-producto-poster.webp";
 
 export const getProductVideo = (lang: Lang): VideoItem => ({
   id: "product",

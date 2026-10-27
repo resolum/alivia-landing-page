@@ -167,7 +167,8 @@ export const termsDocEs: LegalDoc = {
       blocks: [
         {
           type: "paragraph",
-          html: "Cualquier cambio relevante a las condiciones del contrato será notificado a través de los medios oficiales con 15 días de anticipación. TODO(legal-review)",
+          // TODO(legal-review): confirm this clause before launch (was rendered on the page)
+          html: "Cualquier cambio relevante a las condiciones del contrato será notificado a través de los medios oficiales con 15 días de anticipación.",
         },
       ],
     },

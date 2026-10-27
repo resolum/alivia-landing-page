@@ -11,28 +11,23 @@ export const es = {
   'nav.mobileMenuToggle': 'Abrir menú de navegación',
   'nav.mobileMenuLabel': 'Menú móvil',
   // hero
-  'hero.badge': 'Domótica por Voz Asistida • Funcionamiento 100% Local (Edge)',
   'hero.title': 'Autonomía por voz en el hogar sin depender de Internet',
   'hero.desc':
     'Alivia permite a personas con discapacidad motora severa controlar puertas, luces y clima mediante comandos vocales naturales en procesamiento local, brindando supervisión remota y serenidad a sus cuidadores.',
   'hero.ctaPlans': 'Ver planes y equipamiento',
   'hero.ctaHowItWorks': 'Conocer cómo funciona',
   'hero.scrollHint': 'Desplace hacia abajo para interactuar',
-  'hero.card2.badge': 'Procesamiento Local Edge',
   'hero.card2.title': 'Respuesta Instantánea sin Internet',
   'hero.card2.desc':
     'Cada interacción se procesa directamente en el dispositivo local en milisegundos, garantizando privacidad total y operabilidad ininterrumpida.',
-  'hero.card3.badge': 'Control Adaptativo Inteligente',
   'hero.card3.title': 'Integración Fluida en el Hogar',
   'hero.card3.desc':
     'Supervisión de luces, accesos y clima coordinados en tiempo real con confirmación auditiva y visual inmediata.',
-  'hero.card4.badge': 'Experiencia Completa',
   'hero.card4.title': '¿Listo para conocer el equipamiento?',
   'hero.card4.desc':
     'Descubra cómo Alivia integra elegancia, velocidad y soberanía digital en un sistema accesible diseñado para el hogar.',
   'hero.card4.cta': 'Ver equipamiento completo',
   // problem
-  'problem.badge': 'El problema que atendemos',
   'problem.title': 'La dependencia no debería decidir cómo vives tu hogar',
   'problem.desc':
     'Cuando una discapacidad motora severa limita el movimiento, tareas tan simples como encender la luz, abrir una puerta o cerrar una ventana pasan a depender de otra persona. Esa espera reduce la autonomía y aumenta la preocupación de toda la familia.',
@@ -50,7 +45,6 @@ export const es = {
   'problem.cta': 'Conocer cómo funciona',
   'problem.cardListLabel': 'Situaciones que Alivia ayuda a resolver',
   // howItWorks
-  'howItWorks.badge': 'Cómo funciona',
   'howItWorks.title': 'De la voz a la acción en segundos',
   'howItWorks.desc':
     'Alivia procesa cada orden dentro del hogar, sin depender de Internet, y confirma la acción a la persona asistida y a su red de cuidado.',
@@ -68,8 +62,29 @@ export const es = {
     'La persona escucha una respuesta clara y la app del cuidador registra el estado del hogar y las alertas.',
   'howItWorks.note': '100% local: sin Internet, sin cámaras y sin enviar tu voz fuera de casa.',
   'howItWorks.stepsLabel': 'Pasos de funcionamiento de Alivia',
+  'howItWorks.pickLabel': 'Elige una orden y sigue su recorrido',
+  'howItWorks.hub.where': 'Procesado en casa',
+  'howItWorks.hub.offline': 'Sin Internet',
+  'howItWorks.hub.action': 'Acción',
+  'howItWorks.hub.target': 'Destino',
+  'howItWorks.app.name': 'App del cuidador',
+  'howItWorks.app.now': 'Ahora',
+  'howItWorks.cmd.light.say': 'Enciende la luz',
+  'howItWorks.cmd.light.action': 'Encender',
+  'howItWorks.cmd.light.target': 'Luz del dormitorio',
+  'howItWorks.cmd.light.state': 'Encendida',
+  'howItWorks.cmd.light.reply': 'Listo, la luz está encendida.',
+  'howItWorks.cmd.door.say': 'Abre la puerta',
+  'howItWorks.cmd.door.action': 'Abrir',
+  'howItWorks.cmd.door.target': 'Puerta principal',
+  'howItWorks.cmd.door.state': 'Abierta',
+  'howItWorks.cmd.door.reply': 'Listo, la puerta está abierta.',
+  'howItWorks.cmd.window.say': 'Abre la ventana',
+  'howItWorks.cmd.window.action': 'Abrir',
+  'howItWorks.cmd.window.target': 'Ventana de la sala',
+  'howItWorks.cmd.window.state': 'Abierta',
+  'howItWorks.cmd.window.reply': 'Listo, la ventana está abierta.',
   // includedDevices
-  'includedDevices.badge': 'Equipamiento incluido',
   'includedDevices.title': 'Los dispositivos que hacen posible la autonomía',
   'includedDevices.desc':
     'Cada kit de Alivia integra los módulos necesarios para actuar sobre el entorno. Estos son los cuatro componentes principales.',
@@ -94,7 +109,6 @@ export const es = {
     'La composición del kit se ajusta a cada hogar durante la instalación. Consulta los planes para conocer las opciones disponibles.',
   'includedDevices.plansCta': 'Ver planes y equipamiento',
   // twoLives
-  'twoLives.badge': 'Un impacto equitativo en el hogar',
   'twoLives.title': 'Dos vidas transformadas en paralelo',
   'twoLives.desc':
     'La verdadera autonomía no solo emancipa a quien recibe asistencia; devuelve el sosiego y el descanso genuino a quien cuida.',
@@ -132,7 +146,6 @@ export const es = {
   'twoLives.caregiver.quoteAttrib':
     '— Rocío M., cuidadora familiar en San Borja, Lima',
   // devices
-  'devices.badge': 'Ingeniería Embebida · Cero Suscripción Forzosa',
   'devices.title': 'El Ecosistema Alivia en tu Habitación',
   'devices.desc':
     'Módulos interoperables sin cables expuestos, diseñados con estándares biomédicos.',
@@ -141,30 +154,15 @@ export const es = {
   'devices.hotspot.closeLabel': 'Cerrar',
   'devices.hotspot.infoPrefix': 'Información de',
   // media
-  'media.badge': 'Demostración audiovisual',
   'media.title': 'Alivia en acción: experiencia en el hogar',
   'media.desc':
     'Video demostrativo del producto con subtítulos en español e inglés y transcripción completa como alternativa textual accesible.',
   'media.videoTitle': 'Presentación del producto Alivia',
   'media.videoClick': 'Reproduce el video para conocer cómo funciona Alivia',
-  'media.videoDuration': 'Duración: 00:32 • Subtítulos en español e inglés',
   'media.videoUnavailable':
     'El video no pudo reproducirse. Puedes consultar la transcripción completa, que contiene la misma información.',
   'media.videoFallbackLink': 'Ver transcripción alternativa',
   'media.videoExternalLink': 'Abrir video en una nueva pestaña',
-  'media.showTranscript': 'Ver Transcripción Completa',
-  'media.hideTranscript': 'Ocultar Transcripción',
-  'media.transcriptLabel': 'Transcripción textual equivalente del video',
-  'media.transcriptTitle': 'Transcripción completa del video del producto',
-  'media.transcriptAltLabel': 'Texto alternativo accesible',
-  'media.transcript.p1':
-    '[00:00 – 00:08] Alivia es un sistema de domótica asistida por voz para personas con discapacidad motora severa.',
-  'media.transcript.p2':
-    '[00:08 – 00:16] Un micrófono de largo alcance capta la orden y el Hub la procesa localmente, sin depender de Internet.',
-  'media.transcript.p3':
-    '[00:16 – 00:24] Los módulos de luz, puerta y ventana ejecutan la acción solicitada en milisegundos.',
-  'media.transcript.p4':
-    '[00:24 – 00:32] La persona gana autonomía y seguridad, mientras su cuidador recibe confirmación y alertas en la aplicación.',
   // testimonials
   'testimonials.badge': 'Testimonios reales',
   'testimonials.count': '99',
@@ -175,31 +173,23 @@ export const es = {
   'testimonials.privacyNote':
     'Protegido bajo Ley N° 29733 de Protección de Datos Personales',
   // team
-  'team.badge': 'Equipo Multidisciplinario',
   'team.title': 'Detrás de Alivia',
   'team.desc':
     'Estudiantes de Ingeniería de Software dedicados al desarrollo de tecnología y soluciones de alto impacto.',
-  'team.aboutBadge': 'Sobre el Equipo',
   'team.videoTitle': 'Presentación del equipo',
   'team.videoDescription':
     'Conoce a las personas que desarrollan Alivia y la responsabilidad principal de cada integrante.',
   'team.videoPlay': 'Reproducir video',
   'team.videoClick': 'Mira la presentación del equipo de Alivia',
   'team.videoIframeTitle': 'Video de presentación del equipo de Alivia',
-  'team.videoTemporaryBadge': 'Video temporal',
-  'team.videoTemporaryNote':
-    'Video temporal. Se reemplazará por la presentación oficial del equipo cuando esté grabada.',
   'team.videoUnavailable':
     'El video del equipo no pudo reproducirse. Puedes revisar el resumen textual con los integrantes y sus responsabilidades.',
   'team.videoShowFallback': 'Ver resumen del equipo',
-  'team.videoHideFallback': 'Ocultar resumen del equipo',
-  'team.videoExternalLink': 'Abrir video en YouTube',
   'team.videoFallbackTitle': 'Resumen textual del equipo',
   'team.videoFallbackDesc':
     'Estas son las personas que respaldan Alivia y su responsabilidad principal.',
   'team.videoMembersLabel': 'Integrantes del equipo Alivia y sus responsabilidades',
   // plans
-  'plans.badge': 'Sin sorpresas ni letras pequeñas',
   'plans.title': 'Planes Diseñados para Cada Necesidad',
   'plans.desc':
     'Instalación profesional certificada sin romper paredes, con retiro sin costo si tu ser querido no se adapta.',
@@ -214,7 +204,6 @@ export const es = {
   'plans.roomsLabel': 'Habitaciones requeridas (1 mic por habitación):',
   'plans.doorsLabel': 'Puertas con motorización requerida:',
   // download
-  'download.badge': 'Herramienta gratuita de acompañamiento',
   'download.title': 'Descarga la App Alivia Cuidadores',
   'download.desc':
     'Monitorea accesos, recibe alertas de emergencia en tiempo real y coordina turnos de cuidado de forma sencilla y privada.',
@@ -222,10 +211,7 @@ export const es = {
   'download.googlePlayBadge': 'Disponible en',
   'download.appStoreLabel': 'Descargar en App Store',
   'download.appStoreBadge': 'Consíguelo en',
-  'download.androidTag': 'Alivia Android',
-  'download.iosTag': 'Alivia iOS',
   // faq
-  'faq.badge': 'Claridad y certeza',
   'faq.title': 'Preguntas Frecuentes',
   'faq.desc':
     'Resolvemos tus dudas sobre fiabilidad técnica, privacidad y adaptación en el hogar.',
@@ -248,9 +234,6 @@ export const es = {
   'footer.link.testimonials': 'Testimonios Reales',
   'footer.link.faq': 'Preguntas Frecuentes',
   'footer.link.caregiverApp': 'Acceso Aplicación Cuidadores',
-  'footer.support.title': 'Soporte Técnico Asistencial 24/7',
-  'footer.support.desc':
-    'Atención prioritaria para usuarios y familias registradas.',
   'footer.copyright':
     '© 2026 Alivia Tecnología Asistencial. Todos los derechos reservados.',
   'footer.privacy': 'Política de Privacidad',
@@ -261,8 +244,6 @@ export const es = {
   'legal.termsTab': 'Términos y Condiciones',
   'legal.lastUpdated': 'Última actualización:',
   'legal.version': 'Versión',
-  'legal.expandAll': 'Abrir todo',
-  'legal.collapseAll': 'Cerrar todo',
   'legal.comfortableReading': 'Lectura cómoda',
   'legal.tableOfContents': 'Índice del documento',
   'legal.readingTime': 'min de lectura',
@@ -270,7 +251,6 @@ export const es = {
   'legal.supportBoxDesc': 'Si requieres soporte por llamada o formatos de accesibilidad:',
   'legal.badgeWcag': 'Accesibilidad WCAG 2.1 AA',
   'legal.badgeEncryption': 'Procesamiento 100% Local',
-  'legal.badgeRegistry': 'Registro N° 18492 (LPDP)',
   'legal.badgeLaw': 'Ley N° 29733 (Perú)',
   'legal.print': 'Imprimir documento',
   'legal.skipLink': 'Saltar al contenido legal',

@@ -15,27 +15,23 @@ const productVideo = getProductVideo(lang);
 
 <section
   id="audiovisual"
-  class="py-20 bg-alivia-tertiary text-alivia-neutral-dark border-t border-alivia-tertiary-medium"
+  class="scroll-mt-24 py-20 sm:py-28 bg-alivia-tertiary text-alivia-neutral-dark"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center max-w-3xl mx-auto mb-12">
-      <span
-        class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
-      >
-        {t("media.badge")}
-      </span>
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-12" data-reveal>
       <h2
-        class="text-3xl sm:text-4xl font-semibold font-display mt-4 mb-4 text-alivia-primary"
+        class="text-[2rem] leading-[1.1] sm:text-5xl font-semibold font-display mb-5 text-alivia-primary"
       >
         {t("media.title")}
       </h2>
-      <p class="text-base sm:text-lg text-alivia-neutral-gray">
+      <p class="text-base sm:text-lg text-alivia-neutral-gray leading-relaxed">
         {t("media.desc")}
       </p>
     </div>
 
     <div
-      class="max-w-4xl mx-auto overflow-hidden rounded-3xl bg-alivia-primary-deep text-white shadow-2xl border border-alivia-primary-medium"
+      class="max-w-5xl mx-auto overflow-hidden rounded-3xl bg-alivia-primary-deep text-white"
+      data-reveal
     >
       <VideoPlayer
         id="product-video"

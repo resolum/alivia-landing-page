@@ -12,18 +12,18 @@ interface Props {
 const { blocks, lang } = Astro.props;
 ---
 
-<div class="space-y-4">
+<div class="space-y-5">
   {
     blocks.map((block) => {
       if (block.type === "paragraph") {
-        return <p class="leading-relaxed text-alivia-neutral-dark" set:html={block.html} />;
+        return <p class="max-w-[62ch] leading-[1.7] text-alivia-neutral-dark" set:html={block.html} />;
       }
 
       if (block.type === "list") {
         return (
-          <ul class="list-disc list-inside space-y-2 pl-2 text-alivia-neutral-dark">
+          <ul class="max-w-[62ch] list-disc pl-5 space-y-2.5 text-alivia-neutral-dark marker:text-alivia-secondary-dark">
             {block.items.map((item) => (
-              <li class="leading-relaxed" set:html={item} />
+              <li class="pl-1 leading-[1.7]" set:html={item} />
             ))}
           </ul>
         );
@@ -31,14 +31,14 @@ const { blocks, lang } = Astro.props;
 
       if (block.type === "cards") {
         return (
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
+          <dl class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 !my-8">
             {block.items.map((item) => (
-              <div class="p-4 rounded-2xl bg-white border border-alivia-border shadow-xs hover:border-alivia-secondary/60 transition-all space-y-2">
-                <h4 class="font-bold text-sm text-alivia-primary">{item.title}</h4>
-                <p class="text-xs text-alivia-neutral-gray leading-relaxed">{item.text}</p>
+              <div class="p-5 rounded-2xl bg-alivia-surface-mist">
+                <dt class="font-semibold text-alivia-primary leading-snug">{item.title}</dt>
+                <dd class="mt-2 text-[0.9375rem] text-alivia-neutral-gray leading-relaxed">{item.text}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         );
       }
 

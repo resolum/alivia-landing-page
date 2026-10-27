@@ -11,32 +11,24 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section class="py-12 bg-alivia-surface-mist">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+<section class="py-16 sm:py-24 bg-alivia-surface-mist">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
     <div
-      class="rounded-3xl bg-alivia-primary p-8 sm:p-10 relative overflow-hidden lg:overflow-visible shadow-xl"
+      class="rounded-3xl bg-alivia-primary p-6 sm:p-10 relative overflow-hidden lg:overflow-visible"
+      data-reveal
     >
-      <div
-        class="absolute -right-16 -bottom-16 w-64 h-64 bg-alivia-secondary/20 rounded-full blur-3xl pointer-events-none"
-      >
-      </div>
 
       <div
         class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center"
       >
         <div class="space-y-4 lg:col-span-5">
-          <span
-            class="text-xs uppercase tracking-widest font-extrabold text-alivia-secondary"
-          >
-            {t("download.badge")}
-          </span>
           <h2
-            class="text-3xl sm:text-4xl font-bold font-display text-white leading-tight"
+            class="text-[2rem] sm:text-5xl font-semibold font-display text-white leading-[1.1]"
           >
             {t("download.title")}
           </h2>
           <p
-            class="text-sm sm:text-base text-alivia-primary-mist leading-relaxed font-normal"
+            class="text-base sm:text-lg text-alivia-primary-mist leading-relaxed font-normal"
           >
             {t("download.desc")}
           </p>
@@ -47,11 +39,11 @@ const t = useTranslations(lang);
           <button
             type="button"
             id="btn-google-play"
-            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group ring-4 ring-alivia-secondary cursor-pointer text-left"
+            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface press focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group ring-4 ring-alivia-secondary cursor-pointer text-left"
             aria-label={t("download.googlePlayLabel")}
           >
             <svg
-              class="w-8 h-8 shrink-0 text-alivia-primary group-hover:scale-105 transition-transform"
+              class="w-8 h-8 shrink-0 text-alivia-primary group-hover:scale-105 transition-transform duration-200 ease-[var(--ease-out)]"
               viewBox="0 0 24 24"
               fill="currentColor"
               aria-hidden="true"
@@ -62,7 +54,7 @@ const t = useTranslations(lang);
             </svg>
             <div class="text-left">
               <span
-                class="block text-[10px] uppercase font-semibold text-gray-500"
+                class="block text-xs font-medium text-alivia-neutral-blue"
                 >{t("download.googlePlayBadge")}</span
               >
               <span class="text-base font-bold text-alivia-primary"
@@ -73,11 +65,11 @@ const t = useTranslations(lang);
           <button
             type="button"
             id="btn-app-store"
-            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface transition-all shadow-md focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group cursor-pointer text-left"
+            class="w-full sm:w-auto lg:w-full min-w-[210px] px-6 py-4 rounded-2xl bg-white text-alivia-primary hover:bg-alivia-surface press focus-visible:ring-4 focus-visible:ring-alivia-secondary touch-target flex items-center gap-4 group cursor-pointer text-left"
             aria-label={t("download.appStoreLabel")}
           >
             <svg
-              class="w-8 h-8 shrink-0 text-alivia-primary group-hover:scale-105 transition-transform"
+              class="w-8 h-8 shrink-0 text-alivia-primary group-hover:scale-105 transition-transform duration-200 ease-[var(--ease-out)]"
               viewBox="0 0 24 24"
               fill="currentColor"
               aria-hidden="true"
@@ -88,7 +80,7 @@ const t = useTranslations(lang);
             </svg>
             <div class="text-left">
               <span
-                class="block text-[10px] uppercase font-semibold text-gray-500"
+                class="block text-xs font-medium text-alivia-neutral-blue"
                 >{t("download.appStoreBadge")}</span
               >
               <span class="text-base font-bold text-alivia-primary"
@@ -101,7 +93,7 @@ const t = useTranslations(lang);
           class="lg:col-span-4 flex justify-center lg:justify-end pt-4 lg:pt-0"
         >
           <div
-            class="transform rotate-0 lg:rotate-5 transition-transform duration-500 lg:-mt-10 lg:-mb-10"
+            class="rotate-0 lg:rotate-5 lg:-mt-10 lg:-mb-10"
           >
             <PhoneMockup initialOS="android" />
           </div>

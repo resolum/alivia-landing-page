@@ -135,7 +135,8 @@ export const privacyDocEs: LegalDoc = {
       blocks: [
         {
           type: "paragraph",
-          html: "Conservamos los datos personales únicamente durante la vigencia de la relación de servicio. Tras la cancelación de la cuenta, los datos se eliminan o anonimizan de forma irreversible dentro de los 30 días posteriores. TODO(legal-review)",
+          // TODO(legal-review): confirm this clause before launch (was rendered on the page)
+          html: "Conservamos los datos personales únicamente durante la vigencia de la relación de servicio. Tras la cancelación de la cuenta, los datos se eliminan o anonimizan de forma irreversible dentro de los 30 días posteriores.",
         },
       ],
     },

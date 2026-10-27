@@ -1,10 +1,10 @@
 import type { Lang } from '../i18n/ui';
-import oscarImg from '../assets/oscar.jpg';
-import renatoImg from '../assets/renato.png';
-import faridImg from '../assets/farid.png';
-import matiasImg from '../assets/matias.png';
-import nicolasImg from '../assets/nicolas.png';
-import dayroImg from '../assets/dayro.png';
+import oscarImg from '../assets/oscar.webp';
+import renatoImg from '../assets/renato.webp';
+import faridImg from '../assets/farid.webp';
+import matiasImg from '../assets/matias.webp';
+import nicolasImg from '../assets/nicolas.webp';
+import dayroImg from '../assets/dayro.webp';
 
 export interface TeamMember {
   id: string;

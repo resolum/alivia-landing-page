@@ -3,6 +3,7 @@ import type { Lang } from "../../i18n/ui";
 import { useTranslations } from "../../i18n/utils";
 import type { LegalDoc } from "../../data/legal/types";
 import { companyInfo } from "../../data/company";
+import ReadingSizeToggle from "./ReadingSizeToggle.astro";
 
 interface Props {
   doc: LegalDoc;
@@ -11,45 +12,70 @@ interface Props {
 
 const { doc, lang } = Astro.props;
 const t = useTranslations(lang);
+
+// The meta title carries the brand for SEO; the page heading does not need it
+const heading = doc.meta.title.replace(/\s*[-–]\s*Alivia\s*$/, "");
+
+const words = doc.sections
+  .flatMap((s) => s.blocks)
+  .map((b) => {
+    if (b.type === "paragraph") return b.html.replace(/<[^>]*>/g, "");
+    if (b.type === "list") return b.items.join(" ");
+    if (b.type === "cards") return b.items.map((c) => c.title + " " + c.text).join(" ");
+    if (b.type === "callout") return b.title + " " + b.text;
+    return "";
+  })
+  .join(" ")
+  .split(/\s+/)
+  .filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.ceil(words / 200));
+
+const meta = [
+  companyInfo.complianceBadges.dataProtectionLaw ? t("legal.badgeLaw") : doc.meta.badge,
+  `${t("legal.lastUpdated")} ${doc.meta.updated}`,
+  `${t("legal.version")} ${doc.meta.version}`,
+  `${readingMinutes} ${t("legal.readingTime")}`,
+].filter(Boolean);
 ---
 
-<header class="mb-10 text-center sm:text-left space-y-4">
-  <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+<header class="bg-alivia-surface">
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-12 pb-12 sm:pt-20 sm:pb-16 lg:grid lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-16 xl:gap-24 lg:items-end">
+    <div>
+    <h1
+      class="text-[2.5rem] leading-[1.04] sm:text-6xl lg:text-7xl font-semibold font-display text-alivia-primary max-w-4xl"
+    >
+      {heading}
+    </h1>
+
     {
-      doc.meta.badge && (
-        <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-alivia-secondary-mint text-alivia-secondary-dark border border-alivia-secondary-medium/40">
-          {doc.meta.badge}
-        </span>
+      doc.introCard && (
+        <p class="mt-6 sm:mt-8 text-lg sm:text-xl leading-relaxed text-alivia-neutral-gray max-w-[60ch]">
+          <strong class="font-semibold text-alivia-primary">{doc.introCard.title}.</strong>{" "}
+          {doc.introCard.text}
+        </p>
       )
     }
-    {
-      companyInfo.complianceBadges.dataProtectionLaw && (
-        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-white text-alivia-primary border border-alivia-border shadow-xs">
-          <svg class="w-3.5 h-3.5 text-alivia-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          {t("legal.badgeLaw")}
-        </span>
-      )
-    }
-  </div>
 
-  <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-display text-alivia-primary leading-tight">
-    {doc.meta.title}
-  </h1>
-
-  <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs sm:text-sm text-alivia-neutral-gray pt-1">
-    <div class="flex items-center gap-1.5">
-      <svg class="w-4 h-4 text-alivia-neutral-light" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-      </svg>
-      <span>{t("legal.lastUpdated")} <strong>{doc.meta.updated}</strong></span>
     </div>
 
-    <span class="hidden sm:inline text-alivia-border">•</span>
-
     <div>
-      <span>{t("legal.version")}: <strong>{doc.meta.version}</strong></span>
+    <ul class="mt-8 lg:mt-0 flex flex-wrap lg:flex-col gap-x-5 gap-y-2 text-[0.9375rem] text-alivia-neutral-blue" aria-label={lang === "es" ? "Datos del documento" : "Document details"}>
+      {meta.map((item) => <li class="whitespace-nowrap">{item}</li>)}
+    </ul>
+
+    <div class="mt-8 flex flex-wrap gap-3 print:hidden">
+      <ReadingSizeToggle lang={lang} />
+      <button
+        type="button"
+        id="legal-print"
+        class="press inline-flex items-center gap-2 min-h-11 px-4 rounded-xl bg-white text-sm font-semibold text-alivia-primary hover:bg-alivia-primary-mist focus-visible:ring-2 focus-visible:ring-alivia-primary-medium"
+      >
+        <svg class="w-4 h-4 text-alivia-primary-medium" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        {t("legal.print")}
+      </button>
+    </div>
     </div>
   </div>
 </header>

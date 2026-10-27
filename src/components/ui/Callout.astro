@@ -8,29 +8,31 @@ interface Props {
 
 const { variant = "info", title, text, class: className = "" } = Astro.props;
 
+// Tone fill carries the variant; no side stripe, no shadow
 const variantStyles = {
-  info: "bg-alivia-surface border-alivia-primary-medium text-alivia-neutral-dark",
-  success: "bg-alivia-tertiary border-alivia-secondary-dark text-alivia-neutral-dark",
-  warning: "bg-amber-50 border-amber-400 text-amber-950",
+  info: "bg-alivia-surface text-alivia-neutral-dark",
+  success: "bg-alivia-tertiary text-alivia-neutral-dark",
+  // Safety notice: the strongest block in the document, in brand colours
+  warning: "bg-alivia-primary-deep text-alivia-hero-text",
 };
 
 const iconStyles = {
-  info: "text-alivia-primary",
+  info: "text-alivia-primary-medium",
   success: "text-alivia-secondary-dark",
-  warning: "text-amber-600",
+  warning: "text-amber-300",
 };
 ---
 
 <div
   class:list={[
-    "p-4 sm:p-5 rounded-2xl border-l-4 shadow-sm flex items-start gap-3.5 my-4",
+    "max-w-[62ch] p-5 sm:p-6 rounded-2xl flex items-start gap-3.5 !my-8",
     variantStyles[variant],
     className,
   ]}
-  role="region"
+  role="note"
   aria-label={title || "Aviso"}
 >
-  <div class:list={["shrink-0 mt-0.5", iconStyles[variant]]}>
+  <div class:list={["shrink-0 mt-0.5", iconStyles[variant]]} aria-hidden="true">
     {
       variant === "info" && (
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,8 +55,8 @@ const iconStyles = {
       )
     }
   </div>
-  <div class="space-y-1 text-sm leading-relaxed">
-    {title && <h4 class="font-bold text-alivia-primary">{title}</h4>}
+  <div class="space-y-1 leading-relaxed min-w-0">
+    {title && <p class:list={["font-semibold", variant === "warning" ? "text-white" : "text-alivia-primary"]}>{title}</p>}
     {text && <p>{text}</p>}
     <slot />
   </div>
