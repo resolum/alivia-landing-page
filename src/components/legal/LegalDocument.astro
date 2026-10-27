@@ -1,0 +1,80 @@
+---
+import LegalLayout from "./LegalLayout.astro";
+import LegalHero from "./LegalHero.astro";
+import TableOfContents from "./TableOfContents.astro";
+import LegalSection from "./LegalSection.astro";
+import type { LegalDoc } from "../../data/legal/types";
+import type { Lang } from "../../i18n/ui";
+
+interface Props {
+  doc: LegalDoc;
+  lang: Lang;
+  activeTab: "privacy" | "terms";
+  summary?: { title: string; text: string }[];
+}
+
+const { doc, lang, activeTab, summary } = Astro.props;
+---
+
+<LegalLayout title={doc.meta.title} description={doc.meta.description} lang={lang} activeTab={activeTab}>
+  <LegalHero doc={doc} lang={lang} />
+
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-10 sm:py-16 lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-16 xl:gap-24">
+    <TableOfContents doc={doc} lang={lang} />
+
+    <div id="legal-doc-content" class="legal-prose min-w-0">
+      {
+        summary && summary.length > 0 && (
+          <section class="mb-14 sm:mb-20" aria-labelledby="legal-summary-title">
+            <h2 id="legal-summary-title" class="text-2xl sm:text-3xl font-semibold font-display text-alivia-primary mb-6">
+              {lang === "es" ? "En resumen" : "In short"}
+            </h2>
+            <dl class="grid gap-3 sm:grid-cols-3">
+              {summary.map((item) => (
+                <div class="p-5 sm:p-6 rounded-2xl bg-alivia-tertiary">
+                  <dt class="font-semibold text-alivia-primary">{item.title}</dt>
+                  <dd class="mt-2 text-[0.9375rem] leading-relaxed text-alivia-neutral-gray">{item.text}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )
+      }
+
+      {doc.sections.map((sec) => <LegalSection section={sec} lang={lang} />)}
+    </div>
+  </div>
+</LegalLayout>
+
+<script src="../../scripts/legal/legalInteractions.ts"></script>
+
+<style>
+  /* Reading size: one switch scales the whole column */
+  .legal-prose {
+    font-size: 1.0625rem;
+  }
+  .legal-prose.is-comfortable {
+    font-size: 1.1875rem;
+  }
+
+  /* Links and emphasis arrive as HTML strings from the legal data */
+  .legal-prose :global(p a),
+  .legal-prose :global(li a) {
+    color: var(--color-alivia-primary-medium);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-alivia-primary-light);
+  }
+  .legal-prose :global(p strong),
+  .legal-prose :global(li strong) {
+    font-weight: 600;
+    color: var(--color-alivia-primary);
+  }
+
+  @media print {
+    .legal-prose {
+      font-size: 11pt;
+    }
+  }
+</style>

@@ -9,155 +9,445 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
+const commands = [
+  {
+    id: "light",
+    say: t("howItWorks.cmd.light.say"),
+    action: t("howItWorks.cmd.light.action"),
+    target: t("howItWorks.cmd.light.target"),
+    state: t("howItWorks.cmd.light.state"),
+    reply: t("howItWorks.cmd.light.reply"),
+  },
+  {
+    id: "door",
+    say: t("howItWorks.cmd.door.say"),
+    action: t("howItWorks.cmd.door.action"),
+    target: t("howItWorks.cmd.door.target"),
+    state: t("howItWorks.cmd.door.state"),
+    reply: t("howItWorks.cmd.door.reply"),
+  },
+  {
+    id: "window",
+    say: t("howItWorks.cmd.window.say"),
+    action: t("howItWorks.cmd.window.action"),
+    target: t("howItWorks.cmd.window.target"),
+    state: t("howItWorks.cmd.window.state"),
+    reply: t("howItWorks.cmd.window.reply"),
+  },
+] as const;
+
 const steps = [
   {
     title: t("howItWorks.step1.title"),
     desc: t("howItWorks.step1.desc"),
-    icon: "voice",
+    kind: "voice",
   },
   {
     title: t("howItWorks.step2.title"),
     desc: t("howItWorks.step2.desc"),
-    icon: "hub",
+    kind: "hub",
   },
   {
     title: t("howItWorks.step3.title"),
     desc: t("howItWorks.step3.desc"),
-    icon: "device",
+    kind: "device",
   },
   {
     title: t("howItWorks.step4.title"),
     desc: t("howItWorks.step4.desc"),
-    icon: "confirm",
+    kind: "confirm",
   },
 ] as const;
 ---
 
-<section id="como-funciona" class="scroll-mt-24 py-20 bg-alivia-primary-deep text-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center max-w-3xl mx-auto mb-14">
-      <span
-        class="text-xs uppercase tracking-widest font-semibold text-alivia-secondary-mint px-3.5 py-1 rounded-full border border-alivia-secondary-medium/40 bg-alivia-primary/70"
-      >
-        {t("howItWorks.badge")}
-      </span>
+<section
+  id="como-funciona"
+  class="hiw scroll-mt-24 py-24 sm:py-28 bg-alivia-primary-deep text-white"
+  data-cmd="light"
+>
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div
+      class="grid lg:grid-cols-12 gap-6 lg:gap-10 items-end mb-12 sm:mb-14"
+      data-reveal-group
+    >
       <h2
-        class="text-3xl sm:text-4xl font-bold font-display mt-4 mb-4 text-white"
+        class="lg:col-span-7 text-[2.25rem] leading-[1.02] sm:text-6xl lg:text-[4.25rem] font-semibold font-display text-white"
+        data-reveal
       >
         {t("howItWorks.title")}
       </h2>
-      <p class="text-base sm:text-lg text-alivia-primary-mist leading-relaxed">
+      <p
+        class="lg:col-span-5 text-base sm:text-lg text-alivia-primary-mist leading-relaxed max-w-xl"
+        data-reveal
+      >
         {t("howItWorks.desc")}
       </p>
     </div>
 
+    <div
+      role="group"
+      aria-label={t("howItWorks.pickLabel")}
+      class="mb-12 sm:mb-16"
+      data-reveal
+    >
+      <p class="text-sm text-alivia-primary-light mb-3">
+        {t("howItWorks.pickLabel")}
+      </p>
+      <div class="flex flex-wrap gap-2.5">
+        {
+          commands.map((cmd, i) => (
+            <button
+              type="button"
+              class="hiw-chip press touch-target rounded-full px-5 py-2.5 text-[0.9375rem] font-semibold"
+              data-pick={cmd.id}
+              aria-pressed={i === 0 ? "true" : "false"}
+            >
+              «{cmd.say}»
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
     <ol
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+      class="hiw-flow relative grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-x-8"
       aria-label={t("howItWorks.stepsLabel")}
     >
+      <span class="hiw-track" aria-hidden="true"
+        ><span class="hiw-fill"></span></span
+      >
+
       {
-        steps.map((step, index) => (
-          <li class="relative rounded-2xl bg-alivia-primary/60 border border-alivia-primary-medium/70 p-6 pt-8 h-full">
-            <span
-              class="absolute -top-4 left-6 inline-flex items-center justify-center w-9 h-9 rounded-full bg-alivia-secondary text-alivia-primary-deep text-sm font-bold shadow-lg shadow-alivia-secondary/20"
-              aria-hidden="true"
-            >
-              {index + 1}
-            </span>
-            <div class="w-11 h-11 rounded-xl bg-alivia-primary-deep text-alivia-secondary flex items-center justify-center mb-4">
-              {step.icon === "voice" && (
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 18.5a6.5 6.5 0 006.5-6.5M5.5 12A6.5 6.5 0 0112 5.5m0 13v3m-4 0h8M12 15a3 3 0 003-3V6a3 3 0 10-6 0v6a3 3 0 003 3z"
-                  />
-                </svg>
+        steps.map((step, i) => (
+          <li
+            class="hiw-stage relative pl-9 lg:pl-0 lg:pt-10"
+            style={`--i:${i}`}
+            data-lit="true"
+          >
+            <span class="hiw-dot" aria-hidden="true" />
+
+            <div class="hiw-art mb-6 lg:h-28 flex items-start">
+              {step.kind === "voice" && (
+                <div>
+                  <span
+                    class="hiw-wave flex items-end gap-[3px] h-5 mb-3"
+                    aria-hidden="true"
+                  >
+                    {[0.45, 0.8, 1, 0.65, 0.9, 0.5, 0.7].map((h) => (
+                      <span style={`--h:${h}`} />
+                    ))}
+                  </span>
+                  {commands.map((cmd) => (
+                    <p
+                      class="hiw-swap text-[1.75rem] sm:text-3xl leading-[1.1] font-semibold text-white"
+                      data-for={cmd.id}
+                    >
+                      «{cmd.say}»
+                    </p>
+                  ))}
+                </div>
               )}
-              {step.icon === "hub" && (
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  aria-hidden="true"
-                >
-                  <rect x="6" y="6" width="12" height="12" rx="2" />
-                  <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
-                  <path
-                    stroke-linecap="round"
-                    d="M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"
-                  />
-                </svg>
+
+              {step.kind === "hub" && (
+                <div class="w-full max-w-xs rounded-2xl bg-alivia-primary px-4 py-3.5 text-sm">
+                  <div class="flex items-center justify-between gap-3 mb-3">
+                    <span class="font-semibold text-white">
+                      {t("howItWorks.hub.where")}
+                    </span>
+                    <span class="flex items-center gap-1.5 text-alivia-secondary-light">
+                      <span
+                        class="w-1.5 h-1.5 rounded-full bg-alivia-secondary"
+                        aria-hidden="true"
+                      />
+                      {t("howItWorks.hub.offline")}
+                    </span>
+                  </div>
+                  {commands.map((cmd) => (
+                    <dl
+                      class="hiw-swap grid-cols-[auto_1fr] gap-x-4 gap-y-1"
+                      style="--d:grid"
+                      data-for={cmd.id}
+                    >
+                      <dt class="text-alivia-primary-light">
+                        {t("howItWorks.hub.action")}
+                      </dt>
+                      <dd class="text-white font-medium">{cmd.action}</dd>
+                      <dt class="text-alivia-primary-light">
+                        {t("howItWorks.hub.target")}
+                      </dt>
+                      <dd class="text-white font-medium">{cmd.target}</dd>
+                    </dl>
+                  ))}
+                </div>
               )}
-              {step.icon === "device" && (
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M13 2L4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5z"
-                  />
-                </svg>
+
+              {step.kind === "device" && (
+                <div class="flex items-center gap-4">
+                  <span
+                    class="hiw-device w-16 h-16 rounded-2xl bg-alivia-primary flex items-center justify-center"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      class="hiw-swap w-8 h-8"
+                      data-for="light"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0012 3z" />
+                    </svg>
+                    <svg
+                      class="hiw-swap w-8 h-8"
+                      data-for="door"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M4 21h16M6 21V3h12v18M6 3l7 2.5V21" />
+                      <circle cx="11" cy="12.5" r=".8" fill="currentColor" />
+                    </svg>
+                    <svg
+                      class="hiw-swap w-8 h-8"
+                      data-for="window"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="4" y="3" width="16" height="18" rx="1.5" />
+                      <path d="M12 3v18M4 12h8M14.5 8.5l3-2" />
+                    </svg>
+                  </span>
+                  {commands.map((cmd) => (
+                    <p class="hiw-swap leading-tight" data-for={cmd.id}>
+                      <span class="block text-sm text-alivia-primary-light">
+                        {cmd.target}
+                      </span>
+                      <span class="block text-xl font-semibold text-alivia-secondary-light">
+                        {cmd.state}
+                      </span>
+                    </p>
+                  ))}
+                </div>
               )}
-              {step.icon === "confirm" && (
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  aria-hidden="true"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+
+              {step.kind === "confirm" && (
+                <div class="w-full max-w-xs flex flex-col gap-2 text-sm">
+                  {commands.map((cmd) => (
+                    <div
+                      class="hiw-swap flex-col gap-2"
+                      style="--d:flex"
+                      data-for={cmd.id}
+                    >
+                      <p class="self-start rounded-2xl rounded-bl-md bg-alivia-secondary text-alivia-primary-deep font-semibold px-3.5 py-2">
+                        «{cmd.reply}»
+                      </p>
+                      <p class="rounded-2xl bg-white text-alivia-neutral-dark px-3.5 py-2.5">
+                        <span class="flex justify-between gap-3 text-xs text-alivia-neutral-blue mb-0.5">
+                          <span class="font-semibold">
+                            {t("howItWorks.app.name")}
+                          </span>
+                          <span>{t("howItWorks.app.now")}</span>
+                        </span>
+                        {cmd.target}: {cmd.state.toLowerCase()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-            <h3 class="text-base font-bold text-white mb-2">{step.title}</h3>
-            <p class="text-sm text-alivia-primary-mist leading-relaxed">
+
+            <h3 class="text-lg sm:text-xl font-semibold text-white mb-2">
+              {step.title}
+            </h3>
+            <p class="text-[0.9375rem] sm:text-base text-alivia-primary-mist leading-relaxed max-w-sm">
               {step.desc}
             </p>
           </li>
         ))
       }
     </ol>
-
-    <p
-      class="mt-10 mx-auto w-fit flex items-center gap-2 rounded-full border border-alivia-secondary-medium/40 bg-alivia-primary/60 px-5 py-2.5 text-xs sm:text-sm font-semibold text-alivia-secondary-mint text-center"
-    >
-      <svg
-        class="w-4 h-4 shrink-0 text-alivia-secondary"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-        aria-hidden="true"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-        />
-      </svg>
-      {t("howItWorks.note")}
-    </p>
   </div>
 </section>
+
+<style>
+  /* Command picker */
+  .hiw-chip {
+    background: var(--color-alivia-primary);
+    color: var(--color-alivia-primary-mist);
+  }
+  .hiw-chip[aria-pressed="true"] {
+    background: var(--color-alivia-secondary);
+    color: var(--color-alivia-primary-deep);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hiw-chip[aria-pressed="false"]:hover {
+      background: var(--color-alivia-primary-medium);
+      color: #fff;
+    }
+  }
+
+  /* Only the chosen command's content is shown; works without JS (default: light) */
+  .hiw-swap {
+    display: none;
+  }
+  .hiw[data-cmd="light"] [data-for="light"],
+  .hiw[data-cmd="door"] [data-for="door"],
+  .hiw[data-cmd="window"] [data-for="window"] {
+    display: var(--d, block);
+  }
+
+  /* Track: vertical on phones, horizontal across the dots on desktop */
+  .hiw-track {
+    position: absolute;
+    left: 5px;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--color-alivia-primary);
+    overflow: hidden;
+  }
+  .hiw-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--color-alivia-secondary);
+    transform-origin: top;
+    transform: scaleY(var(--p, 1));
+    /* One step per stage; matches STEP_MS in scripts/howItWorks.ts */
+    transition: transform 320ms var(--ease-out);
+  }
+  .hiw-dot {
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--color-alivia-primary-medium);
+    z-index: 1;
+    transition:
+      background-color 160ms ease,
+      transform 240ms var(--ease-out);
+  }
+  /* The path ends at the last stop */
+  .hiw-stage:last-child::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    bottom: -0.5rem;
+    width: 13px;
+    background: var(--color-alivia-primary-deep);
+  }
+  @media (min-width: 1024px) {
+    .hiw-track {
+      left: 0;
+      right: 0;
+      top: 5px;
+      bottom: auto;
+      width: auto;
+      height: 3px;
+    }
+    .hiw-fill {
+      transform-origin: left;
+      transform: scaleX(var(--p, 1));
+    }
+    .hiw-dot {
+      top: 0;
+    }
+    .hiw-stage:last-child::after {
+      top: 0;
+      bottom: auto;
+      left: 13px;
+      right: 0;
+      width: auto;
+      height: 13px;
+    }
+  }
+
+  /* Stage lighting as the command travels */
+  .hiw-art {
+    transition:
+      opacity 220ms var(--ease-out),
+      transform 260ms var(--ease-out);
+  }
+  /* Replay resets snap back; only the forward path animates */
+  .hiw.is-resetting :is(.hiw-fill, .hiw-art, .hiw-dot, .hiw-device) {
+    transition: none;
+  }
+  .hiw-stage[data-lit="false"] .hiw-art {
+    opacity: 0.3;
+    transform: translateY(6px);
+  }
+  .hiw-stage[data-lit="true"] .hiw-dot {
+    background: var(--color-alivia-secondary);
+  }
+  .hiw-stage[data-lit="pulse"] .hiw-dot {
+    background: var(--color-alivia-secondary);
+    transform: scale(1.3);
+  }
+  .hiw-device {
+    color: var(--color-alivia-primary-light);
+    transition: color 200ms ease;
+  }
+  .hiw-stage[data-lit="true"] .hiw-device,
+  .hiw-stage[data-lit="pulse"] .hiw-device {
+    color: var(--color-alivia-secondary-light);
+  }
+
+  /* Voice waveform: still bars by default, moves only while "speaking" */
+  .hiw-wave span {
+    width: 4px;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--color-alivia-secondary);
+    transform-origin: bottom;
+    transform: scaleY(calc(var(--h) * 0.6));
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hiw.is-speaking .hiw-wave span {
+      animation: hiw-wave 420ms var(--ease-in-out) infinite alternate;
+    }
+    .hiw.is-speaking .hiw-wave span:nth-child(2n) {
+      animation-delay: -210ms;
+    }
+    .hiw.is-speaking .hiw-wave span:nth-child(3n) {
+      animation-delay: -120ms;
+    }
+  }
+  @keyframes hiw-wave {
+    from {
+      transform: scaleY(0.25);
+    }
+    to {
+      transform: scaleY(var(--h));
+    }
+  }
+</style>
+
+<script>
+  import { initHowItWorks } from "../scripts/howItWorks";
+
+  let cleanup: (() => void) | null = null;
+
+  const start = () => {
+    if (cleanup) cleanup();
+    cleanup = initHowItWorks();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
+  document.addEventListener("astro:page-load", start);
+</script>

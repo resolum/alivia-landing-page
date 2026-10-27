@@ -12,33 +12,29 @@ const t = useTranslations(lang);
 const faqItems = getFaqItems(lang);
 ---
 
-<section id="faq" class="py-20 bg-alivia-surface-mist text-alivia-primary">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6">
-    <div class="text-center mb-12">
-      <span
-        class="text-xs uppercase tracking-widest font-bold text-alivia-secondary-dark px-3.5 py-1 rounded-full border border-alivia-tertiary-dark bg-white"
-      >
-        {t("faq.badge")}
-      </span>
+<section id="faq" class="scroll-mt-24 py-20 sm:py-28 bg-alivia-surface-mist text-alivia-primary">
+  <div class="max-w-6xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 mb-14 sm:mb-20">
+    <div class="lg:col-span-4 lg:sticky lg:top-32 lg:self-start" data-reveal>
       <h2
-        class="text-3xl sm:text-4xl font-bold font-display mt-4 mb-3 text-alivia-primary"
+        class="text-[2rem] leading-[1.1] sm:text-5xl font-semibold font-display mb-5 text-alivia-primary"
       >
         {t("faq.title")}
       </h2>
-      <p class="text-base text-alivia-neutral-blue">
+      <p class="text-base sm:text-lg text-alivia-neutral-blue leading-relaxed">
         {t("faq.desc")}
       </p>
     </div>
-    <div class="space-y-3 mb-12" aria-label={t("faq.listLabel")}>
+    <div class="lg:col-span-8 space-y-3" aria-label={t("faq.listLabel")} data-reveal>
       {faqItems.map((item) => (
-        <div class="faq-item bg-white rounded-2xl border border-alivia-border overflow-hidden">
+        <div class="faq-item bg-white rounded-2xl overflow-hidden">
           <button
-            class="faq-trigger w-full flex items-center justify-between px-6 py-5 text-left font-semibold text-base text-alivia-primary hover:bg-alivia-surface/60 transition-colors focus-visible:ring-4 focus-visible:ring-alivia-primary-medium touch-target"
+            class="faq-trigger w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left font-semibold text-base sm:text-lg text-alivia-primary hover:bg-alivia-surface/60 transition-colors focus-visible:ring-4 focus-visible:ring-alivia-primary-medium touch-target"
             aria-expanded="false"
           >
             <span>{item.question}</span>
             <svg
-              class="faq-chevron w-5 h-5 text-gray-500 shrink-0 transition-transform duration-300"
+              class="faq-chevron w-5 h-5 text-alivia-neutral-blue shrink-0 transition-transform duration-250 ease-[var(--ease-out)]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -48,31 +44,28 @@ const faqItems = getFaqItems(lang);
             </svg>
           </button>
           <div class="faq-body overflow-hidden" style="height:0">
-            <div class="px-6 pb-5 pt-4 text-sm text-alivia-neutral-blue leading-relaxed border-t border-alivia-surface">
+            <div class="px-5 sm:px-6 pb-6 pt-1 text-base text-alivia-neutral-blue leading-relaxed max-w-[68ch]">
               {item.answer}
             </div>
           </div>
         </div>
       ))}
     </div>
-    <div class="rounded-3xl bg-alivia-primary p-10 text-center relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-alivia-primary-gradient to-alivia-primary opacity-80"></div>
-      <div class="relative z-10">
-        <blockquote
-          class="text-xl sm:text-2xl font-bold font-display text-white leading-snug mb-6"
-        >
-          {t("faq.quote")}
-        </blockquote>
-        <div class="w-12 h-1 bg-alivia-secondary-dark rounded-full mx-auto"></div>
-      </div>
+    </div>
+    <div class="rounded-3xl bg-alivia-primary px-6 py-10 sm:p-14 text-center" data-reveal>
+      <blockquote
+        class="text-xl sm:text-3xl font-semibold font-display text-white leading-snug max-w-3xl mx-auto"
+      >
+        {t("faq.quote")}
+      </blockquote>
     </div>
   </div>
 </section>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const DURATION = 320;
-    const EASING   = "cubic-bezier(0.4, 0, 0.2, 1)";
+    const DURATION = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 260;
+    const EASING   = "cubic-bezier(0.23, 1, 0.32, 1)";
 
     document.querySelectorAll<HTMLElement>(".faq-item").forEach((item) => {
       const trigger = item.querySelector<HTMLButtonElement>(".faq-trigger")!;

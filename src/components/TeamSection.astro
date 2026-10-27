@@ -18,41 +18,32 @@ const teamVideo = getTeamVideo(lang);
 
 <section
   id="equipo"
-  class="py-20 bg-alivia-tertiary text-alivia-neutral-dark border-t border-alivia-tertiary-medium"
+  class="scroll-mt-24 py-20 sm:py-28 bg-alivia-tertiary text-alivia-neutral-dark"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="text-center max-w-3xl mx-auto mb-16">
-      <span
-        class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
-      >
-        {t("team.badge")}
-      </span>
+  <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mb-12 sm:mb-16" data-reveal>
       <h2
-        class="text-3xl sm:text-4xl font-semibold font-display mt-4 mb-4 text-alivia-primary"
+        class="text-[2rem] leading-[1.1] sm:text-5xl font-semibold font-display mb-5 text-alivia-primary"
       >
         {t("team.title")}
       </h2>
-      <p class="text-base sm:text-lg text-alivia-neutral-gray">
+      <p class="text-base sm:text-lg text-alivia-neutral-gray leading-relaxed">
         {t("team.desc")}
       </p>
     </div>
 
     <div
       id="team-members"
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+      data-reveal-group
     >
       {teamMembers.map((member) => <TeamCard member={member} lang={lang} />)}
     </div>
 
     <div class="mt-20 max-w-4xl mx-auto">
-      <div class="text-center mb-8">
-        <span
-          class="text-xs uppercase tracking-widest font-semibold text-alivia-primary bg-alivia-tertiary-medium px-3.5 py-1 rounded-full border border-alivia-tertiary-dark"
-        >
-          {t("team.aboutBadge")}
-        </span>
+      <div class="text-center mb-8" data-reveal>
         <h3
-          class="text-2xl sm:text-3xl font-semibold font-display mt-4 mb-3 text-alivia-primary"
+          class="text-2xl sm:text-3xl font-semibold font-display mb-3 text-alivia-primary"
         >
           {t("team.videoTitle")}
         </h3>
@@ -62,7 +53,8 @@ const teamVideo = getTeamVideo(lang);
       </div>
 
       <div
-        class="overflow-hidden rounded-3xl bg-alivia-primary-deep text-white shadow-2xl border border-alivia-primary-medium"
+        class="overflow-hidden rounded-3xl bg-alivia-primary-deep text-white"
+        data-reveal
       >
         <VideoPlayer
           id="team-video"

@@ -2,6 +2,10 @@
 
 :root {
     --nav-h: 6rem;
+    /* Motion tokens: strong ease-out for UI, ease-in-out for on-screen movement */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @theme {
@@ -31,6 +35,148 @@
     --color-alivia-border:           #D0DAF0;
     --color-alivia-surface-mist:     #F5F7FF;
     --color-alivia-hero-text:        #E2EAF8;
+}
+
+/* Mobile-native baseline */
+html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+a,
+button,
+[role="button"],
+[role="tab"],
+summary {
+    touch-action: manipulation;
+}
+
+button,
+[role="button"],
+[role="tab"] {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* iOS zooms into inputs under 16px */
+input,
+textarea,
+select {
+    font-size: max(16px, 1rem);
+}
+
+/* Typography: balanced headings, tight display tracking, no orphans in copy */
+h1,
+h2,
+h3 {
+    text-wrap: balance;
+}
+
+h1,
+h2 {
+    letter-spacing: -0.022em;
+}
+
+p,
+blockquote,
+li {
+    text-wrap: pretty;
+}
+
+/* Section labels: quiet, readable, same voice everywhere */
+.eyebrow {
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-alivia-primary-medium);
+}
+
+.eyebrow-dark {
+    color: var(--color-alivia-secondary-medium);
+}
+
+/* Press feedback for primary controls */
+.press {
+    transition:
+        transform 160ms var(--ease-out),
+        background-color 200ms ease,
+        color 200ms ease,
+        box-shadow 200ms ease;
+}
+
+.press:active {
+    transform: scale(0.97);
+}
+
+/* Cross-document transitions (Privacy ↔ Terms): native, never delays navigation */
+@media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+        navigation: auto;
+    }
+
+    ::view-transition-group(*) {
+        animation-duration: 260ms;
+        animation-timing-function: var(--ease-in-out);
+    }
+
+    ::view-transition-old(legal-main) {
+        animation: 160ms ease-out both vt-fade-out;
+    }
+
+    ::view-transition-new(legal-main) {
+        animation: 260ms var(--ease-out) both vt-rise-in;
+    }
+}
+
+@keyframes vt-fade-out {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes vt-rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+}
+
+/* Scroll cue: only the arrow moves, gently, and only while motion is allowed */
+@media (prefers-reduced-motion: no-preference) {
+    .scroll-nudge {
+        animation: scroll-nudge 1.8s var(--ease-in-out) infinite;
+    }
+}
+
+@keyframes scroll-nudge {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(3px);
+    }
+}
+
+/* Section entrance: hidden state only applies when JS is ready and motion is allowed */
+@media (prefers-reduced-motion: no-preference) {
+    .reveal-ready [data-reveal] {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+            opacity 600ms var(--ease-out),
+            transform 700ms var(--ease-out);
+        transition-delay: calc(var(--reveal-i, 0) * 70ms);
+    }
+
+    .reveal-ready [data-reveal].is-revealed {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 /* Custom focus styles for WCAG 2.1 AA Compliance */

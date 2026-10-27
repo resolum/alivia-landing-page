@@ -167,7 +167,8 @@ export const termsDocEn: LegalDoc = {
       blocks: [
         {
           type: "paragraph",
-          html: "Material changes to contract terms will be notified through official channels 15 days in advance. TODO(translation-review)",
+          // TODO(translation-review): confirm this clause before launch (was rendered on the page)
+          html: "Material changes to contract terms will be notified through official channels 15 days in advance.",
         },
       ],
     },
