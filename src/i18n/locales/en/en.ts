@@ -163,6 +163,7 @@ export const en = {
   'media.videoFallbackLink': 'View text alternative',
   'media.videoExternalLink': 'Open video in a new tab',
   // testimonials
+  'testimonials.pause': 'Pause testimonials',
   'testimonials.badge': 'Real testimonials',
   'testimonials.count': '99',
   'testimonials.title':
@@ -200,6 +201,7 @@ export const en = {
   'plans.perMonthAnnual': '/ month (annual billing)',
   'plans.quotePrice': 'Quote Required',
   'plans.perEvaluation': '/ per evaluation',
+  'plans.featuresLabel': 'Features of plan',
   'plans.roomsLabel': 'Rooms required (1 mic per room):',
   'plans.doorsLabel': 'Doors requiring motorization:',
   // download

@@ -9,8 +9,9 @@ const FRAME_SIZES = [
 export function initHeroAnimation(): () => void {
   const canvas = document.getElementById("hero-canvas") as HTMLCanvasElement | null;
   const scrollTrack = document.getElementById("scroll-track");
+  const stage = document.getElementById("hero-viewport");
 
-  if (!canvas || !scrollTrack) return () => {};
+  if (!canvas || !scrollTrack || !stage) return () => {};
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return () => {};
@@ -32,8 +33,13 @@ export function initHeroAnimation(): () => void {
   let lastMaskStop = -1;
   const cardStates: (boolean | undefined)[] = [];
 
-  // Width (CSS px) the frame is drawn at to cover the viewport.
-  const coverWidth = (ratio: number) => Math.max(window.innerWidth, window.innerHeight * ratio);
+  // Sizes come from the sticky stage's own box, never window.innerHeight: on phones
+  // innerHeight changes every time the URL bar shows or hides, the stage doesn't.
+  const stageW = () => stage.clientWidth || window.innerWidth;
+  const stageH = () => stage.clientHeight || window.innerHeight;
+
+  // Width (CSS px) the frame is drawn at to cover the stage.
+  const coverWidth = (ratio: number) => Math.max(stageW(), stageH() * ratio);
   const dpr = () => Math.min(window.devicePixelRatio || 1, 2);
 
   const sequence = createFrameSequence(pickFrameSize(FRAME_SIZES, coverWidth(16 / 9) * dpr()), {
@@ -75,17 +81,24 @@ export function initHeroAnimation(): () => void {
 
   const measure = () => {
     const rect = scrollTrack.getBoundingClientRect();
-    trackTop = rect.top + window.scrollY;
-    trackScrollable = rect.height - window.innerHeight;
+    // The frame sequence starts once the "Alivia" intro has played.
+    const intro = document.getElementById("intro-end")?.offsetTop ?? 0;
+    trackTop = rect.top + window.scrollY + intro;
+    // The stage stays pinned until the track's bottom meets the stage's bottom.
+    trackScrollable = rect.height - stageH() - intro;
   };
 
   const resizeCanvas = () => {
     isMobile = window.innerWidth < 768;
+    measure();
     // Never back the canvas with more pixels than the frame itself has.
     const scale = Math.min(dpr(), sequence.width / coverWidth(sequence.ratio));
-    canvas.width = Math.round(window.innerWidth * scale);
-    canvas.height = Math.round(window.innerHeight * scale);
-    measure();
+    const w = Math.round(stageW() * scale);
+    const h = Math.round(stageH() * scale);
+    // Assigning width/height clears the bitmap, so only do it when the size really changed.
+    if (canvas.width === w && canvas.height === h) return;
+    canvas.width = w;
+    canvas.height = h;
     lastRenderedFrame = -1;
     loop.wake();
   };
