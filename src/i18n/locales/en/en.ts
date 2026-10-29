@@ -163,6 +163,7 @@ export const en = {
   'media.videoFallbackLink': 'View text alternative',
   'media.videoExternalLink': 'Open video in a new tab',
   // testimonials
+  'testimonials.pause': 'Pause testimonials',
   'testimonials.badge': 'Real testimonials',
   'testimonials.count': '99',
   'testimonials.title':
