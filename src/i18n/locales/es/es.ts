@@ -1,4 +1,4 @@
-import type { en } from './en';
+import type { en } from '../en/en';
 
 export const es = {
   // nav
