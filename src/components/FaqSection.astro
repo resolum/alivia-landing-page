@@ -54,10 +54,10 @@ const faqItems = getFaqItems(lang);
     </div>
     <div class="rounded-3xl bg-alivia-primary px-6 py-10 sm:p-14 text-center" data-reveal="scale">
       <blockquote
-       
+        data-words
         class="text-xl sm:text-3xl font-semibold font-display text-white leading-snug max-w-3xl mx-auto"
       >
-        {t("faq.quote")}
+        {t("faq.quote").split(" ").map((word, i) => <>{i > 0 && " "}<span data-word>{word}</span></>)}
       </blockquote>
     </div>
   </div>
@@ -66,7 +66,7 @@ const faqItems = getFaqItems(lang);
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const DURATION = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 260;
-    const EASING   = "cubic-bezier(0.23, 1, 0.32, 1)";
+    const EASING   = getComputedStyle(document.documentElement).getPropertyValue("--ease-out").trim() || "ease-out";
 
     document.querySelectorAll<HTMLElement>(".faq-item").forEach((item) => {
       const trigger = item.querySelector<HTMLButtonElement>(".faq-trigger")!;

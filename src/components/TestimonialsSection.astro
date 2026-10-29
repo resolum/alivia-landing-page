@@ -52,6 +52,25 @@ const colDown = getTestimonialsColDown(lang);
           </svg>
           {t("testimonials.privacyNote")}
         </div>
+        <!-- WCAG 2.2.2: moving content needs a way to stop it on touch and keyboard too -->
+        <button
+          id="marquee-toggle"
+          type="button"
+          aria-pressed="false"
+          aria-controls="testimonial-marquee"
+          class="press marquee-toggle self-start inline-flex items-center gap-2 px-4 min-h-11 rounded-full text-sm font-semibold bg-alivia-surface-mist text-alivia-primary hover:bg-alivia-primary-mist focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
+        >
+          <span class="relative w-4 h-4 shrink-0" aria-hidden="true">
+            <svg class="marquee-icon marquee-icon-pause absolute inset-0 w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="6" y="5" width="4" height="14" rx="1"></rect>
+              <rect x="14" y="5" width="4" height="14" rx="1"></rect>
+            </svg>
+            <svg class="marquee-icon marquee-icon-play absolute inset-0 w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"></path>
+            </svg>
+          </span>
+          {t("testimonials.pause")}
+        </button>
       </div>
 
       <div
@@ -126,6 +145,15 @@ const colDown = getTestimonialsColDown(lang);
       marquee.classList.toggle("is-offscreen", !entry.isIntersecting);
     }).observe(marquee);
   }
+
+  const toggle = document.getElementById("marquee-toggle");
+  if (marquee && toggle) {
+    toggle.addEventListener("click", () => {
+      const paused = toggle.getAttribute("aria-pressed") !== "true";
+      toggle.setAttribute("aria-pressed", String(paused));
+      marquee.classList.toggle("is-paused", paused);
+    });
+  }
 </script>
 
 <style>
@@ -168,6 +196,29 @@ const colDown = getTestimonialsColDown(lang);
     }
   }
 
+  /* Nothing moves under reduced motion, so there is nothing to pause */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-toggle {
+      display: none;
+    }
+  }
+
+  /* Pause ⇄ play: both icons stay in the DOM and cross-fade */
+  .marquee-icon {
+    transition:
+      opacity 200ms cubic-bezier(0.2, 0, 0, 1),
+      transform 200ms cubic-bezier(0.2, 0, 0, 1),
+      filter 200ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .marquee-toggle[aria-pressed="false"] .marquee-icon-play,
+  .marquee-toggle[aria-pressed="true"] .marquee-icon-pause {
+    opacity: 0;
+    transform: scale(0.25);
+    filter: blur(4px);
+  }
+
+  #testimonial-marquee.is-paused .marquee-col,
   #testimonial-marquee.is-offscreen .marquee-col {
     animation-play-state: paused;
   }

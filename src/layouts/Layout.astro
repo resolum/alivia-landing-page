@@ -51,10 +51,24 @@ const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
   <meta property="og:locale:alternate" content={ogLocaleAlternate} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Font CSS without blocking first paint; display=swap already covers the gap -->
+  <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+  />
   <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
   />
+  <noscript>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    />
+  </noscript>
 
   {lang === "en" && (
     <script is:inline define:vars={{ esPath }}>
@@ -89,34 +103,15 @@ const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
 >
 <slot />
 <script>
-  // Fallback entrances where CSS view timelines aren't supported (those scroll-link in global.css).
-  // Content stays visible if this never runs (no JS, reduced motion).
-  const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
-  const scrollDriven = CSS.supports("animation-timeline: view()");
-  if (items.length && !scrollDriven && "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-revealed");
-          io.unobserve(entry.target);
-        }
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
-    );
-    // Stagger siblings that share a [data-reveal-group] parent
-    document.querySelectorAll<HTMLElement>("[data-reveal-group]").forEach((group) => {
-      group.querySelectorAll<HTMLElement>(":scope > [data-reveal]").forEach((el, i) => {
-        el.style.setProperty("--reveal-i", String(Math.min(i, 6)));
-      });
-    });
-    items.forEach((el) => {
-      // Already on screen at load: show immediately, no entrance
-      if (el.getBoundingClientRect().top < innerHeight * 0.9) el.classList.add("is-revealed");
-      io.observe(el);
-    });
-    document.documentElement.classList.add("reveal-ready");
-  }
+  import "lenis/dist/lenis.css";
+  import { initSmoothScroll } from "../scripts/smoothScroll";
+  import { initReveal, initWordLight } from "../scripts/reveal";
+  import { initMagnetic } from "../scripts/magnetic";
+
+  initSmoothScroll();
+  initReveal();
+  initWordLight();
+  initMagnetic();
 </script>
 </body>
 </html>

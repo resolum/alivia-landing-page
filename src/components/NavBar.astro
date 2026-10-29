@@ -96,7 +96,7 @@ const navLinks = getNavLinks(lang);
         href="https://resolum-alivia.alivia-resolum.workers.dev/"
         target="_blank"
         rel="noopener noreferrer"
-        class="press hidden xl:inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark hover:text-white focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target whitespace-nowrap"
+        class="press hidden xl:inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target whitespace-nowrap"
         aria-label={t("nav.loginAriaLabel")}
       >
         <svg
@@ -118,14 +118,14 @@ const navLinks = getNavLinks(lang);
       <button
         id="mobile-menu-toggle"
         type="button"
-        class="xl:hidden p-2.5 rounded-lg text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary touch-target"
+        class="relative xl:hidden p-2.5 rounded-lg text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-alivia-secondary touch-target"
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label={t("nav.mobileMenuToggle")}
       >
         <svg
           id="menu-icon-open"
-          class="w-6 h-6 block"
+          class="menu-icon w-6 h-6 block"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -139,7 +139,7 @@ const navLinks = getNavLinks(lang);
         </svg>
         <svg
           id="menu-icon-close"
-          class="w-6 h-6 hidden"
+          class="menu-icon absolute top-2.5 left-2.5 w-6 h-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -158,6 +158,7 @@ const navLinks = getNavLinks(lang);
   <div
     id="mobile-menu"
     class="hidden xl:hidden bg-alivia-primary-deep border-b border-white/10 px-6 pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain"
+    data-lenis-prevent
     aria-label={t("nav.mobileMenuLabel")}
   >
     <div class="flex flex-col gap-4 text-base font-medium text-white/90">
@@ -183,7 +184,7 @@ const navLinks = getNavLinks(lang);
         href="https://resolum-alivia.alivia-resolum.workers.dev/"
         target="_blank"
         rel="noopener noreferrer"
-        class="press mobile-nav-link mt-2 inline-flex items-center justify-center gap-2 px-5 min-h-12 rounded-full text-base font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-dark"
+        class="press mobile-nav-link mt-2 inline-flex items-center justify-center gap-2 px-5 min-h-12 rounded-full text-base font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-medium"
       >
         <svg
           class="w-4 h-4 shrink-0"
@@ -271,12 +272,55 @@ const navLinks = getNavLinks(lang);
     }
   }
 
+  /* Close is quicker and travels less than the open: it gets out of the way */
+  #mobile-menu.is-closing {
+    animation: menu-out 150ms var(--ease-out) forwards;
+  }
+
+  @keyframes menu-out {
+    to {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  /* Burger ⇄ close: both icons stay mounted and cross-fade */
+  .menu-icon {
+    transition:
+      opacity 200ms cubic-bezier(0.2, 0, 0, 1),
+      transform 200ms cubic-bezier(0.2, 0, 0, 1),
+      filter 200ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  #mobile-menu-toggle[aria-expanded="false"] #menu-icon-close,
+  #mobile-menu-toggle[aria-expanded="true"] #menu-icon-open {
+    opacity: 0;
+    transform: scale(0.25);
+    filter: blur(4px);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #main-header {
       transition: none !important;
     }
     #mobile-menu:not(.hidden) {
       animation-name: menu-fade;
+    }
+    #mobile-menu.is-closing {
+      animation-name: menu-fade-out;
+    }
+    @keyframes menu-fade-out {
+      to {
+        opacity: 0;
+      }
+    }
+    .menu-icon {
+      transition: opacity 150ms ease;
+    }
+    #mobile-menu-toggle[aria-expanded="false"] #menu-icon-close,
+    #mobile-menu-toggle[aria-expanded="true"] #menu-icon-open {
+      transform: none;
+      filter: none;
     }
     @keyframes menu-fade {
       from {
