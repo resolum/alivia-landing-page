@@ -89,9 +89,11 @@ const ogLocaleAlternate = lang === "es" ? "en_US" : "es_PE";
 >
 <slot />
 <script>
-  // Section entrances: content stays visible if this never runs (no JS, reduced motion).
+  // Fallback entrances where CSS view timelines aren't supported (those scroll-link in global.css).
+  // Content stays visible if this never runs (no JS, reduced motion).
   const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
-  if (items.length && "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const scrollDriven = CSS.supports("animation-timeline: view()");
+  if (items.length && !scrollDriven && "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {

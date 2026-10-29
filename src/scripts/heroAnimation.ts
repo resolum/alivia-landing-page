@@ -75,8 +75,10 @@ export function initHeroAnimation(): () => void {
 
   const measure = () => {
     const rect = scrollTrack.getBoundingClientRect();
-    trackTop = rect.top + window.scrollY;
-    trackScrollable = rect.height - window.innerHeight;
+    // The frame sequence starts once the "Alivia" intro has played.
+    const intro = document.getElementById("intro-end")?.offsetTop ?? 0;
+    trackTop = rect.top + window.scrollY + intro;
+    trackScrollable = rect.height - window.innerHeight - intro;
   };
 
   const resizeCanvas = () => {

@@ -49,8 +49,8 @@ const devices = getIncludedDevices(t);
           aria-label={t("includedDevices.listLabel")}
         >
           {
-            devices.map((device) => (
-              <li class="flex items-start gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-alivia-surface-mist" data-reveal>
+            devices.map((device, i) => (
+              <li class="flex items-start gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl bg-alivia-surface-mist" data-reveal={i % 2 ? "right" : "left"}>
                 <div class="w-14 h-14 min-w-14 sm:w-[72px] sm:h-[72px] sm:min-w-[72px] rounded-xl bg-white flex items-center justify-center shrink-0 p-2 overflow-hidden">
                   <DeviceIcon device={device.id} />
                 </div>
