@@ -164,6 +164,7 @@ export const es = {
   'media.videoFallbackLink': 'Ver transcripción alternativa',
   'media.videoExternalLink': 'Abrir video en una nueva pestaña',
   // testimonials
+  'testimonials.pause': 'Pausar testimonios',
   'testimonials.badge': 'Testimonios reales',
   'testimonials.count': '99',
   'testimonials.title':
