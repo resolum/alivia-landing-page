@@ -25,6 +25,8 @@ const navLinks = getNavLinks(lang);
     (function () {
       const header = document.getElementById("main-header");
       if (!header) return;
+      // Hide the bar before first paint while the "Alivia" intro plays (introWord.ts takes over)
+      document.documentElement.dataset.intro = window.scrollY < window.innerHeight ? "pending" : "done";
       const triggerId = header.getAttribute("data-solid-from") || "problema";
       const section = document.getElementById(triggerId);
       if (!section) return;
@@ -227,7 +229,16 @@ const navLinks = getNavLinks(lang);
       background-color 200ms ease,
       padding 200ms ease,
       border-color 200ms ease,
-      box-shadow 200ms ease;
+      box-shadow 200ms ease,
+      opacity 400ms var(--ease-out),
+      transform 400ms var(--ease-out);
+  }
+
+  /* Waits for the intro to finish; keyboard focus still brings it in */
+  :global(html[data-intro="pending"]) #main-header:not(:focus-within) {
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
   }
 
   #main-header[data-solid="true"] {
