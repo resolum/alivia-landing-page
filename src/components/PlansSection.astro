@@ -41,7 +41,7 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
     <div class="flex justify-center mb-12" data-reveal>
       <div
         id="billing-tablist"
-        role="tablist"
+        role="group"
         aria-label={t("plans.billingLabel")}
         class="relative flex w-full sm:w-auto sm:inline-flex p-1.5 rounded-2xl bg-white"
         data-monthly-price={monthlyPriceFormatted}
@@ -58,18 +58,14 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
 
         <button
           id="btn-mensual"
-          role="tab"
-          aria-selected="true"
-          tabindex="0"
+          aria-pressed="true"
           class="billing-tab relative z-10 flex-1 sm:flex-none min-h-11 px-3 sm:px-6 py-2.5 rounded-xl leading-tight text-sm sm:text-base font-semibold transition-colors duration-200 text-white focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
         >
           {t("plans.monthly")}
         </button>
         <button
           id="btn-anual"
-          role="tab"
-          aria-selected="false"
-          tabindex="-1"
+          aria-pressed="false"
           class="billing-tab relative z-10 flex-1 sm:flex-none min-h-11 inline-flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-2.5 rounded-xl leading-tight text-sm sm:text-base font-semibold transition-colors duration-200 text-alivia-neutral-gray focus-visible:ring-4 focus-visible:ring-alivia-primary-medium"
         >
           {t("plans.annual")}
@@ -125,14 +121,14 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
               { opacity: 0, transform: "translateY(8px)" },
               { opacity: 1, transform: "none" },
             ],
-        { duration: 240, easing: "cubic-bezier(0.23, 1, 0.32, 1)" },
+        { duration: 240, easing: getComputedStyle(el).getPropertyValue("--ease-out") || "ease-out" },
       );
     };
 
     movePill(btnMensual);
     window.addEventListener("resize", () => {
       const active =
-        btnMensual.getAttribute("aria-selected") === "true"
+        btnMensual.getAttribute("aria-pressed") === "true"
           ? btnMensual
           : btnAnual;
       movePill(active);
@@ -144,12 +140,10 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
       isAnnual: boolean,
     ) => {
       movePill(active);
-      active.setAttribute("aria-selected", "true");
-      active.setAttribute("tabindex", "0");
+      active.setAttribute("aria-pressed", "true");
       active.classList.add("text-white");
       active.classList.remove("text-alivia-neutral-gray");
-      inactive.setAttribute("aria-selected", "false");
-      inactive.setAttribute("tabindex", "-1");
+      inactive.setAttribute("aria-pressed", "false");
       inactive.classList.remove("text-white");
       inactive.classList.add("text-alivia-neutral-gray");
       if (priceEsencial && periodEsencial) {
