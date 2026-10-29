@@ -6,8 +6,6 @@ export function initNavBar(): () => void {
 
   const toggleBtn = document.getElementById("mobile-menu-toggle");
   const mobileMenu = document.getElementById("mobile-menu");
-  const iconOpen = document.getElementById("menu-icon-open");
-  const iconClose = document.getElementById("menu-icon-close");
   const mobileLinks = document.querySelectorAll(".mobile-nav-link");
 
   const triggerId = header.getAttribute("data-solid-from") || DEFAULT_TRIGGER_ID;
@@ -41,13 +39,26 @@ export function initNavBar(): () => void {
     }
   };
 
+  let closeTimer: number | undefined;
+
+  const finishClose = () => {
+    if (!mobileMenu?.classList.contains("is-closing")) return;
+    window.clearTimeout(closeTimer);
+    mobileMenu.classList.remove("is-closing");
+    mobileMenu.classList.add("hidden");
+    updateSolidState();
+  };
+
   const setMobileMenuState = (isOpen: boolean) => {
     if (!toggleBtn || !mobileMenu) return;
     toggleBtn.setAttribute("aria-expanded", String(isOpen));
-    mobileMenu.classList.toggle("hidden", !isOpen);
-    if (iconOpen && iconClose) {
-      iconOpen.classList.toggle("hidden", isOpen);
-      iconClose.classList.toggle("hidden", !isOpen);
+    if (isOpen) {
+      window.clearTimeout(closeTimer);
+      mobileMenu.classList.remove("is-closing", "hidden");
+    } else if (!mobileMenu.classList.contains("hidden")) {
+      // Play the exit first; hide once it ends (timer covers a skipped animationend)
+      mobileMenu.classList.add("is-closing");
+      closeTimer = window.setTimeout(finishClose, 250);
     }
     updateSolidState();
   };
@@ -71,6 +82,7 @@ export function initNavBar(): () => void {
     toggleBtn.addEventListener("click", handleToggleClick);
   }
   document.addEventListener("keydown", handleKeydown);
+  mobileMenu?.addEventListener("animationend", finishClose);
 
   mobileLinks.forEach((link) => {
     link.addEventListener("click", handleMobileLinkClick);
@@ -112,6 +124,8 @@ export function initNavBar(): () => void {
   return () => {
     if (toggleBtn) toggleBtn.removeEventListener("click", handleToggleClick);
     document.removeEventListener("keydown", handleKeydown);
+    mobileMenu?.removeEventListener("animationend", finishClose);
+    window.clearTimeout(closeTimer);
     mobileLinks.forEach((link) => link.removeEventListener("click", handleMobileLinkClick));
     window.removeEventListener("scroll", scheduleUpdate);
     window.removeEventListener("resize", scheduleUpdate);

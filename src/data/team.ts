@@ -75,8 +75,8 @@ export const getTeamMembers = (lang: Lang): TeamMember[] => [
     code: 'u202311938',
     bio:
       lang === 'es'
-        ? 'Soy estudiante de la carrera de Ingeniería de Software, actualmente cursando el 7mo ciclo. Cuento con conocimientos sólidos en desarrollo backend y móvil. Además, me adapto con facilidad y tengo una fuerte ética de trabajo. Poseo conocimientos en Git, TypeScript, React.js, HTML y Tailwind, así como en programación orientada a objetos. También tengo manejo básico de frameworks como Vue y Next.js. Contribuyo al equipo aportando soluciones prácticas y orientadas a resultados.'
-        : 'I am a Software Engineering student currently in my 7th semester. I have solid experience in backend and mobile development, high adaptability, and a strong work ethic. I have expertise in Git, TypeScript, React.js, HTML, and Tailwind, as well as object-oriented programming, with working knowledge of Vue and Next.js. I contribute practical, results-driven solutions to the team.',
+        ? 'Soy estudiante de la carrera de Ingeniería de Softwace, Cuento con conocimientos sólidos en desarrollo backend y móvil. Además, me adapto con facilidad y tengo una fuerte ética de trabajo. Poseo conocimientos en Git, TypeScript, React.js, HTML y Tailwind, así como en programación orientada a objetos. También tengo manejo básico de frameworks como Vue y Next.js. Contribuyo al equipo aportando soluciones prácticas y orientadas a resultados.'
+        : 'I am a Software Engineering stuwith have solid experience in backend and mobile development, high adaptability, and a strong work ethic. I have expertise in Git, TypeScript, React.js, HTML, and Tailwind, as well as object-oriented programming, with working knowledge of Vue and Next.js. I contribute practical, results-driven solutions to the team.',
     iconPath:
       'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
     image: matiasImg,
