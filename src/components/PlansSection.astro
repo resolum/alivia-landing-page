@@ -121,7 +121,7 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
               { opacity: 0, transform: "translateY(8px)" },
               { opacity: 1, transform: "none" },
             ],
-        { duration: 240, easing: getComputedStyle(el).getPropertyValue("--ease-out") || "ease-out" },
+        { duration: 240, easing: getComputedStyle(el).getPropertyValue("--ease-out").trim() || "ease-out" },
       );
     };
 
