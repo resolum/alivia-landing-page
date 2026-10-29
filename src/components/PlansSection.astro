@@ -38,7 +38,7 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
         {t("plans.desc")}
       </p>
     </div>
-    <div class="flex justify-center mb-12">
+    <div class="flex justify-center mb-12" data-reveal>
       <div
         id="billing-tablist"
         role="tablist"
@@ -81,7 +81,7 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6" data-reveal-group>
-      {plans.map((plan) => <PlanCard plan={plan} lang={lang} />)}
+      {plans.map((plan, i) => <PlanCard plan={plan} lang={lang} reveal={i % 2 ? "right" : "left"} />)}
     </div>
   </div>
 </section>
@@ -113,6 +113,22 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
       pill.style.transform = `translateX(${btn.offsetLeft - 6}px)`;
     };
 
+    // New price rises into place so the change is noticed, not just swapped
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const swapText = (el: HTMLElement, text: string) => {
+      if (el.textContent === text) return;
+      el.textContent = text;
+      el.animate(
+        reduceMotion
+          ? [{ opacity: 0 }, { opacity: 1 }]
+          : [
+              { opacity: 0, transform: "translateY(8px)" },
+              { opacity: 1, transform: "none" },
+            ],
+        { duration: 240, easing: "cubic-bezier(0.23, 1, 0.32, 1)" },
+      );
+    };
+
     movePill(btnMensual);
     window.addEventListener("resize", () => {
       const active =
@@ -137,8 +153,8 @@ const perMonthAnnualText = t("plans.perMonthAnnual");
       inactive.classList.remove("text-white");
       inactive.classList.add("text-alivia-neutral-gray");
       if (priceEsencial && periodEsencial) {
-        priceEsencial.textContent = isAnnual ? annualPrice : monthlyPrice;
-        periodEsencial.textContent = isAnnual ? annualPeriod : monthlyPeriod;
+        swapText(priceEsencial, isAnnual ? annualPrice : monthlyPrice);
+        swapText(periodEsencial, isAnnual ? annualPeriod : monthlyPeriod);
       }
       active.focus();
     };
