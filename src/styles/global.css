@@ -183,7 +183,7 @@ li {
         transform: translateY(24px) scale(0.96);
         transition:
             opacity 600ms var(--ease-out),
-            transform 900ms var(--ease-out);
+            transform 800ms var(--ease-out);
     }
 
     /* Big rise for the phone so it reads as being lifted into frame */
@@ -191,13 +191,13 @@ li {
         transform: translateY(64px);
         transition:
             opacity 700ms var(--ease-out),
-            transform 1100ms var(--ease-out);
+            transform 800ms var(--ease-out);
     }
 
     /* Photos: the frame fades in while the image settles inside its own crop */
     .reveal-ready [data-reveal="media"] img {
         transform: scale(1.08);
-        transition: transform 1400ms var(--ease-out);
+        transition: transform 800ms var(--ease-out);
     }
 
     .reveal-ready [data-reveal="left"] {
