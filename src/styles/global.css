@@ -371,8 +371,13 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 details summary:focus-visible {
-    outline: 3px solid #2C4A8F !important;
+    outline: 3px solid var(--color-alivia-primary-medium) !important;
     outline-offset: 3px !important;
+}
+
+/* Navy ring disappears on navy surfaces: switch to teal there (≥3:1, WCAG 2.4.11) */
+:is(#main-header, .bg-alivia-primary, .bg-alivia-primary-deep) :is(a, button, input, select, summary):focus-visible {
+    outline-color: var(--color-alivia-secondary-medium) !important;
 }
 
 /* Minimum 44x44px touch target rule helper */
