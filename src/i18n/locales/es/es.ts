@@ -201,6 +201,7 @@ export const es = {
   'plans.perMonthAnnual': '/ mes (cobro anual)',
   'plans.quotePrice': 'A Cotizar',
   'plans.perEvaluation': '/ según evaluación',
+  'plans.featuresLabel': 'Características del plan',
   'plans.roomsLabel': 'Habitaciones requeridas (1 mic por habitación):',
   'plans.doorsLabel': 'Puertas con motorización requerida:',
   // download
