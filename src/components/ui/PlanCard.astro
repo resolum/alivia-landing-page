@@ -51,7 +51,7 @@ const ctaUrl = `${plan.ctaHref}?lang=${lang}`;
     )}
   </div>
   {!isCustom ? (
-    <ul class="space-y-3 text-[0.9375rem] text-alivia-neutral-dark" aria-label={`Características del Plan ${plan.name}`}>
+    <ul class="space-y-3 text-[0.9375rem] text-alivia-neutral-dark" aria-label={`${t("plans.featuresLabel")} ${plan.name}`}>
       {plan.features.map((f) => (
         <li class="flex items-start gap-3">
           {f.included ? (
