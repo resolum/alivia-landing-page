@@ -339,7 +339,7 @@ export function initDeviceExplode(): () => void {
       'left:' + bx + 'px;top:' + by + 'px;' +
       'transform:translate(-50%, 0) scale(' + (anim ? '0.92' : '1') + ');' +
       'opacity:' + (anim ? '0' : '1') + ';' +
-      'transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease;' +
+      'transition:transform 0.3s var(--ease-out), opacity 0.25s ease;' +
       'width:' + bubbleW + 'px;';
 
     bubble.innerHTML = `
