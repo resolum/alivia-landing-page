@@ -173,9 +173,195 @@ li {
         transition-delay: calc(var(--reveal-i, 0) * 70ms);
     }
 
-    .reveal-ready [data-reveal].is-revealed {
+    /* Right-column lists arrive from the side they live on */
+    .reveal-ready [data-reveal="right"] {
+        transform: translateX(32px);
+    }
+
+    /* Feature panels (video, CTA cards): settle in from slightly smaller */
+    .reveal-ready [data-reveal="scale"] {
+        transform: translateY(24px) scale(0.96);
+        transition:
+            opacity 600ms var(--ease-out),
+            transform 900ms var(--ease-out);
+    }
+
+    /* Big rise for the phone so it reads as being lifted into frame */
+    .reveal-ready [data-reveal="rise"] {
+        transform: translateY(64px);
+        transition:
+            opacity 700ms var(--ease-out),
+            transform 1100ms var(--ease-out);
+    }
+
+    /* Photos: the frame fades in while the image settles inside its own crop */
+    .reveal-ready [data-reveal="media"] img {
+        transform: scale(1.08);
+        transition: transform 1400ms var(--ease-out);
+    }
+
+    .reveal-ready [data-reveal="left"] {
+        transform: translateX(-32px);
+    }
+
+    .reveal-ready [data-reveal="fade"] {
+        transform: none;
+    }
+
+    .reveal-ready [data-reveal].is-revealed,
+    .reveal-ready [data-reveal="media"].is-revealed img {
         opacity: 1;
         transform: none;
+    }
+}
+
+/*
+ * Scroll-linked reveals: progress follows the scrollbar, so scrolling back up
+ * plays them in reverse. Runs on the compositor; the IntersectionObserver
+ * entrance above is the fallback where view timelines aren't supported.
+ */
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        /* Text grows in from small and faint, and shrinks away as it leaves the top */
+        /* Longhands only: `animation` would reset the timeline, and minifiers fold it into an unsupported shorthand */
+        [data-reveal],
+        [data-reveal="media"] img {
+            animation-name: sd-text-in, sd-text-out;
+            animation-timing-function: linear;
+            animation-fill-mode: both, forwards;
+            animation-timeline: view();
+            animation-range:
+                entry 0% cover 35%,
+                exit 0% exit 100%;
+        }
+
+        /* Cards zig-zag in from alternating sides */
+        [data-reveal="left"],
+        [data-reveal="right"] {
+            animation-name: sd-from-left;
+            animation-fill-mode: both;
+            animation-range: entry 0% cover 30%;
+        }
+
+        [data-reveal="right"] {
+            animation-name: sd-from-right;
+        }
+
+        /*
+         * Grid cards take their direction from the column they sit in, so cards in
+         * the same row always move apart (left ← · ↑ · → right) and never cross.
+         */
+        [data-reveal="col"] {
+            animation-name: sd-from-left;
+            animation-fill-mode: both;
+            animation-range: entry 0% cover 30%;
+        }
+
+        [data-reveal="col"]:nth-child(even) {
+            animation-name: sd-from-right;
+        }
+
+        @media (min-width: 64rem) {
+            [data-reveal="col"]:nth-child(3n + 1) {
+                animation-name: sd-from-left;
+            }
+
+            [data-reveal="col"]:nth-child(3n + 2) {
+                animation-name: sd-rise-card;
+            }
+
+            [data-reveal="col"]:nth-child(3n) {
+                animation-name: sd-from-right;
+            }
+        }
+
+        [data-reveal="scale"],
+        [data-reveal="media"] {
+            animation-name: sd-scale;
+            animation-fill-mode: both;
+            animation-range: entry 0% cover 40%;
+        }
+
+        /* Photo zooms out inside its own crop for the whole time it's on screen */
+        [data-reveal="media"] img {
+            animation-name: sd-zoom;
+            animation-fill-mode: both;
+            animation-range: cover 0% cover 70%;
+        }
+
+        [data-reveal="rise"] {
+            animation-name: sd-rise;
+            animation-fill-mode: both;
+            animation-range: entry 0% cover 45%;
+        }
+
+        /* Fully-entered range: always reachable, even at the very bottom of the page */
+        [data-reveal="fade"] {
+            animation-name: sd-fade;
+            animation-fill-mode: both;
+            animation-range: entry 0% entry 100%;
+        }
+    }
+}
+
+@keyframes sd-text-in {
+    from {
+        opacity: 0.12;
+        transform: translateY(56px) scale(0.9);
+    }
+}
+
+@keyframes sd-text-out {
+    to {
+        opacity: 0.12;
+        transform: translateY(-40px) scale(0.94);
+    }
+}
+
+@keyframes sd-from-left {
+    from {
+        opacity: 0;
+        transform: translateX(-12%);
+    }
+}
+
+@keyframes sd-from-right {
+    from {
+        opacity: 0;
+        transform: translateX(12%);
+    }
+}
+
+@keyframes sd-rise-card {
+    from {
+        opacity: 0;
+        transform: translateY(48px);
+    }
+}
+
+@keyframes sd-scale {
+    from {
+        opacity: 0.25;
+        transform: scale(0.86);
+    }
+}
+
+@keyframes sd-zoom {
+    from {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes sd-rise {
+    from {
+        opacity: 0;
+        transform: translateY(120px);
+    }
+}
+
+@keyframes sd-fade {
+    from {
+        opacity: 0;
     }
 }
 
