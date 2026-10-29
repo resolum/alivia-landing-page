@@ -25,6 +25,7 @@ const t = useTranslations(lang);
       >
       </div>
       <div
+        id="hero-cards"
         class="absolute inset-0 z-20 pointer-events-none flex items-center justify-center px-4 sm:px-6 max-md:pt-[calc(var(--nav-h,6rem)+0.5rem)]"
       >
         <div
@@ -147,18 +148,60 @@ const t = useTranslations(lang);
           </div>
         </div>
       </div>
+      <div id="alivia-intro" aria-hidden="true" class="absolute inset-0 z-40 select-none">
+        <!-- Navy panel with "Alivia" cut out of it: the hero shows through the letters -->
+        <svg
+          data-zoom
+          class="absolute inset-0 w-full h-full text-alivia-primary-deep font-display"
+          viewBox="0 0 1000 800"
+          preserveAspectRatio="xMidYMid meet"
+          overflow="visible"
+        >
+          <defs>
+            <mask id="intro-mask">
+              <rect x="-6000" y="-6000" width="13000" height="12800" fill="white"></rect>
+              <text x="500" y="505" text-anchor="middle" font-size="300" font-weight="700" letter-spacing="-6" fill="black">Alivia</text>
+            </mask>
+          </defs>
+          <rect x="-6000" y="-6000" width="13000" height="12800" fill="currentColor" mask="url(#intro-mask)"></rect>
+          <!-- Same text, invisible: the masked copy can't be measured -->
+          <text data-measure x="500" y="505" text-anchor="middle" font-size="300" font-weight="700" letter-spacing="-6" opacity="0">Alivia</text>
+        </svg>
+        <div
+          data-hint
+          class="absolute inset-x-0 bottom-[calc(2rem+env(safe-area-inset-bottom,0px))] flex items-center justify-center gap-2 text-sm font-medium text-alivia-secondary-medium"
+        >
+          <span>{t("hero.scrollHint")}</span>
+          <svg
+            class="scroll-nudge w-4 h-4 text-alivia-secondary shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </div>
+      </div>
     </div>
+    <!-- Where the intro ends and the frame sequence starts (read by introWord.ts / heroAnimation.ts) -->
+    <div id="intro-end" aria-hidden="true" class="absolute left-0 w-0 h-0"></div>
   </div>
 </section>
 
 <script>
   import { initHeroAnimation } from '../scripts/heroAnimation';
+  import { initIntroWord } from '../scripts/introWord';
 
   let cleanup: (() => void) | null = null;
 
   const start = () => {
     if (cleanup) cleanup();
-    cleanup = initHeroAnimation();
+    const stopHero = initHeroAnimation();
+    const stopIntro = initIntroWord();
+    cleanup = () => {
+      stopHero();
+      stopIntro();
+    };
   };
 
   if (document.readyState === 'loading') {
@@ -174,9 +217,45 @@ const t = useTranslations(lang);
     overflow-x: clip;
   }
 
+  /* 120svh of intro + 380svh of frame sequence */
   #scroll-track {
-    height: 380vh;
-    height: 380svh;
+    height: 500vh;
+    height: 500svh;
+  }
+
+  #intro-end {
+    top: 120vh;
+    top: 120svh;
+  }
+
+  /* Panel only exists while JS drives it; without JS the hero shows as before */
+  #alivia-intro {
+    visibility: hidden;
+  }
+
+  :global(html[data-intro="pending"]) #alivia-intro {
+    visibility: visible;
+  }
+
+  /* Cards arrive with the navbar, once the camera is through the word */
+  #hero-cards {
+    transition:
+      opacity 400ms var(--ease-out),
+      transform 400ms var(--ease-out);
+  }
+
+  :global(html[data-intro="pending"]) #hero-cards {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #hero-cards {
+      transition: opacity 200ms ease;
+    }
+    :global(html[data-intro="pending"]) #hero-cards {
+      transform: none;
+    }
   }
 
   #hero-viewport {

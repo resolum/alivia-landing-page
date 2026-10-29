@@ -7,9 +7,10 @@ import { getRoomOptions, getDoorOptions } from '../../data/plans';
 interface Props {
   plan: Plan;
   lang: Lang;
+  reveal?: "left" | "right";
 }
 
-const { plan, lang } = Astro.props;
+const { plan, lang, reveal = "left" } = Astro.props;
 const t = useTranslations(lang);
 const isCustom = plan.id === 'personalizado';
 
@@ -28,7 +29,7 @@ const initialPriceText = plan.monthlyPrice !== null ? formatPrice(plan.monthlyPr
 const ctaUrl = `${plan.ctaHref}?lang=${lang}`;
 ---
 
-<div class="rounded-3xl bg-white p-6 sm:p-8 flex flex-col gap-6" data-reveal>
+<div class="rounded-3xl bg-white p-6 sm:p-8 flex flex-col gap-6" data-reveal={reveal}>
   <div>
     <p class="eyebrow mb-2">{plan.badge}</p>
     <h3 class="text-3xl font-semibold font-display text-alivia-primary mb-2">{plan.name}</h3>

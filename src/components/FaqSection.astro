@@ -25,9 +25,9 @@ const faqItems = getFaqItems(lang);
         {t("faq.desc")}
       </p>
     </div>
-    <div class="lg:col-span-8 space-y-3" aria-label={t("faq.listLabel")} data-reveal>
-      {faqItems.map((item) => (
-        <div class="faq-item bg-white rounded-2xl overflow-hidden">
+    <div class="lg:col-span-8 space-y-3" aria-label={t("faq.listLabel")} data-reveal-group>
+      {faqItems.map((item, i) => (
+        <div class="faq-item bg-white rounded-2xl overflow-hidden" data-reveal={i % 2 ? "right" : "left"}>
           <button
             class="faq-trigger w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left font-semibold text-base sm:text-lg text-alivia-primary hover:bg-alivia-surface/60 transition-colors focus-visible:ring-4 focus-visible:ring-alivia-primary-medium touch-target"
             aria-expanded="false"
@@ -52,8 +52,9 @@ const faqItems = getFaqItems(lang);
       ))}
     </div>
     </div>
-    <div class="rounded-3xl bg-alivia-primary px-6 py-10 sm:p-14 text-center" data-reveal>
+    <div class="rounded-3xl bg-alivia-primary px-6 py-10 sm:p-14 text-center" data-reveal="scale">
       <blockquote
+       
         class="text-xl sm:text-3xl font-semibold font-display text-white leading-snug max-w-3xl mx-auto"
       >
         {t("faq.quote")}

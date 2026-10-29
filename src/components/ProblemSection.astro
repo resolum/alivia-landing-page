@@ -48,10 +48,10 @@ const items = [
         data-reveal-group
       >
         {
-          items.map((item) => (
+          items.map((item, i) => (
             <li
               class="flex items-start gap-4 sm:gap-6 p-5 sm:p-7 rounded-2xl bg-alivia-surface-mist"
-              data-reveal
+              data-reveal={i % 2 ? "right" : "left"}
             >
               <span class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white text-alivia-secondary-dark flex items-center justify-center shrink-0">
                 <svg
@@ -81,7 +81,7 @@ const items = [
 
     <div
       class="mt-14 sm:mt-20 rounded-3xl bg-alivia-primary text-white p-6 sm:p-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6"
-      data-reveal
+      data-reveal="scale"
     >
       <p class="text-lg sm:text-2xl font-display leading-snug max-w-3xl">
         {t("problem.closing")}
