@@ -79,9 +79,12 @@ export function initIntroWord(): () => void {
     zoom.style.transformOrigin = `${ox}px ${oy}px`;
 
     // Scale at which the stem (~35% of the glyph box wide, ~0.4em tall) covers the screen.
+    // The word sits in the small viewport; the stem must also cover the strip the
+    // URL bar leaves when it collapses, which the panel itself (intro) reaches.
     const halfStemW = char.width * 0.175 * unit;
     const halfStemH = FONT_SIZE * 0.2 * unit;
-    maxScale = 1.1 * Math.max(Math.max(ox, w - ox) / halfStemW, Math.max(oy, h - oy) / halfStemH);
+    const coverH = Math.max(h, intro.clientHeight);
+    maxScale = 1.1 * Math.max(Math.max(ox, w - ox) / halfStemW, Math.max(oy, coverH - oy) / halfStemH);
 
     last = -1;
     schedule();

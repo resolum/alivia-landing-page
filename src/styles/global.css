@@ -162,207 +162,19 @@ li {
     }
 }
 
-/* Section entrance: hidden state only applies when JS is ready and motion is allowed */
-@media (prefers-reduced-motion: no-preference) {
-    .reveal-ready [data-reveal] {
-        opacity: 0;
-        transform: translateY(20px);
-        transition:
-            opacity 600ms var(--ease-out),
-            transform 700ms var(--ease-out);
-        transition-delay: calc(var(--reveal-i, 0) * 70ms);
-    }
-
-    /* Right-column lists arrive from the side they live on */
-    .reveal-ready [data-reveal="right"] {
-        transform: translateX(32px);
-    }
-
-    /* Feature panels (video, CTA cards): settle in from slightly smaller */
-    .reveal-ready [data-reveal="scale"] {
-        transform: translateY(24px) scale(0.96);
-        transition:
-            opacity 600ms var(--ease-out),
-            transform 800ms var(--ease-out);
-    }
-
-    /* Big rise for the phone so it reads as being lifted into frame */
-    .reveal-ready [data-reveal="rise"] {
-        transform: translateY(64px);
-        transition:
-            opacity 700ms var(--ease-out),
-            transform 800ms var(--ease-out);
-    }
-
-    /* Photos: the frame fades in while the image settles inside its own crop */
-    .reveal-ready [data-reveal="media"] img {
-        transform: scale(1.08);
-        transition: transform 800ms var(--ease-out);
-    }
-
-    .reveal-ready [data-reveal="left"] {
-        transform: translateX(-32px);
-    }
-
-    .reveal-ready [data-reveal="fade"] {
-        transform: none;
-    }
-
-    .reveal-ready [data-reveal].is-revealed,
-    .reveal-ready [data-reveal="media"].is-revealed img {
-        opacity: 1;
-        transform: none;
-    }
+/* Section entrance (scripts/reveal.ts): hidden only once Motion is ready to play it */
+.reveal-ready [data-reveal] {
+    opacity: 0;
 }
 
-/*
- * Scroll-linked reveals: progress follows the scrollbar, so scrolling back up
- * plays them in reverse. Runs on the compositor; the IntersectionObserver
- * entrance above is the fallback where view timelines aren't supported.
- */
-@supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-        /* Text grows in from small and faint, and shrinks away as it leaves the top */
-        /* Longhands only: `animation` would reset the timeline, and minifiers fold it into an unsupported shorthand */
-        [data-reveal],
-        [data-reveal="media"] img {
-            animation-name: sd-text-in, sd-text-out;
-            animation-timing-function: linear;
-            animation-fill-mode: both, forwards;
-            animation-timeline: view();
-            animation-range:
-                entry 0% cover 35%,
-                exit 0% exit 100%;
-        }
-
-        /* Cards zig-zag in from alternating sides */
-        [data-reveal="left"],
-        [data-reveal="right"] {
-            animation-name: sd-from-left;
-            animation-fill-mode: both;
-            animation-range: entry 0% cover 30%;
-        }
-
-        [data-reveal="right"] {
-            animation-name: sd-from-right;
-        }
-
-        /*
-         * Grid cards take their direction from the column they sit in, so cards in
-         * the same row always move apart (left ← · ↑ · → right) and never cross.
-         */
-        [data-reveal="col"] {
-            animation-name: sd-from-left;
-            animation-fill-mode: both;
-            animation-range: entry 0% cover 30%;
-        }
-
-        [data-reveal="col"]:nth-child(even) {
-            animation-name: sd-from-right;
-        }
-
-        @media (min-width: 64rem) {
-            [data-reveal="col"]:nth-child(3n + 1) {
-                animation-name: sd-from-left;
-            }
-
-            [data-reveal="col"]:nth-child(3n + 2) {
-                animation-name: sd-rise-card;
-            }
-
-            [data-reveal="col"]:nth-child(3n) {
-                animation-name: sd-from-right;
-            }
-        }
-
-        [data-reveal="scale"],
-        [data-reveal="media"] {
-            animation-name: sd-scale;
-            animation-fill-mode: both;
-            animation-range: entry 0% cover 40%;
-        }
-
-        /* Photo zooms out inside its own crop for the whole time it's on screen */
-        [data-reveal="media"] img {
-            animation-name: sd-zoom;
-            animation-fill-mode: both;
-            animation-range: cover 0% cover 70%;
-        }
-
-        [data-reveal="rise"] {
-            animation-name: sd-rise;
-            animation-fill-mode: both;
-            animation-range: entry 0% cover 45%;
-        }
-
-        /* Fully-entered range: always reachable, even at the very bottom of the page */
-        [data-reveal="fade"] {
-            animation-name: sd-fade;
-            animation-fill-mode: both;
-            animation-range: entry 0% entry 100%;
-        }
-    }
+/* Scroll-lit statement (scripts/reveal.ts): unlit words wait in a quiet tint */
+.words-ready [data-word] {
+    color: color-mix(in oklab, currentColor 28%, transparent);
+    transition: color 300ms var(--ease-out);
 }
 
-@keyframes sd-text-in {
-    from {
-        opacity: 0.12;
-        transform: translateY(56px) scale(0.9);
-    }
-}
-
-@keyframes sd-text-out {
-    to {
-        opacity: 0.12;
-        transform: translateY(-40px) scale(0.94);
-    }
-}
-
-@keyframes sd-from-left {
-    from {
-        opacity: 0;
-        transform: translateX(-12%);
-    }
-}
-
-@keyframes sd-from-right {
-    from {
-        opacity: 0;
-        transform: translateX(12%);
-    }
-}
-
-@keyframes sd-rise-card {
-    from {
-        opacity: 0;
-        transform: translateY(48px);
-    }
-}
-
-@keyframes sd-scale {
-    from {
-        opacity: 0.25;
-        transform: scale(0.86);
-    }
-}
-
-@keyframes sd-zoom {
-    from {
-        transform: scale(1.15);
-    }
-}
-
-@keyframes sd-rise {
-    from {
-        opacity: 0;
-        transform: translateY(120px);
-    }
-}
-
-@keyframes sd-fade {
-    from {
-        opacity: 0;
-    }
+.words-ready [data-word].is-lit {
+    color: inherit;
 }
 
 /* Custom focus styles for WCAG 2.1 AA Compliance */
@@ -414,4 +226,21 @@ details summary:focus-visible {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+}
+/* Lenis drives wheel scrolling; native smooth scroll on top of it would double-ease every jump */
+html.lenis {
+    scroll-behavior: auto;
+}
+
+/* Heading word masks (scripts/reveal.ts): room for descenders inside the clip */
+.split-mask {
+    display: inline-block;
+    overflow: clip;
+    vertical-align: top;
+    padding-block-end: 0.12em;
+    margin-block-end: -0.12em;
+}
+
+.split-word {
+    display: inline-block;
 }

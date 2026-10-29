@@ -52,12 +52,14 @@ const t = useTranslations(lang);
             >
               <a
                 href="#planes"
+                data-magnetic
                 class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-base font-semibold bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target text-center whitespace-normal leading-snug"
               >
                 {t("hero.ctaPlans")}
               </a>
               <a
                 href="#como-funciona"
+                data-magnetic
                 class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-base font-semibold bg-alivia-primary text-white hover:bg-alivia-primary-medium focus-visible:ring-4 focus-visible:ring-alivia-primary-light touch-target text-center whitespace-normal leading-snug"
               >
                 {t("hero.ctaHowItWorks")}
@@ -140,6 +142,7 @@ const t = useTranslations(lang);
             >
               <a
                 href="#dispositivos"
+                data-magnetic
                 class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-base bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target text-center whitespace-normal leading-snug"
               >
                 {t("hero.card4.cta")}
@@ -160,7 +163,7 @@ const t = useTranslations(lang);
           <defs>
             <mask id="intro-mask">
               <rect x="-6000" y="-6000" width="13000" height="12800" fill="white"></rect>
-              <text x="500" y="505" text-anchor="middle" font-size="300" font-weight="700" letter-spacing="-6" fill="black">Alivia</text>
+              <text data-intro-word x="500" y="505" text-anchor="middle" font-size="300" font-weight="700" letter-spacing="-6" fill="black">{"Alivia".split("").map((c) => <tspan data-intro-letter>{c}</tspan>)}</text>
             </mask>
           </defs>
           <rect x="-6000" y="-6000" width="13000" height="12800" fill="currentColor" mask="url(#intro-mask)"></rect>
@@ -191,6 +194,7 @@ const t = useTranslations(lang);
 <script>
   import { initHeroAnimation } from '../scripts/heroAnimation';
   import { initIntroWord } from '../scripts/introWord';
+  import { initIntroEntrance } from '../scripts/introEntrance';
 
   let cleanup: (() => void) | null = null;
 
@@ -198,9 +202,11 @@ const t = useTranslations(lang);
     if (cleanup) cleanup();
     const stopHero = initHeroAnimation();
     const stopIntro = initIntroWord();
+    const stopEntrance = initIntroEntrance();
     cleanup = () => {
       stopHero();
       stopIntro();
+      stopEntrance();
     };
   };
 
@@ -237,6 +243,17 @@ const t = useTranslations(lang);
     visibility: visible;
   }
 
+  /* Load entrance (introEntrance.ts): letters and hint start hidden until Motion stages them */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-intro="pending"]:not([data-intro-entered])) [data-intro-letter] {
+      fill-opacity: 0;
+    }
+
+    :global(html[data-intro="pending"]:not([data-intro-entered])) [data-hint] > * {
+      opacity: 0;
+    }
+  }
+
   /* Cards arrive with the navbar, once the camera is through the word */
   #hero-cards {
     transition:
@@ -258,10 +275,29 @@ const t = useTranslations(lang);
     }
   }
 
+  /*
+   * The stage covers the large viewport (URL bar hidden), so collapsing the bar
+   * never uncovers a strip of the section behind it. Content layers stay inside
+   * the small viewport, so nothing sits under the bar while it's showing.
+   * Both are fixed lengths: neither moves while the bar animates.
+   */
   #hero-viewport {
     height: 100vh;
-    height: 100svh;
+    height: 100lvh;
     --hero-nav-h: var(--nav-h, 6rem);
+  }
+
+  #hero-cards,
+  #alivia-intro [data-zoom] {
+    bottom: auto;
+    height: 100vh;
+    height: 100svh;
+  }
+
+  @supports (height: 100lvh) {
+    #alivia-intro [data-hint] {
+      bottom: calc(100lvh - 100svh + 2rem + env(safe-area-inset-bottom, 0px));
+    }
   }
 
   @media (max-width: 767.98px) {
