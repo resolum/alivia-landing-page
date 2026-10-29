@@ -86,10 +86,9 @@ const label = lang === 'es' ? 'Volver arriba' : 'Back to top';
     updateVisibility();
 
     btn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+      // Lenis (smoothScroll.ts) owns wheel scrolling when active; a native smooth scroll would fight it.
+      if (window.smoothScroll) window.smoothScroll.scrollTo(0);
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 

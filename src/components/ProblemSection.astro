@@ -83,11 +83,12 @@ const items = [
       class="mt-14 sm:mt-20 rounded-3xl bg-alivia-primary text-white p-6 sm:p-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6"
       data-reveal="scale"
     >
-      <p class="text-lg sm:text-2xl font-display leading-snug max-w-3xl">
-        {t("problem.closing")}
+      <p data-words class="text-lg sm:text-2xl font-display leading-snug max-w-3xl">
+        {t("problem.closing").split(" ").map((word, i) => <>{i > 0 && " "}<span data-word>{word}</span></>)}
       </p>
       <a
         href="#como-funciona"
+        data-magnetic
         class="press inline-flex items-center justify-center gap-2 px-6 min-h-12 rounded-lg text-base font-semibold bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target shrink-0 w-full sm:w-auto"
       >
         {t("problem.cta")}
