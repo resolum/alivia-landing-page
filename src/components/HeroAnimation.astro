@@ -25,6 +25,7 @@ const t = useTranslations(lang);
       >
       </div>
       <div
+        id="hero-cards"
         class="absolute inset-0 z-20 pointer-events-none flex items-center justify-center px-4 sm:px-6 max-md:pt-[calc(var(--nav-h,6rem)+0.5rem)]"
       >
         <div
@@ -51,12 +52,14 @@ const t = useTranslations(lang);
             >
               <a
                 href="#planes"
-                class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-base font-semibold bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-dark hover:text-white focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target text-center whitespace-normal leading-snug"
+                data-magnetic
+                class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-base font-semibold bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target text-center whitespace-normal leading-snug"
               >
                 {t("hero.ctaPlans")}
               </a>
               <a
                 href="#como-funciona"
+                data-magnetic
                 class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-base font-semibold bg-alivia-primary text-white hover:bg-alivia-primary-medium focus-visible:ring-4 focus-visible:ring-alivia-primary-light touch-target text-center whitespace-normal leading-snug"
               >
                 {t("hero.ctaHowItWorks")}
@@ -139,7 +142,8 @@ const t = useTranslations(lang);
             >
               <a
                 href="#dispositivos"
-                class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-base bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-dark hover:text-white focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target text-center whitespace-normal leading-snug"
+                data-magnetic
+                class="press w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-base bg-alivia-secondary text-alivia-primary hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target text-center whitespace-normal leading-snug"
               >
                 {t("hero.card4.cta")}
               </a>
@@ -147,18 +151,63 @@ const t = useTranslations(lang);
           </div>
         </div>
       </div>
+      <div id="alivia-intro" aria-hidden="true" class="absolute inset-0 z-40 select-none">
+        <!-- Navy panel with "Alivia" cut out of it: the hero shows through the letters -->
+        <svg
+          data-zoom
+          class="absolute inset-0 w-full h-full text-alivia-primary-deep font-display"
+          viewBox="0 0 1000 800"
+          preserveAspectRatio="xMidYMid meet"
+          overflow="visible"
+        >
+          <defs>
+            <mask id="intro-mask">
+              <rect x="-6000" y="-6000" width="13000" height="12800" fill="white"></rect>
+              <text data-intro-word x="500" y="505" text-anchor="middle" font-size="300" font-weight="700" letter-spacing="-6" fill="black">{"Alivia".split("").map((c) => <tspan data-intro-letter>{c}</tspan>)}</text>
+            </mask>
+          </defs>
+          <rect x="-6000" y="-6000" width="13000" height="12800" fill="currentColor" mask="url(#intro-mask)"></rect>
+          <!-- Same text, invisible: the masked copy can't be measured -->
+          <text data-measure x="500" y="505" text-anchor="middle" font-size="300" font-weight="700" letter-spacing="-6" opacity="0">Alivia</text>
+        </svg>
+        <div
+          data-hint
+          class="absolute inset-x-0 bottom-[calc(2rem+env(safe-area-inset-bottom,0px))] flex items-center justify-center gap-2 text-sm font-medium text-alivia-secondary-medium"
+        >
+          <span>{t("hero.scrollHint")}</span>
+          <svg
+            class="scroll-nudge w-4 h-4 text-alivia-secondary shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </div>
+      </div>
     </div>
+    <!-- Where the intro ends and the frame sequence starts (read by introWord.ts / heroAnimation.ts) -->
+    <div id="intro-end" aria-hidden="true" class="absolute left-0 w-0 h-0"></div>
   </div>
 </section>
 
 <script>
   import { initHeroAnimation } from '../scripts/heroAnimation';
+  import { initIntroWord } from '../scripts/introWord';
+  import { initIntroEntrance } from '../scripts/introEntrance';
 
   let cleanup: (() => void) | null = null;
 
   const start = () => {
     if (cleanup) cleanup();
-    cleanup = initHeroAnimation();
+    const stopHero = initHeroAnimation();
+    const stopIntro = initIntroWord();
+    const stopEntrance = initIntroEntrance();
+    cleanup = () => {
+      stopHero();
+      stopIntro();
+      stopEntrance();
+    };
   };
 
   if (document.readyState === 'loading') {
@@ -174,15 +223,81 @@ const t = useTranslations(lang);
     overflow-x: clip;
   }
 
+  /* 120svh of intro + 380svh of frame sequence */
   #scroll-track {
-    height: 380vh;
-    height: 380svh;
+    height: 500vh;
+    height: 500svh;
   }
 
+  #intro-end {
+    top: 120vh;
+    top: 120svh;
+  }
+
+  /* Panel only exists while JS drives it; without JS the hero shows as before */
+  #alivia-intro {
+    visibility: hidden;
+  }
+
+  :global(html[data-intro="pending"]) #alivia-intro {
+    visibility: visible;
+  }
+
+  /* Load entrance (introEntrance.ts): letters and hint start hidden until Motion stages them */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html[data-intro="pending"]:not([data-intro-entered])) [data-intro-letter] {
+      fill-opacity: 0;
+    }
+
+    :global(html[data-intro="pending"]:not([data-intro-entered])) [data-hint] > * {
+      opacity: 0;
+    }
+  }
+
+  /* Cards arrive with the navbar, once the camera is through the word */
+  #hero-cards {
+    transition:
+      opacity 400ms var(--ease-out),
+      transform 400ms var(--ease-out);
+  }
+
+  :global(html[data-intro="pending"]) #hero-cards {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #hero-cards {
+      transition: opacity 200ms ease;
+    }
+    :global(html[data-intro="pending"]) #hero-cards {
+      transform: none;
+    }
+  }
+
+  /*
+   * The stage covers the large viewport (URL bar hidden), so collapsing the bar
+   * never uncovers a strip of the section behind it. Content layers stay inside
+   * the small viewport, so nothing sits under the bar while it's showing.
+   * Both are fixed lengths: neither moves while the bar animates.
+   */
   #hero-viewport {
     height: 100vh;
-    height: 100svh;
+    height: 100lvh;
     --hero-nav-h: var(--nav-h, 6rem);
+  }
+
+  #hero-cards,
+  #alivia-intro [data-zoom] {
+    bottom: auto;
+    height: 100vh;
+    height: 100svh;
+  }
+
+  @supports (height: 100lvh) {
+    #alivia-intro [data-hint] {
+      bottom: calc(100lvh - 100svh + 2rem + env(safe-area-inset-bottom, 0px));
+    }
   }
 
   @media (max-width: 767.98px) {
