@@ -2,6 +2,7 @@
 import type { Lang } from "../i18n/ui";
 import { useTranslations } from "../i18n/utils";
 import { getNavLinks } from "../data/nav";
+import { APP_URLS } from "../data/apps";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 import { Image } from "astro:assets";
 import logoImg from "../assets/logo.webp";
@@ -13,6 +14,21 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const navLinks = getNavLinks(lang);
+
+const loginOptions = [
+  {
+    href: APP_URLS.user,
+    label: t("nav.loginUser"),
+    desc: t("nav.loginUserDesc"),
+    icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+  },
+  {
+    href: APP_URLS.admin,
+    label: t("nav.loginAdmin"),
+    desc: t("nav.loginAdminDesc"),
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+  },
+];
 ---
 
 <header
@@ -25,8 +41,6 @@ const navLinks = getNavLinks(lang);
     (function () {
       const header = document.getElementById("main-header");
       if (!header) return;
-      // Hide the bar before first paint while the "Alivia" intro plays (introWord.ts takes over)
-      document.documentElement.dataset.intro = window.scrollY < window.innerHeight ? "pending" : "done";
       const triggerId = header.getAttribute("data-solid-from") || "problema";
       const section = document.getElementById(triggerId);
       if (!section) return;
@@ -92,29 +106,56 @@ const navLinks = getNavLinks(lang);
       <div class="hidden xl:block">
         <LanguageSwitcher currentLang={lang} />
       </div>
-      <a
-        href="https://resolum-alivia.alivia-resolum.workers.dev/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="press hidden xl:inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target whitespace-nowrap"
-        aria-label={t("nav.loginAriaLabel")}
-      >
-        <svg
-          class="w-4 h-4 shrink-0"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
+      <div id="login-dropdown" class="relative hidden xl:block">
+        <button
+          id="login-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="login-menu"
+          aria-label={t("nav.loginAriaLabel")}
+          class="press inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full text-sm font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-medium focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium touch-target whitespace-nowrap"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-          ></path>
-        </svg>
-        <span>{t("nav.login")}</span>
-      </a>
+          <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+            ></path>
+          </svg>
+          <span>{t("nav.login")}</span>
+          <svg class="login-chevron w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div
+          id="login-menu"
+          hidden
+          aria-label={t("nav.loginMenuLabel")}
+          class="absolute right-0 top-full mt-2 w-72 rounded-2xl bg-alivia-primary-deep p-2 shadow-2xl ring-1 ring-white/15"
+        >
+          {
+            loginOptions.map((option) => (
+              <a
+                href={option.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="login-option flex items-start gap-3 rounded-xl px-3 py-2.5 text-white hover:bg-white/10 focus-visible:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alivia-secondary"
+              >
+                <span class="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-alivia-secondary/15 text-alivia-secondary">
+                  <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={option.icon}></path>
+                  </svg>
+                </span>
+                <span class="flex flex-col">
+                  <span class="text-sm font-semibold">{option.label}</span>
+                  <span class="text-xs text-alivia-primary-light">{option.desc}</span>
+                </span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
       <button
         id="mobile-menu-toggle"
         type="button"
@@ -180,28 +221,29 @@ const navLinks = getNavLinks(lang);
           </a>
         ))
       }
-      <a
-        href="https://resolum-alivia.alivia-resolum.workers.dev/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="press mobile-nav-link mt-2 inline-flex items-center justify-center gap-2 px-5 min-h-12 rounded-full text-base font-semibold bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-medium"
-      >
-        <svg
-          class="w-4 h-4 shrink-0"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-          ></path>
-        </svg>
-        <span>{t("nav.login")}</span>
-      </a>
+      <div class="mt-2 flex flex-col gap-2" role="group" aria-label={t("nav.loginAriaLabel")}>
+        <p class="text-xs font-semibold tracking-wider text-alivia-secondary-medium uppercase">{t("nav.login")}</p>
+        {
+          loginOptions.map((option, i) => (
+            <a
+              href={option.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={[
+                "press mobile-nav-link inline-flex items-center justify-center gap-2 px-5 min-h-12 rounded-full text-base font-semibold",
+                i === 0
+                  ? "bg-alivia-secondary text-alivia-primary-deep hover:bg-alivia-secondary-medium"
+                  : "text-white ring-1 ring-white/30 hover:bg-white/10",
+              ]}
+            >
+              <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={option.icon}></path>
+              </svg>
+              <span>{option.label}</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </div>
 </header>
@@ -233,13 +275,6 @@ const navLinks = getNavLinks(lang);
       box-shadow 200ms ease,
       opacity 400ms var(--ease-out),
       transform 400ms var(--ease-out);
-  }
-
-  /* Waits for the intro to finish; keyboard focus still brings it in */
-  :global(html[data-intro="pending"]) #main-header:not(:focus-within) {
-    opacity: 0;
-    transform: translateY(-100%);
-    pointer-events: none;
   }
 
   #main-header[data-solid="true"] {
@@ -284,6 +319,27 @@ const navLinks = getNavLinks(lang);
     }
   }
 
+  /* Sign in menu: grows from the button it belongs to */
+  #login-menu:not([hidden]) {
+    transform-origin: top right;
+    animation: login-in 160ms var(--ease-out);
+  }
+
+  @keyframes login-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.97);
+    }
+  }
+
+  .login-chevron {
+    transition: transform 200ms var(--ease-out);
+  }
+
+  #login-toggle[aria-expanded="true"] .login-chevron {
+    transform: rotate(180deg);
+  }
+
   /* Burger ⇄ close: both icons stay mounted and cross-fade */
   .menu-icon {
     transition:
@@ -303,7 +359,8 @@ const navLinks = getNavLinks(lang);
     #main-header {
       transition: none !important;
     }
-    #mobile-menu:not(.hidden) {
+    #mobile-menu:not(.hidden),
+    #login-menu:not([hidden]) {
       animation-name: menu-fade;
     }
     #mobile-menu.is-closing {

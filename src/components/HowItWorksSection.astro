@@ -84,33 +84,52 @@ const steps = [
       </p>
     </div>
 
-    <div
-      role="group"
-      aria-label={t("howItWorks.pickLabel")}
-      class="mb-12 sm:mb-16"
-      data-reveal
-    >
-      <p class="text-sm text-alivia-primary-light mb-3">
-        {t("howItWorks.pickLabel")}
-      </p>
-      <div class="flex flex-wrap gap-2.5">
-        {
-          commands.map((cmd, i) => (
-            <button
-              type="button"
-              class="hiw-chip press touch-target rounded-full px-5 py-2.5 text-[0.9375rem] font-semibold"
-              data-pick={cmd.id}
-              aria-pressed={i === 0 ? "true" : "false"}
+    <div class="grid lg:grid-cols-12 gap-14 lg:gap-10">
+      <!-- The spoken order is the focal point; the steps below follow what it sets off -->
+      <div class="lg:col-span-5 lg:sticky lg:top-32 lg:self-start" data-reveal>
+        <div role="group" aria-label={t("howItWorks.pickLabel")}>
+          <p class="text-sm text-alivia-primary-light mb-3">
+            {t("howItWorks.pickLabel")}
+          </p>
+          <div class="flex flex-wrap gap-2">
+            {
+              commands.map((cmd, i) => (
+                <button
+                  type="button"
+                  class="hiw-chip press touch-target rounded-lg px-4 py-2.5 text-[0.9375rem] font-semibold focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-alivia-secondary-medium"
+                  data-pick={cmd.id}
+                  aria-pressed={i === 0 ? "true" : "false"}
+                >
+                  {cmd.say}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <figure class="mt-10 sm:mt-12" aria-live="polite">
+          <span class="hiw-wave flex items-end gap-[3px] h-6 mb-4" aria-hidden="true">
+            {[0.45, 0.8, 1, 0.65, 0.9, 0.5, 0.7, 0.4, 0.85].map((h) => (
+              <span style={`--h:${h}`} />
+            ))}
+          </span>
+          {commands.map((cmd) => (
+            <blockquote
+              class="hiw-swap hiw-quote font-display font-semibold text-white text-[2.5rem] leading-[1.02] sm:text-[3.25rem] lg:text-[3.5rem]"
+              data-for={cmd.id}
             >
               «{cmd.say}»
-            </button>
-          ))
-        }
+            </blockquote>
+          ))}
+        </figure>
+
+        <p class="mt-10 max-w-sm border-t border-white/15 pt-4 text-sm text-alivia-primary-mist leading-relaxed">
+          {t("howItWorks.note")}
+        </p>
       </div>
-    </div>
 
     <ol
-      class="hiw-flow relative grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-x-8"
+      class="hiw-flow relative lg:col-span-7 lg:col-start-6"
       aria-label={t("howItWorks.stepsLabel")}
     >
       <span class="hiw-track" aria-hidden="true"
@@ -120,75 +139,52 @@ const steps = [
       {
         steps.map((step, i) => (
           <li
-            class="hiw-stage relative pl-9 lg:pl-0 lg:pt-10"
+            class="hiw-stage relative grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3.5rem_1fr] gap-x-2 py-7 sm:py-9 border-b border-white/10 last:border-b-0"
             style={`--i:${i}`}
             data-lit="true"
           >
-            <span class="hiw-dot" aria-hidden="true" />
+            <span class="hiw-num font-display text-sm font-semibold tabular-nums" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
 
-            <div class="hiw-art mb-6 lg:h-28 flex items-start">
-              {step.kind === "voice" && (
-                <div>
-                  <span
-                    class="hiw-wave flex items-end gap-[3px] h-5 mb-3"
-                    aria-hidden="true"
-                  >
-                    {[0.45, 0.8, 1, 0.65, 0.9, 0.5, 0.7].map((h) => (
-                      <span style={`--h:${h}`} />
-                    ))}
+            <div>
+            <h3 class="text-xl sm:text-2xl font-semibold text-white mb-2">
+              {step.title}
+            </h3>
+            <p class="text-[0.9375rem] sm:text-base text-alivia-primary-mist leading-relaxed max-w-md">
+              {step.desc}
+            </p>
+
+            <div class="hiw-art mt-5 empty:hidden">
+              {step.kind === "hub" && (
+                <div class="inline-flex flex-wrap items-baseline gap-x-6 gap-y-2 text-sm">
+                  <span class="flex items-center gap-1.5 text-alivia-secondary-light">
+                    <span class="w-1.5 h-1.5 rounded-full bg-alivia-secondary" aria-hidden="true" />
+                    {t("howItWorks.hub.where")} · {t("howItWorks.hub.offline")}
                   </span>
                   {commands.map((cmd) => (
-                    <p
-                      class="hiw-swap text-[1.75rem] sm:text-3xl leading-[1.1] font-semibold text-white"
-                      data-for={cmd.id}
-                    >
-                      «{cmd.say}»
-                    </p>
-                  ))}
-                </div>
-              )}
-
-              {step.kind === "hub" && (
-                <div class="w-full max-w-xs rounded-2xl bg-alivia-primary px-4 py-3.5 text-sm">
-                  <div class="flex items-center justify-between gap-3 mb-3">
-                    <span class="font-semibold text-white">
-                      {t("howItWorks.hub.where")}
-                    </span>
-                    <span class="flex items-center gap-1.5 text-alivia-secondary-light">
-                      <span
-                        class="w-1.5 h-1.5 rounded-full bg-alivia-secondary"
-                        aria-hidden="true"
-                      />
-                      {t("howItWorks.hub.offline")}
-                    </span>
-                  </div>
-                  {commands.map((cmd) => (
-                    <dl
-                      class="hiw-swap grid-cols-[auto_1fr] gap-x-4 gap-y-1"
-                      style="--d:grid"
-                      data-for={cmd.id}
-                    >
-                      <dt class="text-alivia-primary-light">
-                        {t("howItWorks.hub.action")}
-                      </dt>
-                      <dd class="text-white font-medium">{cmd.action}</dd>
-                      <dt class="text-alivia-primary-light">
-                        {t("howItWorks.hub.target")}
-                      </dt>
-                      <dd class="text-white font-medium">{cmd.target}</dd>
+                    <dl class="hiw-swap gap-x-5" style="--d:flex" data-for={cmd.id}>
+                      <div class="flex gap-1.5">
+                        <dt class="text-alivia-primary-light">{t("howItWorks.hub.action")}</dt>
+                        <dd class="text-white font-medium">{cmd.action}</dd>
+                      </div>
+                      <div class="flex gap-1.5">
+                        <dt class="text-alivia-primary-light">{t("howItWorks.hub.target")}</dt>
+                        <dd class="text-white font-medium">{cmd.target}</dd>
+                      </div>
                     </dl>
                   ))}
                 </div>
               )}
 
               {step.kind === "device" && (
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
                   <span
-                    class="hiw-device w-16 h-16 rounded-2xl bg-alivia-primary flex items-center justify-center"
+                    class="hiw-device w-11 h-11 rounded-xl bg-alivia-primary flex items-center justify-center"
                     aria-hidden="true"
                   >
                     <svg
-                      class="hiw-swap w-8 h-8"
+                      class="hiw-swap w-5 h-5"
                       data-for="light"
                       viewBox="0 0 24 24"
                       fill="none"
@@ -200,7 +196,7 @@ const steps = [
                       <path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0012 3z" />
                     </svg>
                     <svg
-                      class="hiw-swap w-8 h-8"
+                      class="hiw-swap w-5 h-5"
                       data-for="door"
                       viewBox="0 0 24 24"
                       fill="none"
@@ -213,7 +209,7 @@ const steps = [
                       <circle cx="11" cy="12.5" r=".8" fill="currentColor" />
                     </svg>
                     <svg
-                      class="hiw-swap w-8 h-8"
+                      class="hiw-swap w-5 h-5"
                       data-for="window"
                       viewBox="0 0 24 24"
                       fill="none"
@@ -227,54 +223,41 @@ const steps = [
                     </svg>
                   </span>
                   {commands.map((cmd) => (
-                    <p class="hiw-swap leading-tight" data-for={cmd.id}>
-                      <span class="block text-sm text-alivia-primary-light">
-                        {cmd.target}
-                      </span>
-                      <span class="block text-xl font-semibold text-alivia-secondary-light">
-                        {cmd.state}
-                      </span>
+                    <p class="hiw-swap text-sm" data-for={cmd.id}>
+                      <span class="text-alivia-primary-light">{cmd.target}</span>
+                      <span class="ml-1.5 font-semibold text-alivia-secondary-light">{cmd.state}</span>
                     </p>
                   ))}
                 </div>
               )}
 
               {step.kind === "confirm" && (
-                <div class="w-full max-w-xs flex flex-col gap-2 text-sm">
+                <div class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2 max-w-lg">
                   {commands.map((cmd) => (
-                    <div
-                      class="hiw-swap flex-col gap-2"
-                      style="--d:flex"
-                      data-for={cmd.id}
-                    >
-                      <p class="self-start rounded-2xl rounded-bl-md bg-alivia-secondary text-alivia-primary-deep font-semibold px-3.5 py-2">
-                        «{cmd.reply}»
-                      </p>
-                      <p class="rounded-2xl bg-white text-alivia-neutral-dark px-3.5 py-2.5">
-                        <span class="flex justify-between gap-3 text-xs text-alivia-neutral-blue mb-0.5">
-                          <span class="font-semibold">
-                            {t("howItWorks.app.name")}
-                          </span>
-                          <span>{t("howItWorks.app.now")}</span>
-                        </span>
-                        {cmd.target}: {cmd.state.toLowerCase()}
-                      </p>
-                    </div>
+                    <p class="hiw-swap text-white" data-for={cmd.id}>
+                      <span class="block text-xs text-alivia-primary-light mb-1">Alivia</span>
+                      «{cmd.reply}»
+                    </p>
+                  ))}
+                  {commands.map((cmd) => (
+                    <p class="hiw-swap text-white" data-for={cmd.id}>
+                      <span class="flex gap-2 text-xs text-alivia-primary-light mb-1">
+                        <span>{t("howItWorks.app.name")}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{t("howItWorks.app.now")}</span>
+                      </span>
+                      {cmd.target}: {cmd.state.toLowerCase()}
+                    </p>
                   ))}
                 </div>
               )}
             </div>
-
-            <h3 class="text-lg sm:text-xl font-semibold text-white mb-2">
-              {step.title}
-            </h3>
-            <p class="text-[0.9375rem] sm:text-base text-alivia-primary-mist leading-relaxed max-w-sm">
-              {step.desc}
-            </p>
+            </div>
           </li>
         ))
       }
     </ol>
+    </div>
   </div>
 </section>
 
@@ -305,15 +288,17 @@ const steps = [
     display: var(--d, block);
   }
 
-  /* Track: vertical on phones, horizontal across the dots on desktop */
+  /* A thin rule down the left edge of the steps: the order travelling through the house */
+  .hiw-flow {
+    padding-left: 1.25rem;
+  }
   .hiw-track {
     position: absolute;
-    left: 5px;
-    top: 0.5rem;
-    bottom: 0.5rem;
-    width: 3px;
-    border-radius: 3px;
-    background: var(--color-alivia-primary);
+    left: 0;
+    top: 2.25rem;
+    bottom: 2.25rem;
+    width: 2px;
+    background: rgb(255 255 255 / 0.12);
     overflow: hidden;
   }
   .hiw-fill {
@@ -325,75 +310,47 @@ const steps = [
     /* One step per stage; matches STEP_MS in scripts/howItWorks.ts */
     transition: transform 320ms var(--ease-out);
   }
-  .hiw-dot {
-    position: absolute;
-    left: 0;
-    top: 0.5rem;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: var(--color-alivia-primary-medium);
-    z-index: 1;
-    transition:
-      background-color 160ms ease,
-      transform 240ms var(--ease-out);
-  }
-  /* The path ends at the last stop */
-  .hiw-stage:last-child::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 1rem;
-    bottom: -0.5rem;
-    width: 13px;
-    background: var(--color-alivia-primary-deep);
-  }
-  @media (min-width: 1024px) {
-    .hiw-track {
-      left: 0;
-      right: 0;
-      top: 5px;
-      bottom: auto;
-      width: auto;
-      height: 3px;
-    }
-    .hiw-fill {
-      transform-origin: left;
-      transform: scaleX(var(--p, 1));
-    }
-    .hiw-dot {
-      top: 0;
-    }
-    .hiw-stage:last-child::after {
-      top: 0;
-      bottom: auto;
-      left: 13px;
-      right: 0;
-      width: auto;
-      height: 13px;
+  @media (min-width: 640px) {
+    .hiw-flow {
+      padding-left: 1.75rem;
     }
   }
 
-  /* Stage lighting as the command travels */
+  /* Stage lighting as the command travels: the step number takes the accent once it is reached */
+  .hiw-num {
+    padding-top: 0.4rem;
+    color: var(--color-alivia-primary-light);
+    transition: color 200ms ease;
+  }
+  .hiw-stage[data-lit="true"] .hiw-num,
+  .hiw-stage[data-lit="pulse"] .hiw-num {
+    color: var(--color-alivia-secondary);
+  }
   .hiw-art {
     transition:
       opacity 220ms var(--ease-out),
       transform 260ms var(--ease-out);
   }
   /* Replay resets snap back; only the forward path animates */
-  .hiw.is-resetting :is(.hiw-fill, .hiw-art, .hiw-dot, .hiw-device) {
+  .hiw.is-resetting :is(.hiw-fill, .hiw-art, .hiw-num, .hiw-device) {
     transition: none;
   }
   .hiw-stage[data-lit="false"] .hiw-art {
     opacity: 0.3;
     transform: translateY(6px);
   }
-  .hiw-stage[data-lit="true"] .hiw-dot {
-    background: var(--color-alivia-secondary);
+
+  /* The spoken order changes in place when another chip is picked */
+  @media (prefers-reduced-motion: no-preference) {
+    .hiw-quote {
+      animation: hiw-quote-in 320ms var(--ease-out);
+    }
   }
-  .hiw-stage[data-lit="pulse"] .hiw-dot {
-    background: var(--color-alivia-secondary);
-    transform: scale(1.3);
+  @keyframes hiw-quote-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.25em);
+    }
   }
   .hiw-device {
     color: var(--color-alivia-primary-light);
@@ -406,7 +363,7 @@ const steps = [
 
   /* Voice waveform: still bars by default, moves only while "speaking" */
   .hiw-wave span {
-    width: 4px;
+    width: 5px;
     height: 100%;
     border-radius: 2px;
     background: var(--color-alivia-secondary);

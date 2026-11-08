@@ -4,6 +4,7 @@ interface Props {
   id: string;
   provider: VideoProvider;
   source: string;
+  webmSource?: string;
   title: string;
   description?: string;
   poster?: string;
@@ -23,6 +24,7 @@ const {
   id,
   provider,
   source,
+  webmSource,
   title,
   description,
   poster,
@@ -106,6 +108,7 @@ const externalHref =
         aria-describedby={descriptionId}
         data-video-element
       >
+        {webmSource && <source src={webmSource} type="video/webm" />}
         <source src={source} type="video/mp4" />
         {captions.map((track) => (
           <track
@@ -289,7 +292,9 @@ const externalHref =
     if (!video) return;
 
     video.addEventListener("error", showError);
-    video.querySelector("source")?.addEventListener("error", showError);
+    // Only the last source failing means nothing can play; earlier ones fall through to the next.
+    const sources = video.querySelectorAll("source");
+    sources[sources.length - 1]?.addEventListener("error", showError);
     video.addEventListener("loadeddata", () => {
       errorPanel?.classList.add("hidden");
       frame?.classList.remove("hidden");

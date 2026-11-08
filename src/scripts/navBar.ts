@@ -78,6 +78,39 @@ export function initNavBar(): () => void {
     toggleBtn?.focus();
   };
 
+  /* ---- Sign in / Sign up dropdown (desktop) ---- */
+  const loginWrap = document.getElementById("login-dropdown");
+  const loginToggle = document.getElementById("login-toggle");
+  const loginMenu = document.getElementById("login-menu");
+
+  const setLoginOpen = (open: boolean, returnFocus = false) => {
+    if (!loginToggle || !loginMenu) return;
+    loginToggle.setAttribute("aria-expanded", String(open));
+    loginMenu.hidden = !open;
+    if (!open && returnFocus) loginToggle.focus();
+  };
+  const isLoginOpen = () => loginToggle?.getAttribute("aria-expanded") === "true";
+
+  const handleLoginToggle = () => {
+    const open = !isLoginOpen();
+    setLoginOpen(open);
+    if (open) loginMenu?.querySelector<HTMLAnchorElement>("a")?.focus();
+  };
+  const handleLoginOutside = (e: PointerEvent) => {
+    if (isLoginOpen() && loginWrap && !loginWrap.contains(e.target as Node)) setLoginOpen(false);
+  };
+  const handleLoginFocusOut = (e: FocusEvent) => {
+    if (isLoginOpen() && loginWrap && !loginWrap.contains(e.relatedTarget as Node | null)) setLoginOpen(false);
+  };
+  const handleLoginKeydown = (e: KeyboardEvent) => {
+    if (e.key === "Escape" && isLoginOpen()) setLoginOpen(false, true);
+  };
+
+  loginToggle?.addEventListener("click", handleLoginToggle);
+  loginWrap?.addEventListener("focusout", handleLoginFocusOut);
+  loginWrap?.addEventListener("keydown", handleLoginKeydown);
+  document.addEventListener("pointerdown", handleLoginOutside);
+
   if (toggleBtn) {
     toggleBtn.addEventListener("click", handleToggleClick);
   }
@@ -123,6 +156,10 @@ export function initNavBar(): () => void {
 
   return () => {
     if (toggleBtn) toggleBtn.removeEventListener("click", handleToggleClick);
+    loginToggle?.removeEventListener("click", handleLoginToggle);
+    loginWrap?.removeEventListener("focusout", handleLoginFocusOut);
+    loginWrap?.removeEventListener("keydown", handleLoginKeydown);
+    document.removeEventListener("pointerdown", handleLoginOutside);
     document.removeEventListener("keydown", handleKeydown);
     mobileMenu?.removeEventListener("animationend", finishClose);
     window.clearTimeout(closeTimer);

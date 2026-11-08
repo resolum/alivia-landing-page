@@ -13,6 +13,8 @@ export interface VideoItem {
   id: "product" | "team";
   provider: VideoProvider;
   source: string;
+  /** Optional WebM (VP9) version, offered before the MP4. */
+  webmSource?: string;
   poster?: string;
   title: string;
   description: string;
@@ -22,13 +24,16 @@ export interface VideoItem {
   temporary?: boolean;
 }
 
+// 1080p web encodes; WebM is offered first, MP4 covers browsers without VP9.
 const PRODUCT_VIDEO = "/videos/alivia-producto.mp4";
+const PRODUCT_VIDEO_WEBM = "/videos/alivia-producto.webm";
 const PRODUCT_POSTER = "/videos/alivia-producto-poster.webp";
 
 export const getProductVideo = (lang: Lang): VideoItem => ({
   id: "product",
   provider: "file",
   source: PRODUCT_VIDEO,
+  webmSource: PRODUCT_VIDEO_WEBM,
   poster: PRODUCT_POSTER,
   title:
     lang === "es"
