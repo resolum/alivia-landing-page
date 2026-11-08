@@ -44,20 +44,9 @@ export const getProductVideo = (lang: Lang): VideoItem => ({
       ? "Recorrido por el dispositivo Alivia y los módulos que permiten controlar la luz, la puerta y la ventana por voz."
       : "A walkthrough of the Alivia device and the modules that enable voice control of lights, doors, and windows.",
   duration: "00:32",
-  captions: [
-    {
-      src: "/videos/alivia-producto.es.vtt",
-      srcLang: "es",
-      label: "Español",
-      default: lang === "es",
-    },
-    {
-      src: "/videos/alivia-producto.en.vtt",
-      srcLang: "en",
-      label: "English",
-      default: lang === "en",
-    },
-  ],
+  // TODO: add alivia-producto.es.vtt / .en.vtt to public/videos/ and list them here; until then the
+  // transcript section covers the spoken content.
+  captions: [],
   externalUrl: PRODUCT_VIDEO,
 });
 
