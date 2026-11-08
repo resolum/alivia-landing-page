@@ -140,14 +140,14 @@ export const POS_CONFIG: Record<string, PosConfig> = {
   'cubierta-trasera':  { side: 'top',    offsetX: +10 },
 };
 
-/** Animation constants */
+/** Scrub constants: the clip explodes (0 to ~15 s), turns frontal, then reassembles (to 32 s). */
 export const DEVICE_CONSTANTS = {
-  TOTAL_FRAMES: 240,
-  BASE_PATH: '/device/',
-  FRAME_SIZES: [
-    { dir: 'sm', width: 960 },
-    { dir: 'lg', width: 1920 },
-  ],
-  HS_SHOW_AT: 0.97,
-  HS_HIDE_BELOW: 0.93,
+  CLIP_BASE: '/device/',
+  DURATION: 32,
+  FPS: 15,
+  /** Frame where the parts sit square to the camera, matching the hotspot coordinates above. */
+  PEAK_TIME: 15.5,
+  /** Scroll range (0-1) that holds the peak frame still so the hotspots can be used. */
+  HOLD_FROM: 0.4,
+  HOLD_TO: 0.65,
 } as const;

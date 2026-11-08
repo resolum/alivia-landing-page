@@ -49,10 +49,18 @@ const i18nConfig = JSON.stringify({
       </p>
     </div>
     <div id="canvas-area" class="relative flex-1 w-full min-h-0 bg-white">
-      <canvas
-        id="device-canvas"
-        class="absolute inset-0 w-full h-full bg-white"
-        aria-label={t("devices.canvasLabel")}></canvas>
+      <video
+        id="device-video"
+        class="absolute max-w-none bg-white pointer-events-none"
+        muted
+        playsinline
+        preload="none"
+        disablepictureinpicture
+        disableremoteplayback
+        tabindex="-1"
+        poster="/device/poster.webp"
+        role="img"
+        aria-label={t("devices.canvasLabel")}></video>
       <div
         id="hotspot-layer"
         class="absolute inset-0 z-20 transition-[opacity,visibility] duration-500 ease-[var(--ease-out)] opacity-0 invisible pointer-events-none"
@@ -106,6 +114,16 @@ const i18nConfig = JSON.stringify({
 <script type="application/json" id="device-i18n-data" set:html={i18nConfig} />
 
 <style>
+  /* Reduced motion / data saver: no scrub, the stage is just the still of the exploded view */
+  #device-scroll-stage[data-still] {
+    height: auto !important;
+  }
+
+  #device-scroll-stage[data-still] #device-progress-bar,
+  #device-scroll-stage[data-still] #scroll-hint {
+    display: none;
+  }
+
   :global(.sr-only) {
     position: absolute !important;
     width: 1px !important;
