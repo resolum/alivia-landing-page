@@ -5,6 +5,10 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
   site: "https://resolum-alivia.alivia-resolum.workers.dev",
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: "hover",
+  },
 
   image: {
     service: passthroughImageService(),

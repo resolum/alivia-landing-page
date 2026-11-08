@@ -1,4 +1,5 @@
 import { HOTSPOTS as DEFAULT_HOTSPOTS, DEVICE_CONSTANTS, type Hotspot } from '../data/hotspots';
+import { attachVideo } from './videoBlob';
 import { createVisibleLoop } from './frameSequence';
 
 export function initDeviceExplode(): () => void {
@@ -98,8 +99,8 @@ export function initDeviceExplode(): () => void {
     if (loadStarted || still) return;
     loadStarted = true;
     videoEl.preload = 'auto';
-    // Only the 1080p encode is served, on every screen size.
-    videoEl.src = CLIP_BASE + 'device.mp4';
+    // Only the 1080p encode is served, on every screen size; played from memory so it can seek.
+    attachVideo(videoEl, CLIP_BASE + 'device.mp4');
   };
 
   const preloadObserver = new IntersectionObserver(

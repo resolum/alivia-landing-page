@@ -1,4 +1,5 @@
 import { createVisibleLoop } from "./frameSequence";
+import { attachVideo } from "./videoBlob";
 import { CLIP_COUNT, XFADE, buildTimeline, textWindow } from "./heroTimeline";
 
 const CLIP_BASE = "/hero/clips/";
@@ -83,8 +84,8 @@ export function initHeroAnimation(): () => void {
   const attach = (c: Clip, i: number) => {
     if (c.attached) return;
     c.attached = true;
-    // Only the 1080p encodes are served, on every screen size.
-    c.el.src = `${CLIP_BASE}clip${i + 1}.mp4`;
+    // Only the 1080p encodes are served, on every screen size; played from memory so they can seek.
+    attachVideo(c.el, `${CLIP_BASE}clip${i + 1}.mp4`);
   };
 
   const deferred: number[] = [];
