@@ -1,8 +1,8 @@
 import { HOTSPOTS as DEFAULT_HOTSPOTS, DEVICE_CONSTANTS, type Hotspot } from '../data/hotspots';
-import { createFrameSequence, createVisibleLoop, pickFrameSize, type FrameSequence } from './frameSequence';
+import { createVisibleLoop } from './frameSequence';
 
 export function initDeviceExplode(): () => void {
-  const { TOTAL_FRAMES, BASE_PATH, FRAME_SIZES, HS_SHOW_AT, HS_HIDE_BELOW } = DEVICE_CONSTANTS;
+  const { CLIP_BASE, DURATION, FPS, PEAK_TIME, HOLD_FROM, HOLD_TO } = DEVICE_CONSTANTS;
 
   // Read i18n data passed from Astro component if available
   const i18nScript = document.getElementById('device-i18n-data');
@@ -13,25 +13,21 @@ export function initDeviceExplode(): () => void {
 
   const stage        = document.getElementById('device-scroll-stage');
   const canvasArea   = document.getElementById('canvas-area');
-  const canvasEl     = document.querySelector<HTMLCanvasElement>('#device-canvas');
+  const videoEl      = document.querySelector<HTMLVideoElement>('#device-video');
   const scrollHint   = document.getElementById('scroll-hint');
   const progressBar  = document.getElementById('device-progress-bar');
   const hotspotLayer = document.getElementById('hotspot-layer');
   const svgEl        = document.querySelector<SVGElement>('#mindmap-svg');
   const bubblesDiv   = document.getElementById('mindmap-bubbles') as HTMLElement | null;
 
-  if (!canvasEl || !stage || !canvasArea) return () => {};
-  const ctx = canvasEl.getContext('2d', { alpha: false });
-  if (!ctx) return () => {};
+  if (!videoEl || !stage || !canvasArea) return () => {};
 
-  let sequence: FrameSequence | null = null;
-  let allLoaded     = false;
-  let displayFrame  = 0;
-  let targetFrame   = 0;
-  let lastDrawn     = -1;
+  let loadStarted   = false;
+  let progress      = 0;
+  let lastT: number | null = null;
+  let wantTime: number | null = null;
   let areaW         = canvasArea.clientWidth;
   let areaH         = canvasArea.clientHeight;
-  let canvasScale   = 1;
   let stageTop      = 0;
   let stageScrollable = 0;
   let lastProgress  = -1;
@@ -43,6 +39,13 @@ export function initDeviceExplode(): () => void {
   let sameZoneCount = 0;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  // Reduced motion / data saver: one still of the exploded view, no scrub, hotspots always on.
+  const still = reduced || !!conn?.saveData || /(^|-)2g$/.test(conn?.effectiveType || '');
+  if (still) {
+    stage.dataset.still = '';
+    videoEl.poster = CLIP_BASE + 'still.webp';
+  }
 
   const getImageRect = () => {
     const cw = areaW;
@@ -51,7 +54,7 @@ export function initDeviceExplode(): () => void {
     const vPad = cw < 640 ? 140 : 150;
     const availH = Math.max(200, ch - 2 * vPad);
 
-    const ir = sequence?.ratio ?? 16 / 9;
+    const ir = videoEl.videoWidth && videoEl.videoHeight ? videoEl.videoWidth / videoEl.videoHeight : 16 / 9;
     const cr = cw / availH;
     let dw: number, dh: number, ox: number, oy: number;
 
@@ -69,18 +72,13 @@ export function initDeviceExplode(): () => void {
     return { left: ox, top: oy, width: dw, height: dh };
   };
 
-  const drawFrame = (idx: number) => {
-    const frame = sequence?.get(idx);
-    if (!frame) return;
-
-    const rect = getImageRect();
-    const s = canvasScale;
-
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, canvasEl.width, canvasEl.height);
-    // Resizing the canvas resets this, so set it on every draw.
-    ctx.imageSmoothingQuality = 'high';
-    ctx.drawImage(frame.img, rect.left * s, rect.top * s, rect.width * s, rect.height * s);
+  // The video sits exactly where the frame used to be painted, so the hotspot maths is unchanged.
+  const layoutVideo = () => {
+    const r = getImageRect();
+    videoEl.style.left   = r.left + 'px';
+    videoEl.style.top    = r.top + 'px';
+    videoEl.style.width  = r.width + 'px';
+    videoEl.style.height = r.height + 'px';
   };
 
   const measure = () => {
@@ -92,33 +90,16 @@ export function initDeviceExplode(): () => void {
 
   const resizeCanvas = () => {
     measure();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // Never back the canvas with more pixels than the frame itself has.
-    canvasScale = sequence ? Math.min(dpr, sequence.width / getImageRect().width) : dpr;
-    canvasEl.width  = Math.round(areaW * canvasScale);
-    canvasEl.height = Math.round(areaH * canvasScale);
-    lastDrawn = -1;
-    drawFrame(Math.round(displayFrame));
+    layoutVideo();
   };
 
-  // Frames are only requested once the section gets close to the viewport.
+  // The clip is only requested once the section gets close to the viewport.
   const startLoading = () => {
-    if (sequence) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    sequence = createFrameSequence(pickFrameSize(FRAME_SIZES, getImageRect().width * dpr), {
-      basePath: BASE_PATH,
-      total: TOTAL_FRAMES,
-      onFrame: (i) => {
-        if (i === 0) resizeCanvas();
-        lastDrawn = -1;
-        loop.wake();
-      },
-      onComplete: () => {
-        allLoaded = true;
-        repositionHotspots();
-        updateTarget();
-      },
-    });
+    if (loadStarted || still) return;
+    loadStarted = true;
+    videoEl.preload = 'auto';
+    // Only the 1080p encode is served, on every screen size.
+    videoEl.src = CLIP_BASE + 'device.mp4';
   };
 
   const preloadObserver = new IntersectionObserver(
@@ -393,34 +374,59 @@ export function initDeviceExplode(): () => void {
     else openMindMap(id, btn, true);
   };
 
-  const updateTarget = () => {
+  const targetProgress = () => {
     const scrolled = Math.max(0, window.scrollY - stageTop);
-    const progress = Math.min(1, stageScrollable > 0 ? scrolled / stageScrollable : 0);
-    targetFrame = progress * (TOTAL_FRAMES - 1);
-    if (progressBar && progress !== lastProgress) progressBar.style.transform = `scaleX(${progress})`;
-    lastProgress = progress;
+    return Math.min(1, stageScrollable > 0 ? scrolled / stageScrollable : 0);
+  };
+
+  // Scroll -> clip time: explode up to the frontal peak, hold it still for the hotspots, then reassemble.
+  const timeAt = (p: number) => {
+    const last = DURATION - 0.5 / FPS;
+    if (p < HOLD_FROM) return PEAK_TIME * (p / HOLD_FROM);
+    if (p <= HOLD_TO) return PEAK_TIME;
+    return PEAK_TIME + (last - PEAK_TIME) * ((p - HOLD_TO) / (1 - HOLD_TO));
+  };
+
+  // One seek in flight at a time, always aimed at the latest time.
+  const flush = () => {
+    if (wantTime === null || videoEl.seeking || videoEl.readyState < 1) return;
+    if (Math.abs(videoEl.currentTime - wantTime) > 0.5 / FPS) videoEl.currentTime = wantTime;
+    wantTime = null;
+  };
+  const onMeta = () => { layoutVideo(); repositionHotspots(); flush(); };
+  videoEl.addEventListener('loadedmetadata', onMeta);
+  videoEl.addEventListener('seeked', flush);
+
+  const updateUI = () => {
+    if (progressBar) progressBar.style.transform = `scaleX(${progress})`;
     if (!hintDismissed && progress > 0.02) {
       hintDismissed = true;
       if (scrollHint) scrollHint.style.opacity = '0';
     }
-    if (allLoaded) {
-      if (progress >= HS_SHOW_AT)  showHotspots();
-      else if (progress < HS_HIDE_BELOW) hideHotspots();
-    }
+    if (progress >= HOLD_FROM + 0.01 && progress <= HOLD_TO - 0.01) showHotspots();
+    else if (progress < HOLD_FROM - 0.02 || progress > HOLD_TO + 0.02) hideHotspots();
   };
 
-  const LERP = reduced ? 1 : 0.12;
+  const FOLLOW = 10; // how fast the clip chases the scroll position (1/s)
   // Returns true while there is still motion left to animate.
   const tick = () => {
-    updateTarget();
-    displayFrame += (targetFrame - displayFrame) * LERP;
-    if (Math.abs(targetFrame - displayFrame) < 0.01) displayFrame = targetFrame;
-    const frame = Math.round(displayFrame);
-    if (frame !== lastDrawn) {
-      drawFrame(frame);
-      lastDrawn = frame;
+    if (still) return false;
+    const now = performance.now();
+    const dt = lastT === null ? 1 / 60 : Math.min(0.05, (now - lastT) / 1000);
+    lastT = now;
+
+    const target = targetProgress();
+    if (reduced) progress = target;
+    else {
+      progress += (target - progress) * (1 - Math.exp(-FOLLOW * dt));
+      if (Math.abs(target - progress) < 0.0005) progress = target;
     }
-    return displayFrame !== targetFrame;
+    wantTime = timeAt(progress);
+    flush();
+    updateUI();
+    const moving = progress !== target;
+    if (!moving) lastT = null;
+    return moving;
   };
   const loop = createVisibleLoop(stage, tick);
 
@@ -448,11 +454,16 @@ export function initDeviceExplode(): () => void {
   resizeObserver.observe(document.body);
 
   resizeCanvas();
-  tick();
+  if (still) {
+    showHotspots();
+  } else {
+    tick();
+  }
 
   return () => {
     loop.destroy();
-    sequence?.destroy();
+    videoEl.removeEventListener('loadedmetadata', onMeta);
+    videoEl.removeEventListener('seeked', flush);
     preloadObserver.disconnect();
     resizeObserver.disconnect();
     window.removeEventListener('scroll', loop.wake);
